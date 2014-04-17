@@ -1,23 +1,26 @@
 package com.setoalan.mylastfm;
 
-import android.app.Fragment;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class MyLastFMFragment extends Fragment {
+public class MyLastFMFragment extends ListFragment {
 
     public static String USERNAME;
     public static UserInfo USERINFO;
+
+    private ArrayList<UserInfo> mList;
 
     TextView playCountTV, playsSinceTV;
 
@@ -30,18 +33,9 @@ public class MyLastFMFragment extends Fragment {
         if (USERNAME == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         } else {
+            mList = new ArrayList<UserInfo>();
             new FetchDataTask().execute();
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_my_last_fm, container, false);
-
-        playCountTV = (TextView) v.findViewById(R.id.play_count_tv);
-        playsSinceTV = (TextView) v.findViewById(R.id.plays_since_tv);
-
-        return v;
     }
 
     private class FetchDataTask extends AsyncTask<Void, Void, UserInfo> {
@@ -54,10 +48,40 @@ public class MyLastFMFragment extends Fragment {
         @Override
         protected void onPostExecute(UserInfo userInfo) {
             USERINFO = userInfo;
-            playCountTV.setText(USERINFO.getPlayCount() + "");
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
-            playsSinceTV.setText("plays since "
-                    + simpleDateFormat.format(new Date(USERINFO.getRegistered()*1000)));
+            mList.add(USERINFO);
+            mList.add(USERINFO);
+            UserInfoAdapter userInfoAdapter = new UserInfoAdapter(mList);
+            setListAdapter(userInfoAdapter);
+        }
+
+    }
+
+    private class UserInfoAdapter extends ArrayAdapter<UserInfo> {
+
+        public UserInfoAdapter(ArrayList<UserInfo> List) {
+            super(getActivity(), android.R.layout.simple_list_item_1, List);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            if (convertView == null) {
+                if (position == 0) {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_user, null);
+                    playCountTV = (TextView) convertView.findViewById(R.id.play_count_tv);
+                    playsSinceTV = (TextView) convertView.findViewById(R.id.plays_since_tv);
+                    playCountTV.setText(USERINFO.getPlayCount() + "");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
+                    playsSinceTV.setText("plays since "
+                            + simpleDateFormat.format(new Date(USERINFO.getRegistered()*1000)));
+                } else {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_recent_tracks, null);
+                }
+            }
+
+            return convertView;
         }
 
     }
