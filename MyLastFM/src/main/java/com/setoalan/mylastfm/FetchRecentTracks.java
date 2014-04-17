@@ -10,20 +10,21 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class FetchUserInfo {
+public class FetchRecentTracks {
 
     private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
-    public Void fetchUserInfo()  {
+    public void fetchRecentTracks()  {
         String url = Uri.parse(URL).buildUpon()
-                .appendQueryParameter("method", "user.getinfo")
+                .appendQueryParameter("method", "user.getrecenttracks")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
                 .appendQueryParameter("format", "json")
@@ -58,31 +59,30 @@ public class FetchUserInfo {
             e.printStackTrace();
         }
 
-        MyLastFMFragment.USERINFO = deserialize(result);
-        return null;
+        deserialize(result);
+
+        return;
     }
 
-    private UserInfo deserialize(String result) {
-        UserInfo user = new UserInfo();
+    private void deserialize(String result) {
+        Track track = new Track();
 
         try {
             JSONObject jsonObject = new JSONObject(result);
-            jsonObject = jsonObject.getJSONObject("user");
+            JSONArray jsonArray = jsonObject.getJSONObject("recenttracks").getJSONArray("track");
 
-            user.setName(jsonObject.getString("name"));
-            user.setRealName(jsonObject.getString("realname"));
-            user.setUrl(jsonObject.getString("url"));
-            user.setImage(jsonObject.getString("image"));
-            user.setCountry(jsonObject.getString("country"));
-            user.setAge(jsonObject.getInt("age"));
-            user.setGender(jsonObject.getString("gender"));
-            user.setPlayCount(jsonObject.getInt("playcount"));
-            user.setRegistered(jsonObject.getJSONObject("registered").getLong("unixtime"));
-        } catch (JSONException e){
+            track.setArtist(jsonArray.getJSONObject(0).getJSONObject("artist").getString("#text"));
+            track.setName(jsonArray.getJSONObject(0).getString("name"));
+            track.setAlbum(jsonArray.getJSONObject(0).getJSONObject("album").getString("#text"));
+            track.setUrl(jsonArray.getJSONObject(0).getString("url"));
+            track.setImage(jsonArray.getJSONObject(0).getJSONArray("image").getJSONObject(0).getString("#text"));
+
+            MyLastFMFragment.RECENTTRACKS.add(track);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return user;
+        return;
     }
 
 }

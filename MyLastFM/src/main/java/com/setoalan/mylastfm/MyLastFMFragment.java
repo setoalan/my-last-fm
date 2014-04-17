@@ -19,6 +19,7 @@ public class MyLastFMFragment extends ListFragment {
 
     public static String USERNAME;
     public static UserInfo USERINFO;
+    public static ArrayList<Track> RECENTTRACKS = new ArrayList<Track>();
 
     private ArrayList<UserInfo> mList;
 
@@ -38,16 +39,19 @@ public class MyLastFMFragment extends ListFragment {
         }
     }
 
-    private class FetchDataTask extends AsyncTask<Void, Void, UserInfo> {
+    private class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected UserInfo doInBackground(Void... params) {
-            return new FetchUserInfo().fetchUserInfo();
+        protected Void doInBackground(Void... params) {
+            new FetchUserInfo().fetchUserInfo();
+            new FetchRecentTracks().fetchRecentTracks();
+            return null;
         }
 
         @Override
-        protected void onPostExecute(UserInfo userInfo) {
-            USERINFO = userInfo;
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mList.add(USERINFO);
             mList.add(USERINFO);
             mList.add(USERINFO);
             UserInfoAdapter userInfoAdapter = new UserInfoAdapter(mList);
@@ -77,7 +81,7 @@ public class MyLastFMFragment extends ListFragment {
                             + simpleDateFormat.format(new Date(USERINFO.getRegistered()*1000)));
                 } else {
                     convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_recent_tracks, null);
+                            .inflate(R.layout.list_item_recent_tracks_header, null);
                 }
             }
 
