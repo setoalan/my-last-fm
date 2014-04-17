@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -19,11 +20,13 @@ public class MyLastFMFragment extends ListFragment {
 
     public static String USERNAME;
     public static UserInfo USERINFO;
-    public static ArrayList<Track> RECENTTRACKS = new ArrayList<Track>();
+    public static ArrayList<Track> RECENTTRACKS;
 
     private ArrayList<UserInfo> mList;
 
     TextView playCountTV, playsSinceTV;
+    ImageView albumIV;
+    TextView trackNameTV, lastPlayedTV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class MyLastFMFragment extends ListFragment {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         } else {
             mList = new ArrayList<UserInfo>();
+            RECENTTRACKS = new ArrayList<Track>();
             new FetchDataTask().execute();
         }
     }
@@ -51,6 +55,8 @@ public class MyLastFMFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            mList.add(USERINFO);
+            mList.add(USERINFO);
             mList.add(USERINFO);
             mList.add(USERINFO);
             mList.add(USERINFO);
@@ -73,15 +79,26 @@ public class MyLastFMFragment extends ListFragment {
                 if (position == 0) {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_user, null);
+
                     playCountTV = (TextView) convertView.findViewById(R.id.play_count_tv);
                     playsSinceTV = (TextView) convertView.findViewById(R.id.plays_since_tv);
+
                     playCountTV.setText(USERINFO.getPlayCount() + "");
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
                     playsSinceTV.setText("plays since "
                             + simpleDateFormat.format(new Date(USERINFO.getRegistered()*1000)));
-                } else {
+                } else if (position == 1) {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_recent_tracks_header, null);
+                } else if (position == 2 || position == 3 || position == 4) {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_recent_tracks, null);
+                    albumIV = (ImageView) convertView.findViewById(R.id.album_iv);
+                    trackNameTV = (TextView) convertView.findViewById(R.id.track_name_tv);
+                    lastPlayedTV = (TextView) convertView.findViewById(R.id.last_played_tv);
+
+                    trackNameTV.setText(RECENTTRACKS.get(position-2).getName());
+                    lastPlayedTV.setText(RECENTTRACKS.get(position-2).getNowPlaying() + "");
                 }
             }
 

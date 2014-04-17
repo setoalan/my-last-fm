@@ -28,6 +28,7 @@ public class FetchRecentTracks {
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
                 .appendQueryParameter("format", "json")
+                .appendQueryParameter("limit", "3")
                 .build().toString();
 
         String result = null;
@@ -76,8 +77,19 @@ public class FetchRecentTracks {
             track.setAlbum(jsonArray.getJSONObject(0).getJSONObject("album").getString("#text"));
             track.setUrl(jsonArray.getJSONObject(0).getString("url"));
             track.setImage(jsonArray.getJSONObject(0).getJSONArray("image").getJSONObject(0).getString("#text"));
-
+            track.setNowPlaying(jsonArray.getJSONObject(0).getJSONObject("@attr").getBoolean("nowplaying"));
             MyLastFMFragment.RECENTTRACKS.add(track);
+
+            for (int i=1; i<3; i++) {
+                track = new Track();
+                track.setArtist(jsonArray.getJSONObject(i).getJSONObject("artist").getString("#text"));
+                track.setName(jsonArray.getJSONObject(i).getString("name"));
+                track.setAlbum(jsonArray.getJSONObject(i).getJSONObject("album").getString("#text"));
+                track.setUrl(jsonArray.getJSONObject(i).getString("url"));
+                track.setImage(jsonArray.getJSONObject(i).getJSONArray("image").getJSONObject(0).getString("#text"));
+                track.setDate(jsonArray.getJSONObject(i).getJSONObject("date").getLong("uts"));
+                MyLastFMFragment.RECENTTRACKS.add(track);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

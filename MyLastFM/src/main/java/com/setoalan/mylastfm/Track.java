@@ -7,6 +7,9 @@ public class Track {
     private String mAlbum;
     private String mUrl;
     private String mImage;
+    private boolean mNowPlaying;
+    private long mDate;
+
 
     public String getArtist() {
         return mArtist;
@@ -46,6 +49,22 @@ public class Track {
 
     public void setImage(String image) {
         mImage = image;
+    }
+
+    public boolean getNowPlaying() {
+        return mNowPlaying;
+    }
+
+    public void setNowPlaying(boolean nowPlaying) {
+        mNowPlaying = nowPlaying;
+    }
+
+    public long getDate() {
+        return mDate;
+    }
+
+    public void setDate(long date) {
+        mDate = date;
     }
 
 }
