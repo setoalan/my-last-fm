@@ -2,7 +2,6 @@ package com.setoalan.mylastfm;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -94,7 +93,7 @@ public class FetchWeeklyArtists {
                 mDrawable = Drawable.createFromStream(mInputStream, "src name");
                 artist.setImage(mDrawable);
 
-                MyLastFMFragment.WEEKLYARTISTS.add(artist);
+                MyLastFMFragment.WEEKLY_ARTISTS.add(artist);
             }
 
         } catch (JSONException e) {

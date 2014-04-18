@@ -4,13 +4,24 @@ import android.graphics.drawable.Drawable;
 
 public class Track {
 
+    private int mRank;
     private String mArtist;
     private String mName;
     private String mAlbum;
+    private int mDuration;
+    private int mPlayCount;
     private String mUrl;
     private Drawable mImage;
     private boolean mNowPlaying;
     private long mDate;
+
+    public int getRank() {
+        return mRank;
+    }
+
+    public void setRank(int rank) {
+        mRank = rank;
+    }
 
     public String getArtist() {
         return mArtist;
@@ -36,6 +47,22 @@ public class Track {
         mAlbum = album;
     }
 
+    public int getDuration() {
+        return mDuration;
+    }
+
+    public void setDuration(int duration) {
+        mDuration = duration;
+    }
+
+    public int getPlayCount() {
+        return mPlayCount;
+    }
+
+    public void setPlayCount(int playCount) {
+        mPlayCount = playCount;
+    }
+
     public String getUrl() {
         return mUrl;
     }
@@ -52,7 +79,7 @@ public class Track {
         mImage = image;
     }
 
-    public boolean getNowPlaying() {
+    public boolean isNowPlaying() {
         return mNowPlaying;
     }
 
