@@ -11,7 +11,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,36 +73,39 @@ public class FetchRecentTracks {
         Track track = new Track();
 
         try {
-            JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray = jsonObject.getJSONObject("recenttracks").getJSONArray("track");
+            JSONObject jsonObjectMain = new JSONObject(result);
+            JSONObject jsonObject = jsonObjectMain.getJSONObject("recenttracks")
+                    .getJSONArray("track").getJSONObject(0);
 
-            track.setArtist(jsonArray.getJSONObject(0).getJSONObject("artist").getString("#text"));
-            track.setName(jsonArray.getJSONObject(0).getString("name"));
-            track.setAlbum(jsonArray.getJSONObject(0).getJSONObject("album").getString("#text"));
-            track.setUrl(jsonArray.getJSONObject(0).getString("url"));
-            mInputStream = (InputStream) new URL(jsonArray.getJSONObject(0)
-                    .getJSONArray("image").getJSONObject(2).getString("#text")).getContent();
+            track.setArtist(jsonObject.getJSONObject("artist").getString("#text"));
+            track.setName(jsonObject.getString("name"));
+            track.setAlbum(jsonObject.getJSONObject("album").getString("#text"));
+            track.setUrl(jsonObject.getString("url"));
+            mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image").getJSONObject(2)
+                    .getString("#text")).getContent();
             mDrawable = Drawable.createFromStream(mInputStream, "src name");
             track.setImage(mDrawable);
-            JSONObject dateJsonObject = jsonArray.getJSONObject(0).optJSONObject("date");
+            JSONObject dateJsonObject = jsonObject.optJSONObject("date");
             if (dateJsonObject != null)
                 track.setDate(dateJsonObject.getLong("uts"));
-            JSONObject nowPlayingJsonObject = jsonArray.getJSONObject(0).optJSONObject("@attr");
+            JSONObject nowPlayingJsonObject = jsonObject.optJSONObject("@attr");
             if (nowPlayingJsonObject!= null)
                 track.setNowPlaying(true);
             MyLastFMFragment.RECENTTRACKS.add(track);
 
             for (int i=1; i<3; i++) {
+                jsonObject = jsonObjectMain.getJSONObject("recenttracks").getJSONArray("track")
+                        .getJSONObject(i);
                 track = new Track();
-                track.setArtist(jsonArray.getJSONObject(i).getJSONObject("artist").getString("#text"));
-                track.setName(jsonArray.getJSONObject(i).getString("name"));
-                track.setAlbum(jsonArray.getJSONObject(i).getJSONObject("album").getString("#text"));
-                track.setUrl(jsonArray.getJSONObject(i).getString("url"));
-                mInputStream = (InputStream) new URL(jsonArray.getJSONObject(i)
-                        .getJSONArray("image").getJSONObject(2).getString("#text")).getContent();
+                track.setArtist(jsonObject.getJSONObject("artist").getString("#text"));
+                track.setName(jsonObject.getString("name"));
+                track.setAlbum(jsonObject.getJSONObject("album").getString("#text"));
+                track.setUrl(jsonObject.getString("url"));
+                mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
+                        .getJSONObject(2).getString("#text")).getContent();
                 mDrawable = Drawable.createFromStream(mInputStream, "src name");
                 track.setImage(mDrawable);
-                track.setDate(jsonArray.getJSONObject(i).getJSONObject("date").getLong("uts"));
+                track.setDate(jsonObject.getJSONObject("date").getLong("uts"));
                 MyLastFMFragment.RECENTTRACKS.add(track);
             }
         } catch (JSONException e) {
