@@ -151,7 +151,7 @@ public class MyLastFMFragment extends ListFragment {
                 headerBTN.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        startActivity(new Intent(getActivity(), TopArtistsActivity.class));
                     }
                 });
             } else if (position == 6 || position == 7 || position == 8) {
