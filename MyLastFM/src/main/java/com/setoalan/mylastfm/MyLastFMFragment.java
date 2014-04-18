@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class MyLastFMFragment extends ListFragment {
 
@@ -24,6 +25,7 @@ public class MyLastFMFragment extends ListFragment {
 
     private ArrayList<UserInfo> mList;
 
+    TextView headerTV;
     TextView playCountTV, playsSinceTV;
     ImageView albumIV;
     TextView trackNameTV, lastPlayedTV;
@@ -60,6 +62,7 @@ public class MyLastFMFragment extends ListFragment {
             mList.add(USERINFO);
             mList.add(USERINFO);
             mList.add(USERINFO);
+            mList.add(USERINFO);
             UserInfoAdapter userInfoAdapter = new UserInfoAdapter(mList);
             setListAdapter(userInfoAdapter);
         }
@@ -89,7 +92,9 @@ public class MyLastFMFragment extends ListFragment {
                             + simpleDateFormat.format(new Date(USERINFO.getRegistered()*1000)));
                 } else if (position == 1) {
                     convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_recent_tracks_header, null);
+                            .inflate(R.layout.list_item_header, null);
+                    headerTV = (TextView) convertView.findViewById(R.id.header_tv);
+                    headerTV.setText("Recent Tracks");
                 } else if (position == 2 || position == 3 || position == 4) {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_recent_tracks, null);
@@ -97,8 +102,29 @@ public class MyLastFMFragment extends ListFragment {
                     trackNameTV = (TextView) convertView.findViewById(R.id.track_name_tv);
                     lastPlayedTV = (TextView) convertView.findViewById(R.id.last_played_tv);
 
-                    trackNameTV.setText(RECENTTRACKS.get(position-2).getName());
-                    lastPlayedTV.setText(RECENTTRACKS.get(position-2).getNowPlaying() + "");
+                    albumIV.setImageDrawable(RECENTTRACKS.get(position - 2).getImage());
+                    trackNameTV.setText(RECENTTRACKS.get(position - 2).getName());
+                    if (RECENTTRACKS.get(position - 2).getNowPlaying()) {
+                        lastPlayedTV.setText("now");
+                    } else {
+                        long difference = new Date().getTime()/1000 -
+                                new Date(RECENTTRACKS.get(position - 2).getDate()).getTime();
+                        if (difference < 3600) {
+                            lastPlayedTV.setText(TimeUnit.SECONDS.toMinutes(difference)
+                                    + " minutes ago");
+                        } else if (difference < 86400) {
+                            lastPlayedTV.setText(TimeUnit.SECONDS.toMinutes(difference)
+                                    + " hours ago");
+                        } else {
+                            lastPlayedTV.setText(TimeUnit.SECONDS.toDays(difference)
+                                    + " days ago");
+                        }
+                    }
+                } else if (position == 5) {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_header, null);
+                    headerTV = (TextView) convertView.findViewById(R.id.header_tv);
+                    headerTV.setText("Top Artists");
                 }
             }
 

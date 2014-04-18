@@ -5,9 +5,10 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/recent_tracks_tv"
+        android:id="@+id/header_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -22,6 +23,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/recent_tracks_tv" />
+        android:layout_alignBottom="@+id/header_tv" />
 
 </RelativeLayout>

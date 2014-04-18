@@ -1,15 +1,16 @@
 package com.setoalan.mylastfm;
 
+import android.graphics.drawable.Drawable;
+
 public class Track {
 
     private String mArtist;
     private String mName;
     private String mAlbum;
     private String mUrl;
-    private String mImage;
+    private Drawable mImage;
     private boolean mNowPlaying;
     private long mDate;
-
 
     public String getArtist() {
         return mArtist;
@@ -43,11 +44,11 @@ public class Track {
         mUrl = url;
     }
 
-    public String getImage() {
+    public Drawable getImage() {
         return mImage;
     }
 
-    public void setImage(String image) {
+    public void setImage(Drawable image) {
         mImage = image;
     }
 
