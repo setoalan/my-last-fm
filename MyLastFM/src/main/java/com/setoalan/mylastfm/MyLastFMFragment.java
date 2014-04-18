@@ -22,13 +22,15 @@ public class MyLastFMFragment extends ListFragment {
     public static String USERNAME;
     public static UserInfo USERINFO;
     public static ArrayList<Track> RECENTTRACKS;
+    public static ArrayList<Artist> WEEKLYARTISTS;
 
     private ArrayList<UserInfo> mList;
 
     TextView headerTV;
     TextView playCountTV, playsSinceTV;
-    ImageView albumIV;
+    ImageView albumIV, artistIV;
     TextView trackNameTV, lastPlayedTV;
+    TextView artistTV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MyLastFMFragment extends ListFragment {
         } else {
             mList = new ArrayList<UserInfo>();
             RECENTTRACKS = new ArrayList<Track>();
+            WEEKLYARTISTS = new ArrayList<Artist>();
             new FetchDataTask().execute();
         }
     }
@@ -51,12 +54,16 @@ public class MyLastFMFragment extends ListFragment {
         protected Void doInBackground(Void... params) {
             new FetchUserInfo().fetchUserInfo();
             new FetchRecentTracks().fetchRecentTracks();
+            new FetchWeeklyArtists().fetchWeeklyArtists();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            mList.add(USERINFO);
+            mList.add(USERINFO);
+            mList.add(USERINFO);
             mList.add(USERINFO);
             mList.add(USERINFO);
             mList.add(USERINFO);
@@ -97,10 +104,11 @@ public class MyLastFMFragment extends ListFragment {
                     headerTV.setText("Recent Tracks");
                 } else if (position == 2 || position == 3 || position == 4) {
                     convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_recent_tracks, null);
-                    albumIV = (ImageView) convertView.findViewById(R.id.album_iv);
-                    trackNameTV = (TextView) convertView.findViewById(R.id.track_name_tv);
-                    lastPlayedTV = (TextView) convertView.findViewById(R.id.last_played_tv);
+                            .inflate(R.layout.list_item_main, null);
+
+                    albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                    trackNameTV = (TextView) convertView.findViewById(R.id.name_tv);
+                    lastPlayedTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                     albumIV.setImageDrawable(RECENTTRACKS.get(position - 2).getImage());
                     trackNameTV.setText(RECENTTRACKS.get(position - 2).getName());
@@ -123,8 +131,20 @@ public class MyLastFMFragment extends ListFragment {
                 } else if (position == 5) {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_header, null);
+
                     headerTV = (TextView) convertView.findViewById(R.id.header_tv);
                     headerTV.setText("Top Artists");
+                } else if (position == 6 || position == 7 || position == 8) {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_main, null);
+
+                    artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                    artistTV = (TextView) convertView.findViewById(R.id.name_tv);
+                    playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
+
+                    artistIV.setImageDrawable(WEEKLYARTISTS.get(position - 6).getImage());
+                    artistTV.setText(WEEKLYARTISTS.get(position - 6).getName());
+                    playCountTV.setText(WEEKLYARTISTS.get(position - 6).getPlayCount() + " plays");
                 }
             }
 
