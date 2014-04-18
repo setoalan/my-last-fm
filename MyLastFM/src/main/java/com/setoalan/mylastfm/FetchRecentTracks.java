@@ -28,13 +28,13 @@ public class FetchRecentTracks {
     Drawable mDrawable;
     InputStream mInputStream;
 
-    public void fetchRecentTracks()  {
+    public void fetchRecentTracks(int limit)  {
         String url = Uri.parse(URL).buildUpon()
                 .appendQueryParameter("method", "user.getrecenttracks")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
                 .appendQueryParameter("format", "json")
-                .appendQueryParameter("limit", "3")
+                .appendQueryParameter("limit", limit + "")
                 .build().toString();
 
         String result = null;
@@ -64,12 +64,12 @@ public class FetchRecentTracks {
             e.printStackTrace();
         }
 
-        deserialize(result);
+        deserialize(result, limit);
 
         return;
     }
 
-    private void deserialize(String result) {
+    private void deserialize(String result, int limit) {
         Track track = new Track();
 
         try {
@@ -92,9 +92,12 @@ public class FetchRecentTracks {
             if (nowPlayingJsonObject!= null)
                 track.setNowPlaying(true);
 
-            MyLastFMFragment.RECENT_TRACKS.add(track);
+            if (limit == 3)
+                MyLastFMFragment.RECENT_TRACKS.add(track);
+            else
+                RecentTracksFragment.RECENT_TRACKS.add(track);
 
-            for (int i=1; i<3; i++) {
+            for (int i=1; i<limit; i++) {
                 jsonObject = jsonObjectMain.getJSONObject("recenttracks").getJSONArray("track")
                         .getJSONObject(i);
 
@@ -109,7 +112,10 @@ public class FetchRecentTracks {
                 track.setImage(mDrawable);
                 track.setDate(jsonObject.getJSONObject("date").getLong("uts"));
 
-                MyLastFMFragment.RECENT_TRACKS.add(track);
+                if (limit == 3)
+                    MyLastFMFragment.RECENT_TRACKS.add(track);
+                else
+                    RecentTracksFragment.RECENT_TRACKS.add(track);
             }
         } catch (JSONException e) {
             e.printStackTrace();

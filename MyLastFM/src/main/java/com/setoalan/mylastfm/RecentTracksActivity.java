@@ -5,7 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
-public class MyLastFMActivity extends Activity {
+public class RecentTracksActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class MyLastFMActivity extends Activity {
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
 
         if (fragment == null) {
-            fragment = new MyLastFMFragment();
+            fragment = new RecentTracksFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.fragmentContainer, fragment)
                     .commit();

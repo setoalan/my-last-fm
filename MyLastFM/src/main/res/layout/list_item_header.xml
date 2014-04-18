@@ -17,7 +17,7 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:id="@+id/button"
+        android:id="@+id/header_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
