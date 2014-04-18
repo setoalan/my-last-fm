@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.setoalan.mylastfm.MyLastFMFragment;
+import com.setoalan.mylastfm.TopArtistsFragment;
 import com.setoalan.mylastfm.datastructures.Artist;
 
 import org.apache.http.HttpResponse;
@@ -24,7 +25,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FetchWeeklyArtists {
+public class FetchArtists {
 
     private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
@@ -32,14 +33,14 @@ public class FetchWeeklyArtists {
     InputStream mInputStream;
     Drawable mDrawable;
 
-    public void fetchWeeklyArtists()  {
+    public void fetchArtists(int limit, String period)  {
         String url = Uri.parse(URL).buildUpon()
                 .appendQueryParameter("method", "user.gettopartists")
-                .appendQueryParameter("user", MyLastFMFragment.USERNAME)
+                .appendQueryParameter("user", "LostPolitik42")//MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
-                .appendQueryParameter("period", "7day")
+                .appendQueryParameter("period", period)
                 .appendQueryParameter("format", "json")
-                .appendQueryParameter("limit", "3")
+                .appendQueryParameter("limit", limit + "")
                 .build().toString();
 
         String result = null;
@@ -69,12 +70,12 @@ public class FetchWeeklyArtists {
             e.printStackTrace();
         }
 
-        deserialize(result);
+        deserialize(result, limit, period);
 
         return;
     }
 
-    private void deserialize(String result) {
+    private void deserialize(String result, int limit, String period) {
         Artist artist;
 
         try {
@@ -83,7 +84,7 @@ public class FetchWeeklyArtists {
                     .getJSONArray("artist");
             JSONObject jsonObject;
 
-            for (int i=0; i<3; i++) {
+            for (int i=0; i<limit; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
 
                 artist = new Artist();
@@ -96,7 +97,11 @@ public class FetchWeeklyArtists {
                 mDrawable = Drawable.createFromStream(mInputStream, "src name");
                 artist.setImage(mDrawable);
 
-                MyLastFMFragment.WEEKLY_ARTISTS.add(artist);
+                if (limit == 3 && period.equals("7day")) {
+                    MyLastFMFragment.WEEKLY_ARTISTS.add(artist);
+                } else if (period.equals("7day")) {
+                    TopArtistsFragment.WEEK_ARTISTS.add(artist);
+                }
             }
 
         } catch (JSONException e) {

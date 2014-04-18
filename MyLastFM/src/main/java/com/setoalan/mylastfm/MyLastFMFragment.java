@@ -17,10 +17,10 @@ import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.datastructures.UserInfo;
+import com.setoalan.mylastfm.fetchservices.FetchArtists;
 import com.setoalan.mylastfm.fetchservices.FetchRecentTracks;
 import com.setoalan.mylastfm.fetchservices.FetchUserInfo;
 import com.setoalan.mylastfm.fetchservices.FetchWeeklyAlbums;
-import com.setoalan.mylastfm.fetchservices.FetchWeeklyArtists;
 import com.setoalan.mylastfm.fetchservices.FetchWeeklyTracks;
 
 import java.text.SimpleDateFormat;
@@ -68,7 +68,7 @@ public class MyLastFMFragment extends ListFragment {
         protected Void doInBackground(Void... params) {
             new FetchUserInfo().fetchUserInfo();
             new FetchRecentTracks().fetchRecentTracks(3);
-            new FetchWeeklyArtists().fetchWeeklyArtists();
+            new FetchArtists().fetchArtists(3, "7day");
             new FetchWeeklyTracks().fetchWeeklyTracks();
             new FetchWeeklyAlbums().fetchWeeklyAlbums();
             return null;
@@ -119,9 +119,9 @@ public class MyLastFMFragment extends ListFragment {
             } else if (position == 2 || position == 3 || position == 4) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);
-                albumIV = (ImageView) convertView.findViewById(R.id.album_iv);
-                trackTV = (TextView) convertView.findViewById(R.id.artist_tv);
-                lastPlayedTV = (TextView) convertView.findViewById(R.id.last_played_tv);
+                albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                trackTV = (TextView) convertView.findViewById(R.id.name_tv);
+                lastPlayedTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(RECENT_TRACKS.get(position - 2).getImage());
                 trackTV.setText(RECENT_TRACKS.get(position - 2).getName());
@@ -167,9 +167,9 @@ public class MyLastFMFragment extends ListFragment {
             } else if (position == 6 || position == 7 || position == 8) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);
-                artistIV = (ImageView) convertView.findViewById(R.id.album_iv);
-                artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
-                playCountTV = (TextView) convertView.findViewById(R.id.last_played_tv);
+                artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                artistTV = (TextView) convertView.findViewById(R.id.name_tv);
+                playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 artistIV.setImageDrawable(WEEKLY_ARTISTS.get(position - 6).getImage());
                 artistTV.setText(WEEKLY_ARTISTS.get(position - 6).getName());
@@ -190,9 +190,9 @@ public class MyLastFMFragment extends ListFragment {
             } else if (position == 10 || position == 11 || position == 12) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);
-                albumIV = (ImageView) convertView.findViewById(R.id.album_iv);
-                trackTV = (TextView) convertView.findViewById(R.id.artist_tv);
-                playCountTV = (TextView) convertView.findViewById(R.id.last_played_tv);
+                albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                trackTV = (TextView) convertView.findViewById(R.id.name_tv);
+                playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(WEEKLY_TRACKS.get(position - 10).getImage());
                 trackTV.setText(WEEKLY_TRACKS.get(position - 10).getName());
@@ -213,9 +213,9 @@ public class MyLastFMFragment extends ListFragment {
             } else if (position == 14 || position == 15 || position == 16) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);
-                albumIV = (ImageView) convertView.findViewById(R.id.album_iv);
-                albumTV = (TextView) convertView.findViewById(R.id.artist_tv);
-                playCountTV = (TextView) convertView.findViewById(R.id.last_played_tv);
+                albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                albumTV = (TextView) convertView.findViewById(R.id.name_tv);
+                playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(WEEKLY_ALBUMS.get(position - 14).getImage());
                 albumTV.setText(WEEKLY_ALBUMS.get(position - 14).getName());

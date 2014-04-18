@@ -63,10 +63,10 @@ public class RecentTracksFragment extends ListFragment {
 
             Track track = RECENT_TRACKS.get(position);
 
-            albumIV = (ImageView) convertView.findViewById(R.id.album_iv);
-            artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
+            albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
             trackTV = (TextView) convertView.findViewById(R.id.track_tv);
-            lastPlayedTV = (TextView) convertView.findViewById(R.id.last_played_tv);
+            lastPlayedTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             albumIV.setImageDrawable(track.getImage());
             artistTV.setText(track.getArtist());

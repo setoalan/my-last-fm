@@ -3,19 +3,33 @@ package com.setoalan.mylastfm;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.setoalan.mylastfm.datastructures.Artist;
+import com.setoalan.mylastfm.fetchservices.FetchArtists;
+
+import java.util.ArrayList;
 
 public class TopArtistsFragment extends Fragment {
 
-    ActionBar.Tab mTab, mTab2, mTab3, mTab4, mTab5;
-    Fragment mFragment1 = new FragmentTab1();
-    Fragment mFragment2 = new FragmentTab2();
-    Fragment mFragment3 = new FragmentTab3();
-    Fragment mFragment4 = new FragmentTab4();
-    Fragment mFragment5 = new FragmentTab5();
+    ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
+    Fragment mWeekFragment = new WeekFragmentTab();
+    Fragment mMonthFragment = new MonthFragmentTab();
+    Fragment mYearFragment = new YearFragmentTab();
+    Fragment mOverallFragment = new OverallFragmentTab();
+
+    public static ArrayList<Artist> WEEK_ARTISTS;
+
+    ImageView artistIV;
+    TextView artistTV, playCountTV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,23 +38,20 @@ public class TopArtistsFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        mTab = actionBar.newTab().setText("1");
-        mTab2 = actionBar.newTab().setText("2");
-        mTab3 = actionBar.newTab().setText("3");
-        mTab4 = actionBar.newTab().setText("4");
-        mTab5 = actionBar.newTab().setText("5");
+        mWeekTab = actionBar.newTab().setText("Week");
+        mMonthTab = actionBar.newTab().setText("Month");
+        mYearTab = actionBar.newTab().setText("Year");
+        mOverallTab = actionBar.newTab().setText("Overall");
 
-        mTab.setTabListener(new MyTabListener(mFragment1));
-        mTab2.setTabListener(new MyTabListener(mFragment2));
-        mTab3.setTabListener(new MyTabListener(mFragment3));
-        mTab4.setTabListener(new MyTabListener(mFragment4));
-        mTab5.setTabListener(new MyTabListener(mFragment5));
+        mWeekTab.setTabListener(new MyTabListener(mWeekFragment));
+        mMonthTab.setTabListener(new MyTabListener(mMonthFragment));
+        mYearTab.setTabListener(new MyTabListener(mYearFragment));
+        mOverallTab.setTabListener(new MyTabListener(mOverallFragment));
 
-        actionBar.addTab(mTab);
-        actionBar.addTab(mTab2);
-        actionBar.addTab(mTab3);
-        actionBar.addTab(mTab4);
-        actionBar.addTab(mTab5);
+        actionBar.addTab(mWeekTab);
+        actionBar.addTab(mMonthTab);
+        actionBar.addTab(mYearTab);
+        actionBar.addTab(mOverallTab);
     }
 
     @Override
@@ -50,7 +61,69 @@ public class TopArtistsFragment extends Fragment {
         return view;
     }
 
-    public class FragmentTab1 extends Fragment {
+    public class WeekFragmentTab extends ListFragment {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            WEEK_ARTISTS = new ArrayList<Artist>();
+            new FetchDataTask().execute();
+        }
+
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState){
+            View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
+            return view;
+        }
+
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FetchArtists().fetchArtists(50, "7day");
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                TopArtistsAdapter topArtistsAdapterAdapter = new TopArtistsAdapter(WEEK_ARTISTS);
+                setListAdapter(topArtistsAdapterAdapter);
+            }
+
+        }
+
+    }
+
+    private class TopArtistsAdapter extends ArrayAdapter<Artist> {
+
+        public TopArtistsAdapter(ArrayList<Artist> data) {
+            super(getActivity(), android.R.layout.simple_list_item_1, data);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater()
+                        .inflate(R.layout.list_item_main, null);
+            }
+
+            Artist artist = WEEK_ARTISTS.get(position);
+
+            artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
+            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
+            playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
+
+            artistIV.setImageDrawable(artist.getImage());
+            artistTV.setText(artist.getName());
+            playCountTV.setText(artist.getPlayCount() + " plays");
+
+            return convertView;
+        }
+
+    }
+
+    public class MonthFragmentTab extends ListFragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
@@ -60,7 +133,7 @@ public class TopArtistsFragment extends Fragment {
 
     }
 
-    public class FragmentTab2 extends Fragment {
+    public class YearFragmentTab extends ListFragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
@@ -70,27 +143,7 @@ public class TopArtistsFragment extends Fragment {
 
     }
 
-    public class FragmentTab3 extends Fragment {
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
-            return view;
-        }
-
-    }
-
-    public class FragmentTab4 extends Fragment {
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
-            return view;
-        }
-
-    }
-
-    public class FragmentTab5 extends Fragment {
+    public class OverallFragmentTab extends ListFragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
