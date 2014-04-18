@@ -1,4 +1,4 @@
-package com.setoalan.mylastfm;
+package com.setoalan.mylastfm.datastructures;
 
 public class UserInfo {
 

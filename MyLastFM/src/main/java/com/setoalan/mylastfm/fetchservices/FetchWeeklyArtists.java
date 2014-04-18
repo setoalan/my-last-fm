@@ -1,7 +1,10 @@
-package com.setoalan.mylastfm;
+package com.setoalan.mylastfm.fetchservices;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
+import com.setoalan.mylastfm.MyLastFMFragment;
+import com.setoalan.mylastfm.datastructures.Artist;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -19,8 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 
-public class FetchWeeklyTracks {
+public class FetchWeeklyArtists {
 
     private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
@@ -28,9 +32,9 @@ public class FetchWeeklyTracks {
     InputStream mInputStream;
     Drawable mDrawable;
 
-    public void fetchWeeklyTracks()  {
+    public void fetchWeeklyArtists()  {
         String url = Uri.parse(URL).buildUpon()
-                .appendQueryParameter("method", "user.gettoptracks")
+                .appendQueryParameter("method", "user.gettopartists")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
                 .appendQueryParameter("period", "7day")
@@ -71,30 +75,28 @@ public class FetchWeeklyTracks {
     }
 
     private void deserialize(String result) {
-        Track track;
+        Artist artist;
 
         try {
             JSONObject jsonObjectMain = new JSONObject(result);
-            JSONArray jsonArray = jsonObjectMain.getJSONObject("toptracks")
-                    .getJSONArray("track");
+            JSONArray jsonArray = jsonObjectMain.getJSONObject("topartists")
+                    .getJSONArray("artist");
             JSONObject jsonObject;
 
             for (int i=0; i<3; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
 
-                track = new Track();
-                track.setRank(jsonObject.getJSONObject("@attr").getInt("rank"));
-                track.setArtist(jsonObject.getJSONObject("artist").getString("name"));
-                track.setName(jsonObject.getString("name"));
-                track.setDuration(jsonObject.getInt("duration"));
-                track.setPlayCount(jsonObject.getInt("playcount"));
-                track.setUrl(jsonObject.getString("url"));
-                mInputStream = (InputStream) new java.net.URL(jsonObject.getJSONArray("image")
+                artist = new Artist();
+                artist.setRank(jsonObject.getJSONObject("@attr").getInt("rank"));
+                artist.setName(jsonObject.getString("name"));
+                artist.setPlayCount(jsonObject.getInt("playcount"));
+                artist.setUrl(jsonObject.getString("url"));
+                mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
                         .getJSONObject(2).getString("#text")).getContent();
                 mDrawable = Drawable.createFromStream(mInputStream, "src name");
-                track.setImage(mDrawable);
+                artist.setImage(mDrawable);
 
-                MyLastFMFragment.WEEKLY_TRACKS.add(track);
+                MyLastFMFragment.WEEKLY_ARTISTS.add(artist);
             }
 
         } catch (JSONException e) {

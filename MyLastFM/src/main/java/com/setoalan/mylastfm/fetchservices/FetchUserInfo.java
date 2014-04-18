@@ -1,6 +1,9 @@
-package com.setoalan.mylastfm;
+package com.setoalan.mylastfm.fetchservices;
 
 import android.net.Uri;
+
+import com.setoalan.mylastfm.MyLastFMFragment;
+import com.setoalan.mylastfm.datastructures.UserInfo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

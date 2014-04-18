@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.datastructures.Track;
+import com.setoalan.mylastfm.fetchservices.FetchRecentTracks;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

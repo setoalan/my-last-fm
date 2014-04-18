@@ -13,6 +13,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.datastructures.Album;
+import com.setoalan.mylastfm.datastructures.Artist;
+import com.setoalan.mylastfm.datastructures.Track;
+import com.setoalan.mylastfm.datastructures.UserInfo;
+import com.setoalan.mylastfm.fetchservices.FetchRecentTracks;
+import com.setoalan.mylastfm.fetchservices.FetchUserInfo;
+import com.setoalan.mylastfm.fetchservices.FetchWeeklyAlbums;
+import com.setoalan.mylastfm.fetchservices.FetchWeeklyArtists;
+import com.setoalan.mylastfm.fetchservices.FetchWeeklyTracks;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
