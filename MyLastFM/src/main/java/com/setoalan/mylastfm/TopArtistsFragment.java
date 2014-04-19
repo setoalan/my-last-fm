@@ -65,7 +65,7 @@ public class TopArtistsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_top_artists_container, container, false);
+        View view = inflater.inflate(R.layout.fragment_top_container, container, false);
         return view;
     }
 
@@ -123,7 +123,7 @@ public class TopArtistsFragment extends Fragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
+            View view = inflater.inflate(R.layout.fragment_top, container, false);
             return view;
         }
 
@@ -159,7 +159,7 @@ public class TopArtistsFragment extends Fragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
+            View view = inflater.inflate(R.layout.fragment_top, container, false);
             return view;
         }
 
@@ -195,7 +195,7 @@ public class TopArtistsFragment extends Fragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
+            View view = inflater.inflate(R.layout.fragment_top, container, false);
             return view;
         }
 
@@ -231,7 +231,7 @@ public class TopArtistsFragment extends Fragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
+            View view = inflater.inflate(R.layout.fragment_top, container, false);
             return view;
         }
 
