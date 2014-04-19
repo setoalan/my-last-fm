@@ -27,6 +27,9 @@ public class TopArtistsFragment extends Fragment {
     Fragment mOverallFragment = new OverallFragmentTab();
 
     public static ArrayList<Artist> WEEK_ARTISTS;
+    public static ArrayList<Artist> MONTH_ARTISTS;
+    public static ArrayList<Artist> YEAR_ARTISTS;
+    public static ArrayList<Artist> OVERALL_ARTISTS;
 
     ImageView artistIV;
     TextView artistTV, playCountTV;
@@ -48,6 +51,11 @@ public class TopArtistsFragment extends Fragment {
         mYearTab.setTabListener(new MyTabListener(mYearFragment));
         mOverallTab.setTabListener(new MyTabListener(mOverallFragment));
 
+        new WeekFragmentTab();
+        new MonthFragmentTab();
+        new YearFragmentTab();
+        new OverallFragmentTab();
+
         actionBar.addTab(mWeekTab);
         actionBar.addTab(mMonthTab);
         actionBar.addTab(mYearTab);
@@ -61,12 +69,55 @@ public class TopArtistsFragment extends Fragment {
         return view;
     }
 
+    private class TopArtistsAdapter extends ArrayAdapter<Artist> {
+
+        String mTime;
+
+        public TopArtistsAdapter(ArrayList<Artist> data, String time) {
+            super(getActivity(), android.R.layout.simple_list_item_1, data);
+            mTime = time;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater()
+                        .inflate(R.layout.list_item_main, null);
+            }
+
+            Artist artist = null;
+            if (mTime.equals("week")) {
+                artist = WEEK_ARTISTS.get(position);
+            } else if (mTime.equals("month")) {
+                artist = MONTH_ARTISTS.get(position);
+            } else if (mTime.equals("year")) {
+                artist = YEAR_ARTISTS.get(position);
+            } else if (mTime.equals("overall")) {
+                artist = OVERALL_ARTISTS.get(position);
+            }
+
+            artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
+            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
+            playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
+
+            artistIV.setImageDrawable(artist.getImage());
+            artistTV.setText(artist.getName());
+            playCountTV.setText(artist.getPlayCount() + " plays");
+
+            return convertView;
+        }
+
+    }
+
     public class WeekFragmentTab extends ListFragment {
+
+        public WeekFragmentTab() {
+            WEEK_ARTISTS = new ArrayList<Artist>();
+        }
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            WEEK_ARTISTS = new ArrayList<Artist>();
             new FetchDataTask().execute();
         }
 
@@ -87,68 +138,117 @@ public class TopArtistsFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                TopArtistsAdapter topArtistsAdapterAdapter = new TopArtistsAdapter(WEEK_ARTISTS);
-                setListAdapter(topArtistsAdapterAdapter);
+                setListAdapter(new TopArtistsAdapter(WEEK_ARTISTS, "week"));
             }
 
-        }
-
-    }
-
-    private class TopArtistsAdapter extends ArrayAdapter<Artist> {
-
-        public TopArtistsAdapter(ArrayList<Artist> data) {
-            super(getActivity(), android.R.layout.simple_list_item_1, data);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_main, null);
-            }
-
-            Artist artist = WEEK_ARTISTS.get(position);
-
-            artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
-            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
-            playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
-
-            artistIV.setImageDrawable(artist.getImage());
-            artistTV.setText(artist.getName());
-            playCountTV.setText(artist.getPlayCount() + " plays");
-
-            return convertView;
         }
 
     }
 
     public class MonthFragmentTab extends ListFragment {
 
+        public MonthFragmentTab() {
+            MONTH_ARTISTS = new ArrayList<Artist>();
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            new FetchDataTask().execute();
+        }
+
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
             View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
             return view;
+        }
+
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FetchArtists().fetchArtists(50, "1month");
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                setListAdapter(new TopArtistsAdapter(MONTH_ARTISTS, "month"));
+            }
+
         }
 
     }
 
     public class YearFragmentTab extends ListFragment {
 
+        public YearFragmentTab() {
+            YEAR_ARTISTS = new ArrayList<Artist>();
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            new FetchDataTask().execute();
+        }
+
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
             View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
             return view;
         }
 
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FetchArtists().fetchArtists(50, "12month");
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                setListAdapter(new TopArtistsAdapter(YEAR_ARTISTS, "year"));
+            }
+
+        }
+
     }
 
     public class OverallFragmentTab extends ListFragment {
+
+        public OverallFragmentTab() {
+            OVERALL_ARTISTS = new ArrayList<Artist>();
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            new FetchDataTask().execute();
+        }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
             View view = inflater.inflate(R.layout.fragment_top_artists, container, false);
             return view;
+        }
+
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FetchArtists().fetchArtists(50, "overall");
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                setListAdapter(new TopArtistsAdapter(OVERALL_ARTISTS, "overall"));
+            }
+
         }
 
     }

@@ -101,6 +101,12 @@ public class FetchArtists {
                     MyLastFMFragment.WEEKLY_ARTISTS.add(artist);
                 } else if (period.equals("7day")) {
                     TopArtistsFragment.WEEK_ARTISTS.add(artist);
+                } else if (period.equals("1month")) {
+                    TopArtistsFragment.MONTH_ARTISTS.add(artist);
+                } else if (period.equals("12month")) {
+                    TopArtistsFragment.YEAR_ARTISTS.add(artist);
+                } else if (period.equals("overall")) {
+                    TopArtistsFragment.OVERALL_ARTISTS.add(artist);
                 }
             }
 
