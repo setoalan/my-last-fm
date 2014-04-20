@@ -26,6 +26,7 @@ public class TopTracksFragment extends Fragment {
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
     TextView artistTV, playCountTV, trackTV;
+    View loadingV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,9 +67,9 @@ public class TopTracksFragment extends Fragment {
 
         private String mPeriod;
 
-        public TopTracksAdapter(ArrayList<Track> data, String time) {
+        public TopTracksAdapter(ArrayList<Track> data, String period) {
             super(getActivity(), android.R.layout.simple_list_item_1, data);
-            mPeriod = time;
+            mPeriod = period;
         }
 
         @Override
@@ -106,7 +107,7 @@ public class TopTracksFragment extends Fragment {
 
     public class TrackFragmentTab extends ListFragment {
 
-        private boolean dataCalled = false;
+        private boolean dataCalled = false, fetchDone = false;
         private String mPeriod;
 
         public TrackFragmentTab(String period) {
@@ -132,9 +133,21 @@ public class TopTracksFragment extends Fragment {
             }
         }
 
+        @Override
+        public void onResume() {
+            super.onResume();
+            if (fetchDone) {
+                loadingV.setVisibility(View.INVISIBLE);
+            } else {
+                loadingV.setVisibility(View.VISIBLE);
+            }
+        }
+
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
             View view = inflater.inflate(R.layout.fragment_top, container, false);
+            loadingV = (View) view.findViewById(R.id.loading_container);
+            loadingV.setVisibility(View.VISIBLE);
             return view;
         }
 
@@ -149,6 +162,8 @@ public class TopTracksFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                loadingV.setVisibility(View.INVISIBLE);
+                fetchDone = true;
                 if (mPeriod.equals("7day")) {
                     setListAdapter(new TopTracksAdapter(WEEK_TRACKS, "week"));
                 } else if (mPeriod.equals("1month")) {
