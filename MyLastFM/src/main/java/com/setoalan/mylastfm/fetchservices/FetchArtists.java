@@ -27,7 +27,7 @@ import java.net.URL;
 
 public class FetchArtists {
 
-    private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
+    private static final String URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
     InputStream mInputStream;
@@ -36,7 +36,7 @@ public class FetchArtists {
     public void fetchArtists(int limit, String period)  {
         String url = Uri.parse(URL).buildUpon()
                 .appendQueryParameter("method", "user.gettopartists")
-                .appendQueryParameter("user", "LostPolitik42")//MyLastFMFragment.USERNAME)
+                .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
                 .appendQueryParameter("period", period)
                 .appendQueryParameter("format", "json")

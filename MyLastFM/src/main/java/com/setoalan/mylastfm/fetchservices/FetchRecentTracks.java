@@ -26,7 +26,7 @@ import java.net.URL;
 
 public class FetchRecentTracks {
 
-    private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
+    private static final String URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
     Drawable mDrawable;

@@ -35,7 +35,7 @@ public class FetchUserInfo {
         String result = null;
 
         try {
-            final HttpClient httpclient = new DefaultHttpClient();;
+            final HttpClient httpclient = new DefaultHttpClient();
             final HttpUriRequest request = new HttpGet(url);
             final HttpResponse response = httpclient.execute(request);
             final StatusLine status = response.getStatusLine();

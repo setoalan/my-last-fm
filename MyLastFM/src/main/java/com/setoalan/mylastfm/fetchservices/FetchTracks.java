@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.setoalan.mylastfm.MyLastFMFragment;
+import com.setoalan.mylastfm.TopTracksFragment;
 import com.setoalan.mylastfm.datastructures.Track;
 
 import org.apache.http.HttpResponse;
@@ -23,22 +24,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 
-public class FetchWeeklyTracks {
+public class FetchTracks {
 
-    private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
+    private static final String URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
     InputStream mInputStream;
     Drawable mDrawable;
 
-    public void fetchWeeklyTracks()  {
+    public void fetchTracks(int limit, String period)  {
         String url = Uri.parse(URL).buildUpon()
                 .appendQueryParameter("method", "user.gettoptracks")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
-                .appendQueryParameter("period", "7day")
+                .appendQueryParameter("period", period)
                 .appendQueryParameter("format", "json")
-                .appendQueryParameter("limit", "3")
+                .appendQueryParameter("limit", limit + "")
                 .build().toString();
 
         String result = null;
@@ -68,12 +69,12 @@ public class FetchWeeklyTracks {
             e.printStackTrace();
         }
 
-        deserialize(result);
+        deserialize(result, limit, period);
 
         return;
     }
 
-    private void deserialize(String result) {
+    private void deserialize(String result, int limit, String period) {
         Track track;
 
         try {
@@ -82,7 +83,7 @@ public class FetchWeeklyTracks {
                     .getJSONArray("track");
             JSONObject jsonObject;
 
-            for (int i=0; i<3; i++) {
+            for (int i=0; i<limit; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
 
                 track = new Track();
@@ -92,12 +93,25 @@ public class FetchWeeklyTracks {
                 track.setDuration(jsonObject.getInt("duration"));
                 track.setPlayCount(jsonObject.getInt("playcount"));
                 track.setUrl(jsonObject.getString("url"));
-                mInputStream = (InputStream) new java.net.URL(jsonObject.getJSONArray("image")
-                        .getJSONObject(2).getString("#text")).getContent();
-                mDrawable = Drawable.createFromStream(mInputStream, "src name");
-                track.setImage(mDrawable);
+                JSONArray imageJsonObject = jsonObject.optJSONArray("image");
+                if (imageJsonObject != null) {
+                    mInputStream = (InputStream) new java.net.URL(jsonObject.getJSONArray("image")
+                            .getJSONObject(2).getString("#text")).getContent();
+                    mDrawable = Drawable.createFromStream(mInputStream, "src name");
+                    track.setImage(mDrawable);
+                }
 
-                MyLastFMFragment.WEEKLY_TRACKS.add(track);
+                if (limit == 3 && period.equals("7day")) {
+                    MyLastFMFragment.WEEKLY_TRACKS.add(track);
+                } else if (period.equals("7day")) {
+                    TopTracksFragment.WEEK_TRACKS.add(track);
+                } else if (period.equals("1month")) {
+                    TopTracksFragment.MONTH_TRACKS.add(track);
+                } else if (period.equals("12month")) {
+                    TopTracksFragment.YEAR_TRACKS.add(track);
+                } else if (period.equals("overall")) {
+                    TopTracksFragment.OVERALL_TRACKS.add(track);
+                }
             }
 
         } catch (JSONException e) {

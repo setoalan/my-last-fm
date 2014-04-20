@@ -19,9 +19,9 @@ import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.datastructures.UserInfo;
 import com.setoalan.mylastfm.fetchservices.FetchArtists;
 import com.setoalan.mylastfm.fetchservices.FetchRecentTracks;
+import com.setoalan.mylastfm.fetchservices.FetchTracks;
 import com.setoalan.mylastfm.fetchservices.FetchUserInfo;
 import com.setoalan.mylastfm.fetchservices.FetchWeeklyAlbums;
-import com.setoalan.mylastfm.fetchservices.FetchWeeklyTracks;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class MyLastFMFragment extends ListFragment {
             new FetchUserInfo().fetchUserInfo();
             new FetchRecentTracks().fetchRecentTracks(3);
             new FetchArtists().fetchArtists(3, "7day");
-            new FetchWeeklyTracks().fetchWeeklyTracks();
+            new FetchTracks().fetchTracks(3, "7day");
             new FetchWeeklyAlbums().fetchWeeklyAlbums();
             return null;
         }
@@ -184,7 +184,7 @@ public class MyLastFMFragment extends ListFragment {
                 headerBTN.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        startActivity(new Intent(getActivity(), TopTracksActivity.class));
                     }
                 });
             } else if (position == 10 || position == 11 || position == 12) {
