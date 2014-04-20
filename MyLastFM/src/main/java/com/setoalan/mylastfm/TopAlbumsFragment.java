@@ -13,12 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.setoalan.mylastfm.datastructures.Track;
-import com.setoalan.mylastfm.fetchservices.FetchTracks;
+import com.setoalan.mylastfm.datastructures.Album;
+import com.setoalan.mylastfm.fetchservices.FetchAlbums;
 
 import java.util.ArrayList;
 
-public class TopTracksFragment extends Fragment {
+public class TopAlbumsFragment extends Fragment {
 
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment = new WeekFragmentTab();
@@ -26,13 +26,13 @@ public class TopTracksFragment extends Fragment {
     Fragment mYearFragment = new YearFragmentTab();
     Fragment mOverallFragment = new OverallFragmentTab();
 
-    public static ArrayList<Track> WEEK_TRACKS;
-    public static ArrayList<Track> MONTH_TRACKS;
-    public static ArrayList<Track> YEAR_TRACKS;
-    public static ArrayList<Track> OVERALL_TRACKS;
+    public static ArrayList<Album> WEEK_ALBUMS;
+    public static ArrayList<Album> MONTH_ALBUMS;
+    public static ArrayList<Album> YEAR_ALBUMS;
+    public static ArrayList<Album> OVERALL_ALBUMS;
 
     ImageView albumIV;
-    TextView artistTV, playCountTV, trackTV;
+    TextView albumTV, playCountTV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,11 +69,11 @@ public class TopTracksFragment extends Fragment {
         return view;
     }
 
-    private class TopTracksAdapter extends ArrayAdapter<Track> {
+    private class TopAlbumsAdapter extends ArrayAdapter<Album> {
 
         String mTime;
 
-        public TopTracksAdapter(ArrayList<Track> data, String time) {
+        public TopAlbumsAdapter(ArrayList<Album> data, String time) {
             super(getActivity(), android.R.layout.simple_list_item_1, data);
             mTime = time;
         }
@@ -82,29 +82,27 @@ public class TopTracksFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_tracks, null);
+                        .inflate(R.layout.list_item_main, null);
             }
 
-            Track track = null;
+            Album album = null;
             if (mTime.equals("week")) {
-                track = WEEK_TRACKS.get(position);
+                album = WEEK_ALBUMS.get(position);
             } else if (mTime.equals("month")) {
-                track = MONTH_TRACKS.get(position);
+                album = MONTH_ALBUMS.get(position);
             } else if (mTime.equals("year")) {
-                track = YEAR_TRACKS.get(position);
+                album = YEAR_ALBUMS.get(position);
             } else if (mTime.equals("overall")) {
-                track = OVERALL_TRACKS.get(position);
+                album = OVERALL_ALBUMS.get(position);
             }
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
-            trackTV = (TextView) convertView.findViewById(R.id.track_tv);
+            albumTV = (TextView) convertView.findViewById(R.id.name_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
-            albumIV.setImageDrawable(track.getImage());
-            artistTV.setText(track.getArtist());
-            trackTV.setText(track.getName());
-            playCountTV.setText(track.getPlayCount() + " plays");
+            albumIV.setImageDrawable(album.getImage());
+            albumTV.setText(album.getName());
+            playCountTV.setText(album.getPlayCount() + " plays");
 
             return convertView;
         }
@@ -114,7 +112,7 @@ public class TopTracksFragment extends Fragment {
     public class WeekFragmentTab extends ListFragment {
 
         public WeekFragmentTab() {
-            WEEK_TRACKS = new ArrayList<Track>();
+            WEEK_ALBUMS = new ArrayList<Album>();
         }
 
         @Override
@@ -133,14 +131,14 @@ public class TopTracksFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "7day");
+                new FetchAlbums().fetchAlbums(50, "7day");
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(WEEK_TRACKS, "week"));
+                setListAdapter(new TopAlbumsAdapter(WEEK_ALBUMS, "week"));
             }
 
         }
@@ -150,7 +148,7 @@ public class TopTracksFragment extends Fragment {
     public class MonthFragmentTab extends ListFragment {
 
         public MonthFragmentTab() {
-            MONTH_TRACKS = new ArrayList<Track>();
+            MONTH_ALBUMS = new ArrayList<Album>();
         }
 
         @Override
@@ -169,14 +167,14 @@ public class TopTracksFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "1month");
+                new FetchAlbums().fetchAlbums(50, "1month");
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(MONTH_TRACKS, "month"));
+                setListAdapter(new TopAlbumsAdapter(MONTH_ALBUMS, "month"));
             }
 
         }
@@ -186,7 +184,7 @@ public class TopTracksFragment extends Fragment {
     public class YearFragmentTab extends ListFragment {
 
         public YearFragmentTab() {
-            YEAR_TRACKS = new ArrayList<Track>();
+            YEAR_ALBUMS = new ArrayList<Album>();
         }
 
         @Override
@@ -205,14 +203,14 @@ public class TopTracksFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "12month");
+                new FetchAlbums().fetchAlbums(50, "12month");
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(YEAR_TRACKS, "year"));
+                setListAdapter(new TopAlbumsAdapter(YEAR_ALBUMS, "year"));
             }
 
         }
@@ -222,7 +220,7 @@ public class TopTracksFragment extends Fragment {
     public class OverallFragmentTab extends ListFragment {
 
         public OverallFragmentTab() {
-            OVERALL_TRACKS = new ArrayList<Track>();
+            OVERALL_ALBUMS = new ArrayList<Album>();
         }
 
         @Override
@@ -241,14 +239,14 @@ public class TopTracksFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "overall");
+                new FetchAlbums().fetchAlbums(50, "overall");
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(OVERALL_TRACKS, "overall"));
+                setListAdapter(new TopAlbumsAdapter(OVERALL_ALBUMS, "overall"));
             }
 
         }

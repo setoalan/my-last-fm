@@ -58,7 +58,7 @@ public class RecentTracksFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_recent_tracks, null);
+                        .inflate(R.layout.list_item_tracks, null);
             }
 
             Track track = RECENT_TRACKS.get(position);

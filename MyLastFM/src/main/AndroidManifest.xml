@@ -34,6 +34,10 @@
             android:name=".TopTracksActivity"
             android:label="Top Tracks">
         </activity>
+        <activity
+            android:name=".TopAlbumsActivity"
+            android:label="Top Albums">
+        </activity>
     </application>
 
 </manifest>

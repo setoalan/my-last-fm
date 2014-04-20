@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.setoalan.mylastfm.MyLastFMFragment;
+import com.setoalan.mylastfm.TopAlbumsFragment;
 import com.setoalan.mylastfm.datastructures.Album;
 
 import org.apache.http.HttpResponse;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 
-public class FetchWeeklyAlbums {
+public class FetchAlbums {
 
     private static final String URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
@@ -31,14 +32,14 @@ public class FetchWeeklyAlbums {
     InputStream mInputStream;
     Drawable mDrawable;
 
-    public void fetchWeeklyAlbums()  {
+    public void fetchAlbums(int limit, String period)  {
         String url = Uri.parse(URL).buildUpon()
                 .appendQueryParameter("method", "user.gettopalbums")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
-                .appendQueryParameter("period", "7day")
+                .appendQueryParameter("period", period)
                 .appendQueryParameter("format", "json")
-                .appendQueryParameter("limit", "3")
+                .appendQueryParameter("limit", limit + "")
                 .build().toString();
 
         String result = null;
@@ -68,12 +69,12 @@ public class FetchWeeklyAlbums {
             e.printStackTrace();
         }
 
-        deserialize(result);
+        deserialize(result, limit, period);
 
         return;
     }
 
-    private void deserialize(String result) {
+    private void deserialize(String result, int limit, String period) {
         Album album;
 
         try {
@@ -82,7 +83,7 @@ public class FetchWeeklyAlbums {
                     .getJSONArray("album");
             JSONObject jsonObject;
 
-            for (int i=0; i<3; i++) {
+            for (int i=0; i<limit; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
 
                 album = new Album();
@@ -96,7 +97,17 @@ public class FetchWeeklyAlbums {
                 mDrawable = Drawable.createFromStream(mInputStream, "src name");
                 album.setImage(mDrawable);
 
-                MyLastFMFragment.WEEKLY_ALBUMS.add(album);
+                if (limit == 3 && period.equals("7day")) {
+                    MyLastFMFragment.WEEKLY_ALBUMS.add(album);
+                } else if (period.equals("7day")) {
+                    TopAlbumsFragment.WEEK_ALBUMS.add(album);
+                } else if (period.equals("1month")) {
+                    TopAlbumsFragment.MONTH_ALBUMS.add(album);
+                } else if (period.equals("12month")) {
+                    TopAlbumsFragment.YEAR_ALBUMS.add(album);
+                } else if (period.equals("overall")) {
+                    TopAlbumsFragment.OVERALL_ALBUMS.add(album);
+                }
             }
 
         } catch (JSONException e) {
