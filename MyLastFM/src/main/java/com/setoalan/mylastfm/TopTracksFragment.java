@@ -20,17 +20,10 @@ import java.util.ArrayList;
 
 public class TopTracksFragment extends Fragment {
 
+    public static ArrayList<Track> WEEK_TRACKS, MONTH_TRACKS, YEAR_TRACKS, OVERALL_TRACKS;
+
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
-    Fragment mWeekFragment = new WeekFragmentTab();
-    Fragment mMonthFragment = new MonthFragmentTab();
-    Fragment mYearFragment = new YearFragmentTab();
-    Fragment mOverallFragment = new OverallFragmentTab();
-
-    public static ArrayList<Track> WEEK_TRACKS;
-    public static ArrayList<Track> MONTH_TRACKS;
-    public static ArrayList<Track> YEAR_TRACKS;
-    public static ArrayList<Track> OVERALL_TRACKS;
-
+    Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
     TextView artistTV, playCountTV, trackTV;
 
@@ -41,6 +34,11 @@ public class TopTracksFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+        mWeekFragment = new TrackFragmentTab("7day");
+        mMonthFragment = new TrackFragmentTab("1month");
+        mYearFragment = new TrackFragmentTab("12month");
+        mOverallFragment = new TrackFragmentTab("overall");
+
         mWeekTab = actionBar.newTab().setText("Week");
         mMonthTab = actionBar.newTab().setText("Month");
         mYearTab = actionBar.newTab().setText("Year");
@@ -50,11 +48,6 @@ public class TopTracksFragment extends Fragment {
         mMonthTab.setTabListener(new MyTabListener(mMonthFragment));
         mYearTab.setTabListener(new MyTabListener(mYearFragment));
         mOverallTab.setTabListener(new MyTabListener(mOverallFragment));
-
-        new WeekFragmentTab();
-        new MonthFragmentTab();
-        new YearFragmentTab();
-        new OverallFragmentTab();
 
         actionBar.addTab(mWeekTab);
         actionBar.addTab(mMonthTab);
@@ -71,11 +64,11 @@ public class TopTracksFragment extends Fragment {
 
     private class TopTracksAdapter extends ArrayAdapter<Track> {
 
-        String mTime;
+        private String mPeriod;
 
         public TopTracksAdapter(ArrayList<Track> data, String time) {
             super(getActivity(), android.R.layout.simple_list_item_1, data);
-            mTime = time;
+            mPeriod = time;
         }
 
         @Override
@@ -86,13 +79,13 @@ public class TopTracksFragment extends Fragment {
             }
 
             Track track = null;
-            if (mTime.equals("week")) {
+            if (mPeriod.equals("week")) {
                 track = WEEK_TRACKS.get(position);
-            } else if (mTime.equals("month")) {
+            } else if (mPeriod.equals("month")) {
                 track = MONTH_TRACKS.get(position);
-            } else if (mTime.equals("year")) {
+            } else if (mPeriod.equals("year")) {
                 track = YEAR_TRACKS.get(position);
-            } else if (mTime.equals("overall")) {
+            } else if (mPeriod.equals("overall")) {
                 track = OVERALL_TRACKS.get(position);
             }
 
@@ -111,12 +104,22 @@ public class TopTracksFragment extends Fragment {
 
     }
 
-    public class WeekFragmentTab extends ListFragment {
+    public class TrackFragmentTab extends ListFragment {
 
         private boolean dataCalled = false;
+        private String mPeriod;
 
-        public WeekFragmentTab() {
-            WEEK_TRACKS = new ArrayList<Track>();
+        public TrackFragmentTab(String period) {
+            mPeriod = period;
+            if (mPeriod.equals("7day")) {
+                WEEK_TRACKS = new ArrayList<Track>();
+            } else if (mPeriod.equals("1month")) {
+                MONTH_TRACKS = new ArrayList<Track>();
+            } else if (mPeriod.equals("12month")) {
+                YEAR_TRACKS = new ArrayList<Track>();
+            } else if (mPeriod.equals("overall")) {
+                OVERALL_TRACKS = new ArrayList<Track>();
+            }
         }
 
         @Override
@@ -139,140 +142,23 @@ public class TopTracksFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "7day");
+                new FetchTracks().fetchTracks(50, mPeriod);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(WEEK_TRACKS, "week"));
-            }
+                if (mPeriod.equals("7day")) {
+                    setListAdapter(new TopTracksAdapter(WEEK_TRACKS, "week"));
+                } else if (mPeriod.equals("1month")) {
+                    setListAdapter(new TopTracksAdapter(MONTH_TRACKS, "month"));
+                } else if (mPeriod.equals("12month")) {
+                    setListAdapter(new TopTracksAdapter(YEAR_TRACKS, "year"));
+                } else if (mPeriod.equals("overall")) {
+                    setListAdapter(new TopTracksAdapter(OVERALL_TRACKS, "overall"));
+                }
 
-        }
-
-    }
-
-    public class MonthFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public MonthFragmentTab() {
-            MONTH_TRACKS = new ArrayList<Track>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "1month");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(MONTH_TRACKS, "month"));
-            }
-
-        }
-
-    }
-
-    public class YearFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public YearFragmentTab() {
-            YEAR_TRACKS = new ArrayList<Track>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "12month");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(YEAR_TRACKS, "year"));
-            }
-
-        }
-
-    }
-
-    public class OverallFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public OverallFragmentTab() {
-            OVERALL_TRACKS = new ArrayList<Track>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchTracks().fetchTracks(50, "overall");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopTracksAdapter(OVERALL_TRACKS, "overall"));
             }
 
         }

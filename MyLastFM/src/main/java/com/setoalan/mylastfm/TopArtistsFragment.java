@@ -20,17 +20,10 @@ import java.util.ArrayList;
 
 public class TopArtistsFragment extends Fragment {
 
+    public static ArrayList<Artist> WEEK_ARTISTS, MONTH_ARTISTS, YEAR_ARTISTS, OVERALL_ARTISTS;
+
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
-    Fragment mWeekFragment = new WeekFragmentTab();
-    Fragment mMonthFragment = new MonthFragmentTab();
-    Fragment mYearFragment = new YearFragmentTab();
-    Fragment mOverallFragment = new OverallFragmentTab();
-
-    public static ArrayList<Artist> WEEK_ARTISTS;
-    public static ArrayList<Artist> MONTH_ARTISTS;
-    public static ArrayList<Artist> YEAR_ARTISTS;
-    public static ArrayList<Artist> OVERALL_ARTISTS;
-
+    Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView artistIV;
     TextView artistTV, playCountTV;
 
@@ -41,6 +34,11 @@ public class TopArtistsFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+        mWeekFragment = new ArtistFragmentTab("7day");
+        mMonthFragment = new ArtistFragmentTab("1month");
+        mYearFragment = new ArtistFragmentTab("12month");
+        mOverallFragment = new ArtistFragmentTab("overall");
+
         mWeekTab = actionBar.newTab().setText("Week");
         mMonthTab = actionBar.newTab().setText("Month");
         mYearTab = actionBar.newTab().setText("Year");
@@ -50,11 +48,6 @@ public class TopArtistsFragment extends Fragment {
         mMonthTab.setTabListener(new MyTabListener(mMonthFragment));
         mYearTab.setTabListener(new MyTabListener(mYearFragment));
         mOverallTab.setTabListener(new MyTabListener(mOverallFragment));
-
-        new WeekFragmentTab();
-        new MonthFragmentTab();
-        new YearFragmentTab();
-        new OverallFragmentTab();
 
         actionBar.addTab(mWeekTab);
         actionBar.addTab(mMonthTab);
@@ -71,11 +64,11 @@ public class TopArtistsFragment extends Fragment {
 
     private class TopArtistsAdapter extends ArrayAdapter<Artist> {
 
-        String mTime;
+        private String mPeriod;
 
         public TopArtistsAdapter(ArrayList<Artist> data, String time) {
             super(getActivity(), android.R.layout.simple_list_item_1, data);
-            mTime = time;
+            mPeriod = time;
         }
 
         @Override
@@ -86,13 +79,13 @@ public class TopArtistsFragment extends Fragment {
             }
 
             Artist artist = null;
-            if (mTime.equals("week")) {
+            if (mPeriod.equals("week")) {
                 artist = WEEK_ARTISTS.get(position);
-            } else if (mTime.equals("month")) {
+            } else if (mPeriod.equals("month")) {
                 artist = MONTH_ARTISTS.get(position);
-            } else if (mTime.equals("year")) {
+            } else if (mPeriod.equals("year")) {
                 artist = YEAR_ARTISTS.get(position);
-            } else if (mTime.equals("overall")) {
+            } else if (mPeriod.equals("overall")) {
                 artist = OVERALL_ARTISTS.get(position);
             }
 
@@ -109,56 +102,22 @@ public class TopArtistsFragment extends Fragment {
 
     }
 
-    public class WeekFragmentTab extends ListFragment {
+    public class ArtistFragmentTab extends ListFragment {
 
         private boolean dataCalled = false;
+        private String mPeriod;
 
-        public WeekFragmentTab() {
-            WEEK_ARTISTS = new ArrayList<Artist>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
+        public ArtistFragmentTab(String period) {
+            mPeriod = period;
+            if (mPeriod.equals("7day")) {
+                WEEK_ARTISTS = new ArrayList<Artist>();
+            } else if (mPeriod.equals("1month")) {
+                MONTH_ARTISTS = new ArrayList<Artist>();
+            } else if (mPeriod.equals("12month")) {
+                YEAR_ARTISTS = new ArrayList<Artist>();
+            } else if (mPeriod.equals("overall")) {
+                OVERALL_ARTISTS = new ArrayList<Artist>();
             }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-
-            
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchArtists().fetchArtists(50, "7day");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopArtistsAdapter(WEEK_ARTISTS, "week"));
-            }
-
-        }
-
-    }
-
-    public class MonthFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public MonthFragmentTab() {
-            MONTH_ARTISTS = new ArrayList<Artist>();
         }
 
         @Override
@@ -181,98 +140,22 @@ public class TopArtistsFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                new FetchArtists().fetchArtists(50, "1month");
+                new FetchArtists().fetchArtists(50, mPeriod);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new TopArtistsAdapter(MONTH_ARTISTS, "month"));
-            }
-
-        }
-
-    }
-
-    public class YearFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public YearFragmentTab() {
-            YEAR_ARTISTS = new ArrayList<Artist>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchArtists().fetchArtists(50, "12month");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopArtistsAdapter(YEAR_ARTISTS, "year"));
-            }
-
-        }
-
-    }
-
-    public class OverallFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public OverallFragmentTab() {
-            OVERALL_ARTISTS = new ArrayList<Artist>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchArtists().fetchArtists(50, "overall");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopArtistsAdapter(OVERALL_ARTISTS, "overall"));
+                if (mPeriod.equals("7day")) {
+                    setListAdapter(new TopArtistsAdapter(WEEK_ARTISTS, "week"));
+                } else if (mPeriod.equals("1month")) {
+                    setListAdapter(new TopArtistsAdapter(MONTH_ARTISTS, "month"));
+                } else if (mPeriod.equals("12month")) {
+                    setListAdapter(new TopArtistsAdapter(YEAR_ARTISTS, "year"));
+                } else if (mPeriod.equals("overall")) {
+                    setListAdapter(new TopArtistsAdapter(OVERALL_ARTISTS, "overall"));
+                }
             }
 
         }

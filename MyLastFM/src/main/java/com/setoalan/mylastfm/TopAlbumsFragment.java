@@ -20,17 +20,10 @@ import java.util.ArrayList;
 
 public class TopAlbumsFragment extends Fragment {
 
+    public static ArrayList<Album> WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS, OVERALL_ALBUMS;
+
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
-    Fragment mWeekFragment = new WeekFragmentTab();
-    Fragment mMonthFragment = new MonthFragmentTab();
-    Fragment mYearFragment = new YearFragmentTab();
-    Fragment mOverallFragment = new OverallFragmentTab();
-
-    public static ArrayList<Album> WEEK_ALBUMS;
-    public static ArrayList<Album> MONTH_ALBUMS;
-    public static ArrayList<Album> YEAR_ALBUMS;
-    public static ArrayList<Album> OVERALL_ALBUMS;
-
+    Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
     TextView albumTV, playCountTV;
 
@@ -41,6 +34,11 @@ public class TopAlbumsFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+        mWeekFragment = new AlbumFragmentTab("7day");
+        mMonthFragment = new AlbumFragmentTab("1month");
+        mYearFragment = new AlbumFragmentTab("12month");
+        mOverallFragment = new AlbumFragmentTab("overall");
+
         mWeekTab = actionBar.newTab().setText("Week");
         mMonthTab = actionBar.newTab().setText("Month");
         mYearTab = actionBar.newTab().setText("Year");
@@ -50,11 +48,6 @@ public class TopAlbumsFragment extends Fragment {
         mMonthTab.setTabListener(new MyTabListener(mMonthFragment));
         mYearTab.setTabListener(new MyTabListener(mYearFragment));
         mOverallTab.setTabListener(new MyTabListener(mOverallFragment));
-
-        new WeekFragmentTab();
-        new MonthFragmentTab();
-        new YearFragmentTab();
-        new OverallFragmentTab();
 
         actionBar.addTab(mWeekTab);
         actionBar.addTab(mMonthTab);
@@ -71,11 +64,12 @@ public class TopAlbumsFragment extends Fragment {
 
     private class TopAlbumsAdapter extends ArrayAdapter<Album> {
 
-        String mTime;
+        private String mPeriod;
+
 
         public TopAlbumsAdapter(ArrayList<Album> data, String time) {
             super(getActivity(), android.R.layout.simple_list_item_1, data);
-            mTime = time;
+            mPeriod = time;
         }
 
         @Override
@@ -86,13 +80,13 @@ public class TopAlbumsFragment extends Fragment {
             }
 
             Album album = null;
-            if (mTime.equals("week")) {
+            if (mPeriod.equals("week")) {
                 album = WEEK_ALBUMS.get(position);
-            } else if (mTime.equals("month")) {
+            } else if (mPeriod.equals("month")) {
                 album = MONTH_ALBUMS.get(position);
-            } else if (mTime.equals("year")) {
+            } else if (mPeriod.equals("year")) {
                 album = YEAR_ALBUMS.get(position);
-            } else if (mTime.equals("overall")) {
+            } else if (mPeriod.equals("overall")) {
                 album = OVERALL_ALBUMS.get(position);
             }
 
@@ -109,12 +103,22 @@ public class TopAlbumsFragment extends Fragment {
 
     }
 
-    public class WeekFragmentTab extends ListFragment {
+    public class AlbumFragmentTab extends ListFragment {
 
         private boolean dataCalled = false;
+        private String mPeriod;
 
-        public WeekFragmentTab() {
-            WEEK_ALBUMS = new ArrayList<Album>();
+        public AlbumFragmentTab(String period) {
+            mPeriod = period;
+            if (mPeriod.equals("7day")) {
+                WEEK_ALBUMS = new ArrayList<Album>();
+            } else if (mPeriod.equals("1month")) {
+                MONTH_ALBUMS = new ArrayList<Album>();
+            } else if (mPeriod.equals("12month")) {
+                YEAR_ALBUMS = new ArrayList<Album>();
+            } else if (mPeriod.equals("overall")) {
+                OVERALL_ALBUMS = new ArrayList<Album>();
+            }
         }
 
         @Override
@@ -128,7 +132,7 @@ public class TopAlbumsFragment extends Fragment {
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
+                                 Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_top, container, false);
             return view;
         }
@@ -137,140 +141,23 @@ public class TopAlbumsFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                new FetchAlbums().fetchAlbums(50, "7day");
+                new FetchAlbums().fetchAlbums(50, mPeriod);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new TopAlbumsAdapter(WEEK_ALBUMS, "week"));
-            }
+                if (mPeriod.equals("7day")) {
+                    setListAdapter(new TopAlbumsAdapter(WEEK_ALBUMS, "week"));
+                } else if (mPeriod.equals("1month")) {
+                    setListAdapter(new TopAlbumsAdapter(MONTH_ALBUMS, "month"));
+                } else if (mPeriod.equals("12month")) {
+                    setListAdapter(new TopAlbumsAdapter(YEAR_ALBUMS, "year"));
+                } else if (mPeriod.equals("overall")) {
+                    setListAdapter(new TopAlbumsAdapter(OVERALL_ALBUMS, "overall"));
+                }
 
-        }
-
-    }
-
-    public class MonthFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public MonthFragmentTab() {
-            MONTH_ALBUMS = new ArrayList<Album>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchAlbums().fetchAlbums(50, "1month");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopAlbumsAdapter(MONTH_ALBUMS, "month"));
-            }
-
-        }
-
-    }
-
-    public class YearFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public YearFragmentTab() {
-            YEAR_ALBUMS = new ArrayList<Album>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchAlbums().fetchAlbums(50, "12month");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopAlbumsAdapter(YEAR_ALBUMS, "year"));
-            }
-
-        }
-
-    }
-
-    public class OverallFragmentTab extends ListFragment {
-
-        private boolean dataCalled = false;
-
-        public OverallFragmentTab() {
-            OVERALL_ALBUMS = new ArrayList<Album>();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (!dataCalled) {
-                dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchAlbums().fetchAlbums(50, "overall");
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                setListAdapter(new TopAlbumsAdapter(OVERALL_ALBUMS, "overall"));
             }
 
         }
