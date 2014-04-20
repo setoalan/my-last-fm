@@ -23,17 +23,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 public class FetchTracks {
 
-    private static final String URL = "http://ws.audioscrobbler.com/2.0/?";
+    private static final String LASTFM_URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
     InputStream mInputStream;
     Drawable mDrawable;
 
     public void fetchTracks(int limit, String period)  {
-        String url = Uri.parse(URL).buildUpon()
+        String url = Uri.parse(LASTFM_URL).buildUpon()
                 .appendQueryParameter("method", "user.gettoptracks")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
@@ -76,26 +77,35 @@ public class FetchTracks {
 
     private void deserialize(String result, int limit, String period) {
         Track track;
+        int total = limit;
 
         try {
             JSONObject jsonObjectMain = new JSONObject(result);
+            if (jsonObjectMain.getJSONObject("toptracks").optJSONObject("@attr") == null)
+                return;
             JSONArray jsonArray = jsonObjectMain.getJSONObject("toptracks")
                     .getJSONArray("track");
             JSONObject jsonObject;
 
-            for (int i=0; i<limit; i++) {
+            if (limit !=3 && jsonObjectMain.getJSONObject("toptracks").getJSONObject("@attr")
+                    .getInt("total") < 50) {
+                total = jsonObjectMain.getJSONObject("toptracks").getJSONObject("@attr")
+                        .getInt("total");
+            }
+
+            for (int i=0; i<total; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
 
                 track = new Track();
                 track.setRank(jsonObject.getJSONObject("@attr").getInt("rank"));
                 track.setArtist(jsonObject.getJSONObject("artist").getString("name"));
                 track.setName(jsonObject.getString("name"));
-                track.setDuration(jsonObject.getInt("duration"));
+                if (!jsonObject.getString("duration").equals(""))
+                    track.setDuration(jsonObject.getInt("duration"));
                 track.setPlayCount(jsonObject.getInt("playcount"));
                 track.setUrl(jsonObject.getString("url"));
-                JSONArray imageJsonObject = jsonObject.optJSONArray("image");
-                if (imageJsonObject != null) {
-                    mInputStream = (InputStream) new java.net.URL(jsonObject.getJSONArray("image")
+                if (jsonObject.optJSONArray("image") != null) {
+                    mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
                             .getJSONObject(2).getString("#text")).getContent();
                     mDrawable = Drawable.createFromStream(mInputStream, "src name");
                     track.setImage(mDrawable);
@@ -113,7 +123,6 @@ public class FetchTracks {
                     TopTracksFragment.OVERALL_TRACKS.add(track);
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

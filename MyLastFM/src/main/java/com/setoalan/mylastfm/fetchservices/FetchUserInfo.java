@@ -75,7 +75,8 @@ public class FetchUserInfo {
             user.setUrl(jsonObject.getString("url"));
             user.setImage(jsonObject.getString("image"));
             user.setCountry(jsonObject.getString("country"));
-            user.setAge(jsonObject.getInt("age"));
+            if (!jsonObject.getString("age").equals(""))
+                user.setAge(jsonObject.getInt("age"));
             user.setGender(jsonObject.getString("gender"));
             user.setPlayCount(jsonObject.getInt("playcount"));
             user.setRegistered(jsonObject.getJSONObject("registered").getLong("unixtime"));

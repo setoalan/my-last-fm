@@ -89,12 +89,24 @@ public class RecentTracksFragment extends ListFragment {
                         lastPlayedTV.setText(time + " hour ago");
                     else
                         lastPlayedTV.setText(time + " hours ago");
-                } else {
+                }  else if (difference < 2592000) {
                     time = TimeUnit.SECONDS.toDays(difference);
                     if (time == 1)
                         lastPlayedTV.setText(time + " day ago");
                     else
                         lastPlayedTV.setText(time + " days ago");
+                } else if (difference < 31556952) {
+                    time = TimeUnit.SECONDS.toDays(difference) / 12;
+                    if (time == 1)
+                        lastPlayedTV.setText(time + " month ago");
+                    else
+                        lastPlayedTV.setText(time + " months ago");
+                } else {
+                    time = TimeUnit.SECONDS.toDays(difference) / 365;
+                    if (time == 1)
+                        lastPlayedTV.setText(time + " year ago");
+                    else
+                        lastPlayedTV.setText(time + " years ago");
                 }
             }
 

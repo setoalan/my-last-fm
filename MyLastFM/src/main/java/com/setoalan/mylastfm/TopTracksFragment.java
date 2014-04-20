@@ -25,7 +25,7 @@ public class TopTracksFragment extends Fragment {
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
-    TextView artistTV, playCountTV, trackTV;
+    TextView artistTV, playCountTV, rankTV, trackTV;
     View loadingV;
 
     @Override
@@ -91,11 +91,13 @@ public class TopTracksFragment extends Fragment {
             }
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+            rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
             artistTV = (TextView) convertView.findViewById(R.id.name_tv);
             trackTV = (TextView) convertView.findViewById(R.id.track_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             albumIV.setImageDrawable(track.getImage());
+            rankTV.setText(track.getRank() + "");
             artistTV.setText(track.getArtist());
             trackTV.setText(track.getName());
             playCountTV.setText(track.getPlayCount() + " plays");

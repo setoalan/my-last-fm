@@ -26,14 +26,14 @@ import java.net.URL;
 
 public class FetchRecentTracks {
 
-    private static final String URL = "http://ws.audioscrobbler.com/2.0/?";
+    private static final String LASTFM_URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
     Drawable mDrawable;
     InputStream mInputStream;
 
     public void fetchRecentTracks(int limit)  {
-        String url = Uri.parse(URL).buildUpon()
+        String url = Uri.parse(LASTFM_URL).buildUpon()
                 .appendQueryParameter("method", "user.getrecenttracks")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
@@ -85,15 +85,16 @@ public class FetchRecentTracks {
             track.setName(jsonObject.getString("name"));
             track.setAlbum(jsonObject.getJSONObject("album").getString("#text"));
             track.setUrl(jsonObject.getString("url"));
-            mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image").getJSONObject(2)
-                    .getString("#text")).getContent();
-            mDrawable = Drawable.createFromStream(mInputStream, "src name");
-            track.setImage(mDrawable);
-            JSONObject dateJsonObject = jsonObject.optJSONObject("date");
-            if (dateJsonObject != null)
-                track.setDate(dateJsonObject.getLong("uts"));
-            JSONObject nowPlayingJsonObject = jsonObject.optJSONObject("@attr");
-            if (nowPlayingJsonObject!= null)
+            if (!jsonObject.getJSONArray("image").getJSONObject(2).getString("#text").equals("")) {
+                mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
+                        .getJSONObject(2)
+                        .getString("#text")).getContent();
+                mDrawable = Drawable.createFromStream(mInputStream, "src name");
+                track.setImage(mDrawable);
+            }
+            if (jsonObject.optJSONObject("date") != null)
+                track.setDate(jsonObject.optJSONObject("date").getLong("uts"));
+            if (jsonObject.optJSONObject("@attr") != null)
                 track.setNowPlaying(true);
 
             if (limit == 3)
@@ -110,10 +111,13 @@ public class FetchRecentTracks {
                 track.setName(jsonObject.getString("name"));
                 track.setAlbum(jsonObject.getJSONObject("album").getString("#text"));
                 track.setUrl(jsonObject.getString("url"));
-                mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
-                        .getJSONObject(2).getString("#text")).getContent();
-                mDrawable = Drawable.createFromStream(mInputStream, "src name");
-                track.setImage(mDrawable);
+                if (!jsonObject.getJSONArray("image").getJSONObject(2).getString("#text")
+                        .equals("")) {
+                    mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
+                            .getJSONObject(2).getString("#text")).getContent();
+                    mDrawable = Drawable.createFromStream(mInputStream, "src name");
+                    track.setImage(mDrawable);
+                }
                 track.setDate(jsonObject.getJSONObject("date").getLong("uts"));
 
                 if (limit == 3)

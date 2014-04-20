@@ -25,7 +25,7 @@ public class TopAlbumsFragment extends Fragment {
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
-    TextView albumTV, playCountTV;
+    TextView albumTV, playCountTV, rankTV;
     View loadingV;
 
     @Override
@@ -92,10 +92,12 @@ public class TopAlbumsFragment extends Fragment {
             }
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+            rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
             albumTV = (TextView) convertView.findViewById(R.id.name_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             albumIV.setImageDrawable(album.getImage());
+            rankTV.setText(album.getRank() + "");
             albumTV.setText(album.getName());
             playCountTV.setText(album.getPlayCount() + " plays");
 

@@ -25,7 +25,7 @@ public class TopArtistsFragment extends Fragment {
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView artistIV;
-    TextView artistTV, playCountTV;
+    TextView artistTV, playCountTV, rankTV;
     View loadingV;
 
     @Override
@@ -91,10 +91,12 @@ public class TopArtistsFragment extends Fragment {
             }
 
             artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
+            rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
             artistTV = (TextView) convertView.findViewById(R.id.name_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             artistIV.setImageDrawable(artist.getImage());
+            rankTV.setText(artist.getRank() + "");
             artistTV.setText(artist.getName());
             playCountTV.setText(artist.getPlayCount() + " plays");
 

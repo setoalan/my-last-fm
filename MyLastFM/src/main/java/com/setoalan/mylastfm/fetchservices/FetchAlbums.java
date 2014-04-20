@@ -23,17 +23,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 public class FetchAlbums {
 
-    private static final String URL = "http://ws.audioscrobbler.com/2.0/?";
+    private static final String LASTFM_URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
     InputStream mInputStream;
     Drawable mDrawable;
 
     public void fetchAlbums(int limit, String period)  {
-        String url = Uri.parse(URL).buildUpon()
+        String url = Uri.parse(LASTFM_URL).buildUpon()
                 .appendQueryParameter("method", "user.gettopalbums")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
                 .appendQueryParameter("api_key", KEY)
@@ -76,14 +77,23 @@ public class FetchAlbums {
 
     private void deserialize(String result, int limit, String period) {
         Album album;
+        int total = limit;
 
         try {
             JSONObject jsonObjectMain = new JSONObject(result);
+            if (jsonObjectMain.getJSONObject("topalbums").optJSONObject("@attr") == null)
+                return;
             JSONArray jsonArray = jsonObjectMain.getJSONObject("topalbums")
                     .getJSONArray("album");
             JSONObject jsonObject;
 
-            for (int i=0; i<limit; i++) {
+            if (limit !=3 && jsonObjectMain.getJSONObject("topalbums").getJSONObject("@attr")
+                    .getInt("total") < 50) {
+                total = jsonObjectMain.getJSONObject("topalbums").getJSONObject("@attr")
+                        .getInt("total");
+            }
+
+            for (int i=0; i<total; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
 
                 album = new Album();
@@ -92,10 +102,13 @@ public class FetchAlbums {
                 album.setName(jsonObject.getString("name"));
                 album.setPlayCount(jsonObject.getInt("playcount"));
                 album.setUrl(jsonObject.getString("url"));
-                mInputStream = (InputStream) new java.net.URL(jsonObject.getJSONArray("image")
-                        .getJSONObject(2).getString("#text")).getContent();
-                mDrawable = Drawable.createFromStream(mInputStream, "src name");
-                album.setImage(mDrawable);
+                if (!jsonObject.getJSONArray("image").getJSONObject(2).getString("#text")
+                        .equals("")) {
+                    mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
+                            .getJSONObject(2).getString("#text")).getContent();
+                    mDrawable = Drawable.createFromStream(mInputStream, "src name");
+                    album.setImage(mDrawable);
+                }
 
                 if (limit == 3 && period.equals("7day")) {
                     MyLastFMFragment.WEEKLY_ALBUMS.add(album);
@@ -109,7 +122,6 @@ public class FetchAlbums {
                     TopAlbumsFragment.OVERALL_ALBUMS.add(album);
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
