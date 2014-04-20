@@ -111,6 +111,8 @@ public class TopAlbumsFragment extends Fragment {
 
     public class WeekFragmentTab extends ListFragment {
 
+        private boolean dataCalled = false;
+
         public WeekFragmentTab() {
             WEEK_ALBUMS = new ArrayList<Album>();
         }
@@ -119,8 +121,10 @@ public class TopAlbumsFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
-            if (WEEK_ALBUMS.size() == 0)
+            if (!dataCalled) {
+                dataCalled = true;
                 new FetchDataTask().execute();
+            }
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -149,6 +153,8 @@ public class TopAlbumsFragment extends Fragment {
 
     public class MonthFragmentTab extends ListFragment {
 
+        private boolean dataCalled = false;
+
         public MonthFragmentTab() {
             MONTH_ALBUMS = new ArrayList<Album>();
         }
@@ -157,8 +163,10 @@ public class TopAlbumsFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
-            if (MONTH_ALBUMS.size() == 0)
+            if (!dataCalled) {
+                dataCalled = true;
                 new FetchDataTask().execute();
+            }
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -187,6 +195,8 @@ public class TopAlbumsFragment extends Fragment {
 
     public class YearFragmentTab extends ListFragment {
 
+        private boolean dataCalled = false;
+
         public YearFragmentTab() {
             YEAR_ALBUMS = new ArrayList<Album>();
         }
@@ -195,8 +205,10 @@ public class TopAlbumsFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
-            if (YEAR_ALBUMS.size() == 0)
+            if (!dataCalled) {
+                dataCalled = true;
                 new FetchDataTask().execute();
+            }
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -225,6 +237,8 @@ public class TopAlbumsFragment extends Fragment {
 
     public class OverallFragmentTab extends ListFragment {
 
+        private boolean dataCalled = false;
+
         public OverallFragmentTab() {
             OVERALL_ALBUMS = new ArrayList<Album>();
         }
@@ -233,8 +247,10 @@ public class TopAlbumsFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
-            if (OVERALL_ALBUMS.size() == 0)
+            if (!dataCalled) {
+                dataCalled = true;
                 new FetchDataTask().execute();
+            }
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -263,18 +279,18 @@ public class TopAlbumsFragment extends Fragment {
 
     public class MyTabListener implements ActionBar.TabListener {
 
-        Fragment fragment;
+        Fragment mFragment;
 
         public MyTabListener(Fragment fragment) {
-            this.fragment = fragment;
+            mFragment = fragment;
         }
 
         public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.replace(R.id.fragment_container, mFragment);
         }
 
         public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-            fragmentTransaction.remove(fragment);
+            fragmentTransaction.remove(mFragment);
         }
 
         public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
