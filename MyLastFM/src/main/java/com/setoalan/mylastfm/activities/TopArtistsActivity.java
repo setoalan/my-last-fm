@@ -1,9 +1,12 @@
-package com.setoalan.mylastfm;
+package com.setoalan.mylastfm.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+
+import com.setoalan.mylastfm.R;
+import com.setoalan.mylastfm.TopArtistsFragment;
 
 public class TopArtistsActivity extends Activity {
 

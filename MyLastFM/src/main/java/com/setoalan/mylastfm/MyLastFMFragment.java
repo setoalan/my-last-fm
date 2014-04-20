@@ -13,6 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.LoginActivity;
+import com.setoalan.mylastfm.activities.RecentTracksActivity;
+import com.setoalan.mylastfm.activities.TopAlbumsActivity;
+import com.setoalan.mylastfm.activities.TopArtistsActivity;
+import com.setoalan.mylastfm.activities.TopTracksActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Track;
@@ -51,7 +56,7 @@ public class MyLastFMFragment extends ListFragment {
                 .getDefaultSharedPreferences(getActivity());
         USERNAME = sharedPreferences.getString("username", null);
         if (USERNAME == null) {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            startActivityForResult(new Intent(getActivity(), LoginActivity.class), 1);
         } else {
             mList = new ArrayList<String>();
             RECENT_TRACKS = new ArrayList<Track>();
@@ -60,6 +65,16 @@ public class MyLastFMFragment extends ListFragment {
             WEEKLY_ALBUMS = new ArrayList<Album>();
             new FetchDataTask().execute();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mList = new ArrayList<String>();
+        RECENT_TRACKS = new ArrayList<Track>();
+        WEEKLY_ARTISTS = new ArrayList<Artist>();
+        WEEKLY_TRACKS = new ArrayList<Track>();
+        WEEKLY_ALBUMS = new ArrayList<Album>();
+        new FetchDataTask().execute();
     }
 
     private class FetchDataTask extends AsyncTask<Void, Void, Void> {
