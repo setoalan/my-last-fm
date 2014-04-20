@@ -120,7 +120,9 @@ public class TopTracksFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (WEEK_TRACKS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,7 +158,9 @@ public class TopTracksFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (MONTH_TRACKS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -192,7 +196,9 @@ public class TopTracksFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (YEAR_TRACKS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -228,7 +234,9 @@ public class TopTracksFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (OVERALL_TRACKS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

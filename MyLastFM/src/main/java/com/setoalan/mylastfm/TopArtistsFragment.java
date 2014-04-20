@@ -118,7 +118,9 @@ public class TopArtistsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (WEEK_ARTISTS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,7 +156,9 @@ public class TopArtistsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (MONTH_ARTISTS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -190,7 +194,9 @@ public class TopArtistsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (YEAR_ARTISTS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -226,7 +232,9 @@ public class TopArtistsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (OVERALL_ARTISTS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

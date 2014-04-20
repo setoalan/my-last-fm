@@ -118,7 +118,9 @@ public class TopAlbumsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (WEEK_ALBUMS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,7 +156,9 @@ public class TopAlbumsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (MONTH_ALBUMS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -190,7 +194,9 @@ public class TopAlbumsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (YEAR_ALBUMS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -226,7 +232,9 @@ public class TopAlbumsFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            setRetainInstance(true);
+            if (OVERALL_ALBUMS.size() == 0)
+                new FetchDataTask().execute();
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

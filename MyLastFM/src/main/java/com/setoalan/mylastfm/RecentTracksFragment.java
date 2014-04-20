@@ -26,6 +26,7 @@ public class RecentTracksFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         RECENT_TRACKS = new ArrayList<Track>();
         new FetchDataTask().execute();
