@@ -59,7 +59,7 @@ public class TopAlbumsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_top_container, container, false);
+        View view = inflater.inflate(R.layout.fragment_container, container, false);
         return view;
     }
 
@@ -144,7 +144,7 @@ public class TopAlbumsFragment extends Fragment {
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_top, container, false);
+            View view = inflater.inflate(R.layout.fragment_list, container, false);
             loadingV = (View) view.findViewById(R.id.loading_container);
             loadingV.setVisibility(View.VISIBLE);
             return view;
