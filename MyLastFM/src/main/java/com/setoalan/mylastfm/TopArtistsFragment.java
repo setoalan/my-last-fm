@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.setoalan.mylastfm.datastructures.Artist;
@@ -22,6 +23,7 @@ public class TopArtistsFragment extends Fragment {
 
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
+    FragmentTransaction fragmentTransaction;
     ImageView artistIV;
     TextView artistTV, playCountTV, rankTV;
     View loadingV;
@@ -149,9 +151,15 @@ public class TopArtistsFragment extends Fragment {
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
+                                 Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_list, container, false);
             loadingV = view.findViewById(R.id.loading_container);
+            if (getActivity().getActionBar().getTabCount() == 0) {
+                getActivity().getActionBar().addTab(mWeekTab);
+                getActivity().getActionBar().addTab(mMonthTab);
+                getActivity().getActionBar().addTab(mYearTab);
+                getActivity().getActionBar().addTab(mOverallTab);
+            }
             if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
                 if (MyLastFMActivity.WEEK_ARTISTS.isEmpty())
                     loadingV.setVisibility(View.VISIBLE);
@@ -166,6 +174,20 @@ public class TopArtistsFragment extends Fragment {
                     loadingV.setVisibility(View.VISIBLE);
             }
             return view;
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            Artist artist = MyLastFMActivity.WEEK_ARTISTS.get(position);
+            fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.animator.slide_in_right,
+                    R.animator.slide_out_right,
+                    R.animator.slide_out_left,
+                    R.animator.slide_in_left)
+                    .replace(R.id.fragment_container, new ArtistFragment(artist))
+                    .addToBackStack(null)
+                    .commit();
+
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {
