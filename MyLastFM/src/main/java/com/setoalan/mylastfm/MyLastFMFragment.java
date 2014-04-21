@@ -9,15 +9,10 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.setoalan.mylastfm.activities.LoginActivity;
-import com.setoalan.mylastfm.activities.RecentTracksActivity;
-import com.setoalan.mylastfm.activities.TopAlbumsActivity;
-import com.setoalan.mylastfm.activities.TopArtistsActivity;
-import com.setoalan.mylastfm.activities.TopTracksActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Track;
@@ -44,7 +39,6 @@ public class MyLastFMFragment extends ListFragment {
 
     private ArrayList<String> mList;
 
-    Button headerBTN;
     ImageView albumIV, artistIV;
     TextView albumTV, artistTV, headerTV, lastPlayedTV, playCountTV, playsSinceTV, trackTV;
 
@@ -123,15 +117,8 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-                headerBTN = (Button) convertView.findViewById(R.id.header_btn);
 
                 headerTV.setText("Recent Tracks");
-                headerBTN.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), RecentTracksActivity.class));
-                    }
-                });
             } else if (position == 2 || position == 3 || position == 4) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);
@@ -184,15 +171,8 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-                headerBTN = (Button) convertView.findViewById(R.id.header_btn);
 
                 headerTV.setText("Top Artists");
-                headerBTN.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), TopArtistsActivity.class));
-                    }
-                });
             } else if (position == 6 || position == 7 || position == 8) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);
@@ -208,15 +188,8 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-                headerBTN = (Button) convertView.findViewById(R.id.header_btn);
 
                 headerTV.setText("Top Tracks");
-                headerBTN.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), TopTracksActivity.class));
-                    }
-                });
             } else if (position == 10 || position == 11 || position == 12) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);
@@ -232,15 +205,8 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-                headerBTN = (Button) convertView.findViewById(R.id.header_btn);
 
                 headerTV.setText("Top Albums");
-                headerBTN.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), TopAlbumsActivity.class));
-                    }
-                });
             } else if (position == 14 || position == 15 || position == 16) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_main, null);

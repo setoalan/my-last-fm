@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="drawer_items">
+        <item>Home</item>
+        <item>Top Artists</item>
+        <item>Top Tracks</item>
+        <item>Top Albums</item>
+    </string-array>
+
+</resources>
