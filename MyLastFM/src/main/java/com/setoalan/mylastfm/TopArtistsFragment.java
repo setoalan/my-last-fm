@@ -77,23 +77,22 @@ public class TopArtistsFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_main, null);
+                        .inflate(R.layout.list_item_default, null);
             }
 
             Artist artist = null;
-            if (mPeriod.equals("week")) {
+            if (mPeriod.equals("week"))
                 artist = MyLastFMActivity.WEEK_ARTISTS.get(position);
-            } else if (mPeriod.equals("month")) {
+            else if (mPeriod.equals("month"))
                 artist = MyLastFMActivity.MONTH_ARTISTS.get(position);
-            } else if (mPeriod.equals("year")) {
+            else if (mPeriod.equals("year"))
                 artist = MyLastFMActivity.YEAR_ARTISTS.get(position);
-            } else if (mPeriod.equals("overall")) {
+            else if (mPeriod.equals("overall"))
                 artist = MyLastFMActivity.OVERALL_ARTISTS.get(position);
-            }
 
             artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
             rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
-            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
+            artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             artistIV.setImageDrawable(artist.getImage());
@@ -125,22 +124,26 @@ public class TopArtistsFragment extends Fragment {
                     if (MyLastFMActivity.WEEK_ARTISTS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS, "week"));
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS,
+                                "week"));
                 } else if (mPeriod.equals("1month")) {
                     if (MyLastFMActivity.MONTH_ARTISTS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.MONTH_ARTISTS, "month"));
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.MONTH_ARTISTS,
+                                "month"));
                 } else if (mPeriod.equals("12month")) {
                     if (MyLastFMActivity.YEAR_ARTISTS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.YEAR_ARTISTS, "year"));
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.YEAR_ARTISTS,
+                                "year"));
                 } else if (mPeriod.equals("overall")) {
                     if (MyLastFMActivity.OVERALL_ARTISTS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.OVERALL_ARTISTS, "overall"));
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.OVERALL_ARTISTS,
+                                "overall"));
                 }
             }
         }
@@ -177,15 +180,15 @@ public class TopArtistsFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                if (mPeriod.equals("7day")) {
+                if (mPeriod.equals("7day"))
                     setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS, "week"));
-                } else if (mPeriod.equals("1month")) {
+                else if (mPeriod.equals("1month"))
                     setListAdapter(new TopArtistsAdapter(MyLastFMActivity.MONTH_ARTISTS, "month"));
-                } else if (mPeriod.equals("12month")) {
+                else if (mPeriod.equals("12month"))
                     setListAdapter(new TopArtistsAdapter(MyLastFMActivity.YEAR_ARTISTS, "year"));
-                } else if (mPeriod.equals("overall")) {
-                    setListAdapter(new TopArtistsAdapter(MyLastFMActivity.OVERALL_ARTISTS, "overall"));
-                }
+                else if (mPeriod.equals("overall"))
+                    setListAdapter(new TopArtistsAdapter(MyLastFMActivity.OVERALL_ARTISTS,
+                            "overall"));
             }
 
         }

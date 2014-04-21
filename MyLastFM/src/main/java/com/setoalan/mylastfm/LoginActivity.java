@@ -5,9 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
-import com.setoalan.mylastfm.LoginFragment;
-import com.setoalan.mylastfm.R;
-
 public class LoginActivity extends Activity {
 
     @Override
@@ -16,12 +13,12 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_fragment);
 
         FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container_main);
 
         if (fragment == null) {
             fragment = new LoginFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
+                    .add(R.id.fragment_container_main, fragment)
                     .commit();
         }
     }

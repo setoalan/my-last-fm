@@ -28,30 +28,30 @@
         android:text="" />
 
     <TextView
-        android:id="@+id/name_tv"
+        android:id="@+id/artist_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_iv"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Name" />
+        android:text="Artist" />
 
     <TextView
-        android:id="@+id/track_tv"
+        android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name_tv"
+        android:layout_below="@+id/artist_tv"
         android:layout_toRightOf="@+id/image_iv"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
-        android:text="Track" />
+        android:text="Name" />
 
     <TextView
         android:id="@+id/detail_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/track_tv"
+        android:layout_below="@+id/name_tv"
         android:layout_toRightOf="@+id/image_iv"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Detail" />

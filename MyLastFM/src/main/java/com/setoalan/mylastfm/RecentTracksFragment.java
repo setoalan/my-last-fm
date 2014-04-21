@@ -58,14 +58,14 @@ public class RecentTracksFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_tracks, null);
+                        .inflate(R.layout.list_item_detail, null);
             }
 
             Track track = MyLastFMActivity.RECENT_TRACKS.get(position);
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
-            trackTV = (TextView) convertView.findViewById(R.id.track_tv);
+            artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
+            trackTV = (TextView) convertView.findViewById(R.id.name_tv);
             lastPlayedTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             albumIV.setImageDrawable(track.getImage());

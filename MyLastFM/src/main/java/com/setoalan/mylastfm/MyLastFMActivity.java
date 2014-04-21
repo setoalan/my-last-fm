@@ -24,17 +24,18 @@ import java.util.ArrayList;
 public class MyLastFMActivity extends Activity {
 
     public static UserInfo USERINFO;
-    public static ArrayList<Track> THREE_RECENT_TRACKS;
-    public static ArrayList<Artist> WEEKLY_ARTISTS;
-    public static ArrayList<Track> WEEKLY_TRACKS;
-    public static ArrayList<Album> WEEKLY_ALBUMS;
-    public static ArrayList<Track> RECENT_TRACKS;
-    public static ArrayList<Artist> WEEK_ARTISTS, MONTH_ARTISTS, YEAR_ARTISTS, OVERALL_ARTISTS;
-    public static ArrayList<Track> WEEK_TRACKS, MONTH_TRACKS, YEAR_TRACKS, OVERALL_TRACKS;
-    public static ArrayList<Album> WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS, OVERALL_ALBUMS;
+    public static ArrayList<Track> THREE_RECENT_TRACKS, WEEKLY_TRACKS, RECENT_TRACKS, WEEK_TRACKS,
+            MONTH_TRACKS, YEAR_TRACKS, OVERALL_TRACKS;
+    public static ArrayList<Artist> WEEKLY_ARTISTS, WEEK_ARTISTS, MONTH_ARTISTS, YEAR_ARTISTS,
+            OVERALL_ARTISTS;
+    public static ArrayList<Album> WEEKLY_ALBUMS, WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS,
+            OVERALL_ALBUMS;
 
     public static DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mActionBarDrawerToggle;
+
+    FragmentManager fragmentManager;
+    Fragment fragment;
 
     ListView mDrawerList;
 
@@ -70,36 +71,22 @@ public class MyLastFMActivity extends Activity {
         WEEKLY_ARTISTS = new ArrayList<Artist>();
         WEEKLY_TRACKS = new ArrayList<Track>();
         WEEKLY_ALBUMS = new ArrayList<Album>();
-        RECENT_TRACKS = new ArrayList<Track>();
-        WEEK_ARTISTS = new ArrayList<Artist>();
-        MONTH_ARTISTS = new ArrayList<Artist>();
-        YEAR_ARTISTS = new ArrayList<Artist>();
-        OVERALL_ARTISTS = new ArrayList<Artist>();
-        WEEK_TRACKS = new ArrayList<Track>();
-        MONTH_TRACKS = new ArrayList<Track>();
-        YEAR_TRACKS = new ArrayList<Track>();
-        OVERALL_TRACKS = new ArrayList<Track>();
-        WEEK_ALBUMS = new ArrayList<Album>();
-        MONTH_ALBUMS = new ArrayList<Album>();
-        YEAR_ALBUMS = new ArrayList<Album>();
-        OVERALL_ALBUMS = new ArrayList<Album>();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
+        fragmentManager = getFragmentManager();
+        fragment = fragmentManager.findFragmentById(R.id.fragment_container_main);
 
         if (fragment == null) {
             fragment = new MyLastFMFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
+                    .add(R.id.fragment_container_main, fragment)
                     .commit();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mActionBarDrawerToggle.onOptionsItemSelected(item)) {
+        if (mActionBarDrawerToggle.onOptionsItemSelected(item))
             return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -119,39 +106,57 @@ public class MyLastFMActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            FragmentManager fragmentManager = getFragmentManager();
-            Fragment fragment;
             switch (position) {
                 case 0:
                     getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                     fragment = new MyLastFMFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
+                            .replace(R.id.fragment_container_main, fragment)
                             .commit();
                     break;
                 case 1:
                     getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                    if (RECENT_TRACKS == null)
+                        RECENT_TRACKS = new ArrayList<Track>();
                     fragment = new RecentTracksFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
+                            .replace(R.id.fragment_container_main, fragment)
                             .commit();
                     break;
                 case 2:
+                    if (WEEK_ARTISTS == null) {
+                        WEEK_ARTISTS = new ArrayList<Artist>();
+                        MONTH_ARTISTS = new ArrayList<Artist>();
+                        YEAR_ARTISTS = new ArrayList<Artist>();
+                        OVERALL_ARTISTS = new ArrayList<Artist>();
+                    }
                     fragment = new TopArtistsFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
+                            .replace(R.id.fragment_container_main, fragment)
                             .commit();
                     break;
                 case 3:
+                    if (WEEK_TRACKS == null) {
+                        WEEK_TRACKS = new ArrayList<Track>();
+                        MONTH_TRACKS = new ArrayList<Track>();
+                        YEAR_TRACKS = new ArrayList<Track>();
+                        OVERALL_TRACKS = new ArrayList<Track>();
+                    }
                     fragment = new TopTracksFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
+                            .replace(R.id.fragment_container_main, fragment)
                             .commit();
                     break;
                 case 4:
+                    if (WEEK_ALBUMS == null) {
+                        WEEK_ALBUMS = new ArrayList<Album>();
+                        MONTH_ALBUMS = new ArrayList<Album>();
+                        YEAR_ALBUMS = new ArrayList<Album>();
+                        OVERALL_ALBUMS = new ArrayList<Album>();
+                    }
                     fragment = new TopAlbumsFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
+                            .replace(R.id.fragment_container_main, fragment)
                             .commit();
                     break;
             }

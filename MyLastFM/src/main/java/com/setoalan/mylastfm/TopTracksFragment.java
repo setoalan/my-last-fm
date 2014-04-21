@@ -77,24 +77,23 @@ public class TopTracksFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_tracks, null);
+                        .inflate(R.layout.list_item_detail, null);
             }
 
             Track track = null;
-            if (mPeriod.equals("week")) {
+            if (mPeriod.equals("week"))
                 track = MyLastFMActivity.WEEK_TRACKS.get(position);
-            } else if (mPeriod.equals("month")) {
+            else if (mPeriod.equals("month"))
                 track = MyLastFMActivity.MONTH_TRACKS.get(position);
-            } else if (mPeriod.equals("year")) {
+            else if (mPeriod.equals("year"))
                 track = MyLastFMActivity.YEAR_TRACKS.get(position);
-            } else if (mPeriod.equals("overall")) {
+            else if (mPeriod.equals("overall"))
                 track = MyLastFMActivity.OVERALL_TRACKS.get(position);
-            }
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
             rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
-            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
-            trackTV = (TextView) convertView.findViewById(R.id.track_tv);
+            artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
+            trackTV = (TextView) convertView.findViewById(R.id.name_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             albumIV.setImageDrawable(track.getImage());
@@ -132,7 +131,8 @@ public class TopTracksFragment extends Fragment {
                     if (MyLastFMActivity.MONTH_TRACKS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS, "month"));
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS,
+                                "month"));
                 } else if (mPeriod.equals("12month")) {
                     if (MyLastFMActivity.YEAR_TRACKS.isEmpty())
                         new FetchDataTask().execute();
@@ -142,7 +142,8 @@ public class TopTracksFragment extends Fragment {
                     if (MyLastFMActivity.OVERALL_TRACKS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS, "overall"));
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS,
+                                "overall"));
                 }
             }
         }
@@ -179,15 +180,15 @@ public class TopTracksFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                if (mPeriod.equals("7day")) {
+                if (mPeriod.equals("7day"))
                     setListAdapter(new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week"));
-                } else if (mPeriod.equals("1month")) {
+                else if (mPeriod.equals("1month"))
                     setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS, "month"));
-                } else if (mPeriod.equals("12month")) {
+                else if (mPeriod.equals("12month"))
                     setListAdapter(new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year"));
-                } else if (mPeriod.equals("overall")) {
-                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS, "overall"));
-                }
+                else if (mPeriod.equals("overall"))
+                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS,
+                            "overall"));
 
             }
 

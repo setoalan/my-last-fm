@@ -109,10 +109,10 @@ public class MyLastFMFragment extends ListFragment {
                 headerTV.setText("Recent Tracks");
             } else if (position == 2 || position == 3 || position == 4) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_main, null);
+                        .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.THREE_RECENT_TRACKS.size() == 0) return convertView;
                 albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                trackTV = (TextView) convertView.findViewById(R.id.name_tv);
+                trackTV = (TextView) convertView.findViewById(R.id.artist_tv);
                 lastPlayedTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2)
@@ -165,10 +165,10 @@ public class MyLastFMFragment extends ListFragment {
                 headerTV.setText("Top Artists");
             } else if (position == 6 || position == 7 || position == 8) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_main, null);
+                        .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.WEEKLY_ARTISTS.size() == 0) return convertView;
                 artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                artistTV = (TextView) convertView.findViewById(R.id.name_tv);
+                artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
                 playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 artistIV.setImageDrawable(MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6)
@@ -184,10 +184,10 @@ public class MyLastFMFragment extends ListFragment {
                 headerTV.setText("Top Tracks");
             } else if (position == 10 || position == 11 || position == 12) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_main, null);
+                        .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.WEEKLY_TRACKS.size() == 0) return convertView;
                 albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                trackTV = (TextView) convertView.findViewById(R.id.name_tv);
+                trackTV = (TextView) convertView.findViewById(R.id.artist_tv);
                 playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(MyLastFMActivity.WEEKLY_TRACKS.get(position - 10)
@@ -203,10 +203,10 @@ public class MyLastFMFragment extends ListFragment {
                 headerTV.setText("Top Albums");
             } else if (position == 14 || position == 15 || position == 16) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_main, null);
+                        .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.WEEKLY_ALBUMS.size() == 0) return convertView;
                 albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                albumTV = (TextView) convertView.findViewById(R.id.name_tv);
+                albumTV = (TextView) convertView.findViewById(R.id.artist_tv);
                 playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(MyLastFMActivity.WEEKLY_ALBUMS.get(position - 14)

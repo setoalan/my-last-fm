@@ -87,8 +87,7 @@ public class FetchRecentTracks {
             track.setUrl(jsonObject.getString("url"));
             if (!jsonObject.getJSONArray("image").getJSONObject(2).getString("#text").equals("")) {
                 mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
-                        .getJSONObject(2)
-                        .getString("#text")).getContent();
+                        .getJSONObject(2).getString("#text")).getContent();
                 mDrawable = Drawable.createFromStream(mInputStream, "src name");
                 track.setImage(mDrawable);
             }

@@ -23,7 +23,7 @@ public class TopAlbumsFragment extends Fragment {
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
-    TextView albumTV, playCountTV, rankTV;
+    TextView albumTV, artistTV, playCountTV, rankTV;
     View loadingV;
 
     @Override
@@ -78,27 +78,28 @@ public class TopAlbumsFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_main, null);
+                        .inflate(R.layout.list_item_detail, null);
             }
 
             Album album = null;
-            if (mPeriod.equals("week")) {
+            if (mPeriod.equals("week"))
                 album = MyLastFMActivity.WEEK_ALBUMS.get(position);
-            } else if (mPeriod.equals("month")) {
+            else if (mPeriod.equals("month"))
                 album =  MyLastFMActivity.MONTH_ALBUMS.get(position);
-            } else if (mPeriod.equals("year")) {
+            else if (mPeriod.equals("year"))
                 album =  MyLastFMActivity.YEAR_ALBUMS.get(position);
-            } else if (mPeriod.equals("overall")) {
+            else if (mPeriod.equals("overall"))
                 album =  MyLastFMActivity.OVERALL_ALBUMS.get(position);
-            }
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
             rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
+            artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
             albumTV = (TextView) convertView.findViewById(R.id.name_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             albumIV.setImageDrawable(album.getImage());
             rankTV.setText(album.getRank() + "");
+            artistTV.setText(album.getArtist());
             albumTV.setText(album.getName());
             playCountTV.setText(album.getPlayCount() + " plays");
 
@@ -131,7 +132,8 @@ public class TopAlbumsFragment extends Fragment {
                     if (MyLastFMActivity.MONTH_ALBUMS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.MONTH_ALBUMS, "month"));
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.MONTH_ALBUMS,
+                                "month"));
                 } else if (mPeriod.equals("12month")) {
                     if (MyLastFMActivity.YEAR_ALBUMS.isEmpty())
                         new FetchDataTask().execute();
@@ -141,7 +143,8 @@ public class TopAlbumsFragment extends Fragment {
                     if (MyLastFMActivity.OVERALL_ALBUMS.isEmpty())
                         new FetchDataTask().execute();
                     else
-                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS, "overall"));
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS,
+                                "overall"));
                 }
             }
         }
@@ -178,15 +181,15 @@ public class TopAlbumsFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                if (mPeriod.equals("7day")) {
+                if (mPeriod.equals("7day"))
                     setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.WEEK_ALBUMS, "week"));
-                } else if (mPeriod.equals("1month")) {
+                else if (mPeriod.equals("1month"))
                     setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.MONTH_ALBUMS, "month"));
-                } else if (mPeriod.equals("12month")) {
+                else if (mPeriod.equals("12month"))
                     setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.YEAR_ALBUMS, "year"));
-                } else if (mPeriod.equals("overall")) {
-                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.OVERALL_ALBUMS, "overall"));
-                }
+                else if (mPeriod.equals("overall"))
+                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.OVERALL_ALBUMS,
+                            "overall"));
 
             }
 
