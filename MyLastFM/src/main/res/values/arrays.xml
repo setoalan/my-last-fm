@@ -3,6 +3,7 @@
     
     <string-array name="drawer_items">
         <item>Home</item>
+        <item>Recent Tracks</item>
         <item>Top Artists</item>
         <item>Top Tracks</item>
         <item>Top Albums</item>

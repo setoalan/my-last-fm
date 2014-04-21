@@ -1,9 +1,9 @@
-package com.setoalan.mylastfm.activities;
+package com.setoalan.mylastfm;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -16,6 +16,9 @@ import android.widget.ListView;
 
 import com.setoalan.mylastfm.MyLastFMFragment;
 import com.setoalan.mylastfm.R;
+import com.setoalan.mylastfm.RecentTracksFragment;
+import com.setoalan.mylastfm.TopAlbumsFragment;
+import com.setoalan.mylastfm.TopArtistsFragment;
 
 public class MyLastFMActivity extends Activity {
 
@@ -86,18 +89,41 @@ public class MyLastFMActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            FragmentManager fragmentManager = getFragmentManager();
+            Fragment fragment;
             switch (position) {
                 case 0:
-                    return;
+                    getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                    fragment = new MyLastFMFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
+                    break;
                 case 1:
-                    startActivity(new Intent(MyLastFMActivity.this, TopArtistsActivity.class));
+                    getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                    fragment = new RecentTracksFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
                     break;
                 case 2:
-                    startActivity(new Intent(MyLastFMActivity.this, TopTracksActivity.class));
-                    return;
+                    fragment = new TopArtistsFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
+                    break;
                 case 3:
-                    startActivity(new Intent(MyLastFMActivity.this, TopAlbumsActivity.class));
-                    return;
+                    fragment = new TopArtistsFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
+                    break;
+                case 4:
+                    fragment = new TopAlbumsFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
+                    break;
             }
             mDrawerList.setItemChecked(position, true);
             mDrawerLayout.closeDrawer(mDrawerList);

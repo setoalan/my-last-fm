@@ -35,6 +35,9 @@ public class TopAlbumsFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+        if (actionBar.getTabCount() != 0)
+            actionBar.removeAllTabs();
+
         mWeekFragment = new AlbumFragmentTab("7day");
         mMonthFragment = new AlbumFragmentTab("1month");
         mYearFragment = new AlbumFragmentTab("12month");

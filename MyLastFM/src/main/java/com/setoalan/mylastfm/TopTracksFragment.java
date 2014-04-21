@@ -35,6 +35,9 @@ public class TopTracksFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+        if (actionBar.getTabCount() != 0)
+            actionBar.removeAllTabs();
+
         mWeekFragment = new TrackFragmentTab("7day");
         mMonthFragment = new TrackFragmentTab("1month");
         mYearFragment = new TrackFragmentTab("12month");

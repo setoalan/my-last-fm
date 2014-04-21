@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.setoalan.mylastfm.activities.LoginActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Track;

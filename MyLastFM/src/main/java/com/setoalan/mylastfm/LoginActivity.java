@@ -1,14 +1,14 @@
-package com.setoalan.mylastfm.activities;
+package com.setoalan.mylastfm;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
+import com.setoalan.mylastfm.LoginFragment;
 import com.setoalan.mylastfm.R;
-import com.setoalan.mylastfm.RecentTracksFragment;
 
-public class RecentTracksActivity extends Activity {
+public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class RecentTracksActivity extends Activity {
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
 
         if (fragment == null) {
-            fragment = new RecentTracksFragment();
+            fragment = new LoginFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.fragmentContainer, fragment)
                     .commit();

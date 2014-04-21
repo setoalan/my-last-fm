@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activities.MyLastFMActivity"
+            android:name=".MyLastFMActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,24 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name">
-        </activity>
-        <activity
-            android:name=".activities.RecentTracksActivity"
-            android:label="Recent Tracks">
-        </activity>
-        <activity
-            android:name=".activities.TopArtistsActivity"
-            android:label="Top Artists">
-        </activity>
-        <activity
-            android:name=".activities.TopTracksActivity"
-            android:label="Top Tracks">
-        </activity>
-        <activity
-            android:name=".activities.TopAlbumsActivity"
-            android:label="Top Albums">
         </activity>
     </application>
 
