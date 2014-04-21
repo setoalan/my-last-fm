@@ -3,6 +3,7 @@ package com.setoalan.mylastfm.fetchservices;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
+import com.setoalan.mylastfm.MyLastFMActivity;
 import com.setoalan.mylastfm.MyLastFMFragment;
 import com.setoalan.mylastfm.TopAlbumsFragment;
 import com.setoalan.mylastfm.datastructures.Album;
@@ -111,7 +112,7 @@ public class FetchAlbums {
                 }
 
                 if (limit == 3 && period.equals("7day")) {
-                    MyLastFMFragment.WEEKLY_ALBUMS.add(album);
+                    MyLastFMActivity.WEEKLY_ALBUMS.add(album);
                 } else if (period.equals("7day")) {
                     TopAlbumsFragment.WEEK_ALBUMS.add(album);
                 } else if (period.equals("1month")) {

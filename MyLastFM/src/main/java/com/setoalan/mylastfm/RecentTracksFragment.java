@@ -18,8 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 public class RecentTracksFragment extends ListFragment {
 
-    public static ArrayList<Track> RECENT_TRACKS;
-
     ImageView albumIV;
     TextView artistTV, lastPlayedTV, trackTV;
 
@@ -28,8 +26,10 @@ public class RecentTracksFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        RECENT_TRACKS = new ArrayList<Track>();
-        new FetchDataTask().execute();
+        if (MyLastFMActivity.RECENT_TRACKS.isEmpty())
+            new FetchDataTask().execute();
+        else
+            setListAdapter(new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS));
     }
 
     private class FetchDataTask extends AsyncTask<Void, Void, Void> {
@@ -43,8 +43,7 @@ public class RecentTracksFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            RecentTracksAdapter userInfoAdapter = new RecentTracksAdapter(RECENT_TRACKS);
-            setListAdapter(userInfoAdapter);
+            setListAdapter(new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS));
         }
 
     }
@@ -62,7 +61,7 @@ public class RecentTracksFragment extends ListFragment {
                         .inflate(R.layout.list_item_tracks, null);
             }
 
-            Track track = RECENT_TRACKS.get(position);
+            Track track = MyLastFMActivity.RECENT_TRACKS.get(position);
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
             artistTV = (TextView) convertView.findViewById(R.id.name_tv);

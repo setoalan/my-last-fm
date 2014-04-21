@@ -3,8 +3,8 @@ package com.setoalan.mylastfm.fetchservices;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
+import com.setoalan.mylastfm.MyLastFMActivity;
 import com.setoalan.mylastfm.MyLastFMFragment;
-import com.setoalan.mylastfm.RecentTracksFragment;
 import com.setoalan.mylastfm.datastructures.Track;
 
 import org.apache.http.HttpResponse;
@@ -98,9 +98,9 @@ public class FetchRecentTracks {
                 track.setNowPlaying(true);
 
             if (limit == 3)
-                MyLastFMFragment.RECENT_TRACKS.add(track);
+                MyLastFMActivity.THREE_RECENT_TRACKS.add(track);
             else
-                RecentTracksFragment.RECENT_TRACKS.add(track);
+                MyLastFMActivity.RECENT_TRACKS.add(track);
 
             for (int i=1; i<limit; i++) {
                 jsonObject = jsonObjectMain.getJSONObject("recenttracks").getJSONArray("track")
@@ -121,9 +121,9 @@ public class FetchRecentTracks {
                 track.setDate(jsonObject.getJSONObject("date").getLong("uts"));
 
                 if (limit == 3)
-                    MyLastFMFragment.RECENT_TRACKS.add(track);
+                    MyLastFMActivity.THREE_RECENT_TRACKS.add(track);
                 else
-                    RecentTracksFragment.RECENT_TRACKS.add(track);
+                    MyLastFMActivity.RECENT_TRACKS.add(track);
             }
         } catch (JSONException e) {
             e.printStackTrace();

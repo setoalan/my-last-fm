@@ -14,13 +14,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.setoalan.mylastfm.MyLastFMFragment;
-import com.setoalan.mylastfm.R;
-import com.setoalan.mylastfm.RecentTracksFragment;
-import com.setoalan.mylastfm.TopAlbumsFragment;
-import com.setoalan.mylastfm.TopArtistsFragment;
+import com.setoalan.mylastfm.datastructures.Album;
+import com.setoalan.mylastfm.datastructures.Artist;
+import com.setoalan.mylastfm.datastructures.Track;
+import com.setoalan.mylastfm.datastructures.UserInfo;
+
+import java.util.ArrayList;
 
 public class MyLastFMActivity extends Activity {
+
+    public static UserInfo USERINFO;
+    public static ArrayList<Track> THREE_RECENT_TRACKS;
+    public static ArrayList<Artist> WEEKLY_ARTISTS;
+    public static ArrayList<Track> WEEKLY_TRACKS;
+    public static ArrayList<Album> WEEKLY_ALBUMS;
+    public static ArrayList<Track> RECENT_TRACKS;
 
     public static DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -53,6 +61,13 @@ public class MyLastFMActivity extends Activity {
         };
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        USERINFO = new UserInfo();
+        THREE_RECENT_TRACKS = new ArrayList<Track>();
+        WEEKLY_ARTISTS = new ArrayList<Artist>();
+        WEEKLY_TRACKS = new ArrayList<Track>();
+        WEEKLY_ALBUMS = new ArrayList<Album>();
+        RECENT_TRACKS = new ArrayList<Track>();
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);

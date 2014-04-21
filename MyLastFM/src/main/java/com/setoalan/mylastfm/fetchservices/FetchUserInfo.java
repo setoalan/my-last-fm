@@ -2,6 +2,7 @@ package com.setoalan.mylastfm.fetchservices;
 
 import android.net.Uri;
 
+import com.setoalan.mylastfm.MyLastFMActivity;
 import com.setoalan.mylastfm.MyLastFMFragment;
 import com.setoalan.mylastfm.datastructures.UserInfo;
 
@@ -59,7 +60,7 @@ public class FetchUserInfo {
             e.printStackTrace();
         }
 
-        MyLastFMFragment.USERINFO = deserialize(result);
+        MyLastFMActivity.USERINFO = deserialize(result);
         return null;
     }
 
