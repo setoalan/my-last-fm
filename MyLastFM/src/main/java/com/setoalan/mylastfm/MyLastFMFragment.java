@@ -1,6 +1,9 @@
 package com.setoalan.mylastfm;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -77,6 +80,20 @@ public class MyLastFMFragment extends ListFragment {
             super.onPostExecute(aVoid);
             for (int i=0; i<17; i++)
                 mList.add("");
+            if (MyLastFMActivity.USERINFO.getName() == null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("No user with that name was found")
+                        .setPositiveButton("Enter username", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivityForResult(new Intent(getActivity(),
+                                        LoginActivity.class), 1);
+                            }
+                        });
+                builder.setCancelable(false);
+                Dialog dialog = builder.create();
+                dialog.show();
+            }
             setListAdapter(new MyLastFMAdapter(mList));
         }
 

@@ -25,7 +25,7 @@ public class FetchUserInfo {
     private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
-    public Void fetchUserInfo()  {
+    public void fetchUserInfo()  {
         String url = Uri.parse(URL).buildUpon()
                 .appendQueryParameter("method", "user.getinfo")
                 .appendQueryParameter("user", MyLastFMFragment.USERNAME)
@@ -60,11 +60,12 @@ public class FetchUserInfo {
             e.printStackTrace();
         }
 
-        MyLastFMActivity.USERINFO = deserialize(result);
-        return null;
+        deserialize(result);
+
+        return;
     }
 
-    private UserInfo deserialize(String result) {
+    private void deserialize(String result) {
         UserInfo user = new UserInfo();
 
         try {
@@ -81,11 +82,13 @@ public class FetchUserInfo {
             user.setGender(jsonObject.getString("gender"));
             user.setPlayCount(jsonObject.getInt("playcount"));
             user.setRegistered(jsonObject.getJSONObject("registered").getLong("unixtime"));
+
+            MyLastFMActivity.USERINFO = user;
         } catch (JSONException e){
             e.printStackTrace();
         }
 
-        return user;
+        return;
     }
 
 }

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -64,6 +66,7 @@ public class MyLastFMActivity extends Activity {
             }
         };
 
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         USERINFO = new UserInfo();
