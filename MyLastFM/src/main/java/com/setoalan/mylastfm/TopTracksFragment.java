@@ -20,8 +20,6 @@ import java.util.ArrayList;
 
 public class TopTracksFragment extends Fragment {
 
-    public static ArrayList<Track> WEEK_TRACKS, MONTH_TRACKS, YEAR_TRACKS, OVERALL_TRACKS;
-
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
@@ -84,13 +82,13 @@ public class TopTracksFragment extends Fragment {
 
             Track track = null;
             if (mPeriod.equals("week")) {
-                track = WEEK_TRACKS.get(position);
+                track = MyLastFMActivity.WEEK_TRACKS.get(position);
             } else if (mPeriod.equals("month")) {
-                track = MONTH_TRACKS.get(position);
+                track = MyLastFMActivity.MONTH_TRACKS.get(position);
             } else if (mPeriod.equals("year")) {
-                track = YEAR_TRACKS.get(position);
+                track = MyLastFMActivity.YEAR_TRACKS.get(position);
             } else if (mPeriod.equals("overall")) {
-                track = OVERALL_TRACKS.get(position);
+                track = MyLastFMActivity.OVERALL_TRACKS.get(position);
             }
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
@@ -112,20 +110,11 @@ public class TopTracksFragment extends Fragment {
 
     public class TrackFragmentTab extends ListFragment {
 
-        private boolean dataCalled = false, fetchDone = false;
+        private boolean dataCalled = false;
         private String mPeriod;
 
         public TrackFragmentTab(String period) {
             mPeriod = period;
-            if (mPeriod.equals("7day")) {
-                WEEK_TRACKS = new ArrayList<Track>();
-            } else if (mPeriod.equals("1month")) {
-                MONTH_TRACKS = new ArrayList<Track>();
-            } else if (mPeriod.equals("12month")) {
-                YEAR_TRACKS = new ArrayList<Track>();
-            } else if (mPeriod.equals("overall")) {
-                OVERALL_TRACKS = new ArrayList<Track>();
-            }
         }
 
         @Override
@@ -134,25 +123,47 @@ public class TopTracksFragment extends Fragment {
             setRetainInstance(true);
             if (!dataCalled) {
                 dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-            if (fetchDone) {
-                loadingV.setVisibility(View.INVISIBLE);
-            } else {
-                loadingV.setVisibility(View.VISIBLE);
+                if (mPeriod.equals("7day")) {
+                    if (MyLastFMActivity.WEEK_TRACKS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week"));
+                } else if (mPeriod.equals("1month")) {
+                    if (MyLastFMActivity.MONTH_TRACKS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS, "month"));
+                } else if (mPeriod.equals("12month")) {
+                    if (MyLastFMActivity.YEAR_TRACKS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year"));
+                } else if (mPeriod.equals("overall")) {
+                    if (MyLastFMActivity.OVERALL_TRACKS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS, "overall"));
+                }
             }
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState){
             View view = inflater.inflate(R.layout.fragment_list, container, false);
-            loadingV = (View) view.findViewById(R.id.loading_container);
-            loadingV.setVisibility(View.VISIBLE);
+            loadingV = view.findViewById(R.id.loading_container);
+            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
+                if (MyLastFMActivity.WEEK_TRACKS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1) {
+                if (MyLastFMActivity.MONTH_TRACKS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2) {
+                if (MyLastFMActivity.YEAR_TRACKS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3) {
+                if (MyLastFMActivity.OVERALL_TRACKS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            }
             return view;
         }
 
@@ -168,15 +179,14 @@ public class TopTracksFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                fetchDone = true;
                 if (mPeriod.equals("7day")) {
-                    setListAdapter(new TopTracksAdapter(WEEK_TRACKS, "week"));
+                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week"));
                 } else if (mPeriod.equals("1month")) {
-                    setListAdapter(new TopTracksAdapter(MONTH_TRACKS, "month"));
+                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS, "month"));
                 } else if (mPeriod.equals("12month")) {
-                    setListAdapter(new TopTracksAdapter(YEAR_TRACKS, "year"));
+                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year"));
                 } else if (mPeriod.equals("overall")) {
-                    setListAdapter(new TopTracksAdapter(OVERALL_TRACKS, "overall"));
+                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS, "overall"));
                 }
 
             }

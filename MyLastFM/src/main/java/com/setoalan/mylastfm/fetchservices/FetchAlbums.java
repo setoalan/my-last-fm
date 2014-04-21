@@ -5,7 +5,6 @@ import android.net.Uri;
 
 import com.setoalan.mylastfm.MyLastFMActivity;
 import com.setoalan.mylastfm.MyLastFMFragment;
-import com.setoalan.mylastfm.TopAlbumsFragment;
 import com.setoalan.mylastfm.datastructures.Album;
 
 import org.apache.http.HttpResponse;
@@ -114,13 +113,13 @@ public class FetchAlbums {
                 if (limit == 3 && period.equals("7day")) {
                     MyLastFMActivity.WEEKLY_ALBUMS.add(album);
                 } else if (period.equals("7day")) {
-                    TopAlbumsFragment.WEEK_ALBUMS.add(album);
+                    MyLastFMActivity.WEEK_ALBUMS.add(album);
                 } else if (period.equals("1month")) {
-                    TopAlbumsFragment.MONTH_ALBUMS.add(album);
+                    MyLastFMActivity.MONTH_ALBUMS.add(album);
                 } else if (period.equals("12month")) {
-                    TopAlbumsFragment.YEAR_ALBUMS.add(album);
+                    MyLastFMActivity.YEAR_ALBUMS.add(album);
                 } else if (period.equals("overall")) {
-                    TopAlbumsFragment.OVERALL_ALBUMS.add(album);
+                    MyLastFMActivity.OVERALL_ALBUMS.add(album);
                 }
             }
         } catch (JSONException e) {

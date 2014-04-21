@@ -29,6 +29,9 @@ public class MyLastFMActivity extends Activity {
     public static ArrayList<Track> WEEKLY_TRACKS;
     public static ArrayList<Album> WEEKLY_ALBUMS;
     public static ArrayList<Track> RECENT_TRACKS;
+    public static ArrayList<Artist> WEEK_ARTISTS, MONTH_ARTISTS, YEAR_ARTISTS, OVERALL_ARTISTS;
+    public static ArrayList<Track> WEEK_TRACKS, MONTH_TRACKS, YEAR_TRACKS, OVERALL_TRACKS;
+    public static ArrayList<Album> WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS, OVERALL_ALBUMS;
 
     public static DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -68,6 +71,18 @@ public class MyLastFMActivity extends Activity {
         WEEKLY_TRACKS = new ArrayList<Track>();
         WEEKLY_ALBUMS = new ArrayList<Album>();
         RECENT_TRACKS = new ArrayList<Track>();
+        WEEK_ARTISTS = new ArrayList<Artist>();
+        MONTH_ARTISTS = new ArrayList<Artist>();
+        YEAR_ARTISTS = new ArrayList<Artist>();
+        OVERALL_ARTISTS = new ArrayList<Artist>();
+        WEEK_TRACKS = new ArrayList<Track>();
+        MONTH_TRACKS = new ArrayList<Track>();
+        YEAR_TRACKS = new ArrayList<Track>();
+        OVERALL_TRACKS = new ArrayList<Track>();
+        WEEK_ALBUMS = new ArrayList<Album>();
+        MONTH_ALBUMS = new ArrayList<Album>();
+        YEAR_ALBUMS = new ArrayList<Album>();
+        OVERALL_ALBUMS = new ArrayList<Album>();
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
@@ -128,7 +143,7 @@ public class MyLastFMActivity extends Activity {
                             .commit();
                     break;
                 case 3:
-                    fragment = new TopArtistsFragment();
+                    fragment = new TopTracksFragment();
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainer, fragment)
                             .commit();

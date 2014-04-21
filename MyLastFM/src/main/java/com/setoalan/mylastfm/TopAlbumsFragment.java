@@ -20,8 +20,6 @@ import java.util.ArrayList;
 
 public class TopAlbumsFragment extends Fragment {
 
-    public static ArrayList<Album> WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS, OVERALL_ALBUMS;
-
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
@@ -85,13 +83,13 @@ public class TopAlbumsFragment extends Fragment {
 
             Album album = null;
             if (mPeriod.equals("week")) {
-                album = WEEK_ALBUMS.get(position);
+                album = MyLastFMActivity.WEEK_ALBUMS.get(position);
             } else if (mPeriod.equals("month")) {
-                album = MONTH_ALBUMS.get(position);
+                album =  MyLastFMActivity.MONTH_ALBUMS.get(position);
             } else if (mPeriod.equals("year")) {
-                album = YEAR_ALBUMS.get(position);
+                album =  MyLastFMActivity.YEAR_ALBUMS.get(position);
             } else if (mPeriod.equals("overall")) {
-                album = OVERALL_ALBUMS.get(position);
+                album =  MyLastFMActivity.OVERALL_ALBUMS.get(position);
             }
 
             albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
@@ -111,20 +109,11 @@ public class TopAlbumsFragment extends Fragment {
 
     public class AlbumFragmentTab extends ListFragment {
 
-        private boolean dataCalled = false, fetchDone = false;;
+        private boolean dataCalled = false;
         private String mPeriod;
 
         public AlbumFragmentTab(String period) {
             mPeriod = period;
-            if (mPeriod.equals("7day")) {
-                WEEK_ALBUMS = new ArrayList<Album>();
-            } else if (mPeriod.equals("1month")) {
-                MONTH_ALBUMS = new ArrayList<Album>();
-            } else if (mPeriod.equals("12month")) {
-                YEAR_ALBUMS = new ArrayList<Album>();
-            } else if (mPeriod.equals("overall")) {
-                OVERALL_ALBUMS = new ArrayList<Album>();
-            }
         }
 
         @Override
@@ -133,25 +122,47 @@ public class TopAlbumsFragment extends Fragment {
             setRetainInstance(true);
             if (!dataCalled) {
                 dataCalled = true;
-                new FetchDataTask().execute();
-            }
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-            if (fetchDone) {
-                loadingV.setVisibility(View.INVISIBLE);
-            } else {
-                loadingV.setVisibility(View.VISIBLE);
+                if (mPeriod.equals("7day")) {
+                    if (MyLastFMActivity.WEEK_ALBUMS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.WEEK_ALBUMS, "week"));
+                } else if (mPeriod.equals("1month")) {
+                    if (MyLastFMActivity.MONTH_ALBUMS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.MONTH_ALBUMS, "month"));
+                } else if (mPeriod.equals("12month")) {
+                    if (MyLastFMActivity.YEAR_ALBUMS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.YEAR_ALBUMS, "year"));
+                } else if (mPeriod.equals("overall")) {
+                    if (MyLastFMActivity.OVERALL_ALBUMS.isEmpty())
+                        new FetchDataTask().execute();
+                    else
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS, "overall"));
+                }
             }
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_list, container, false);
-            loadingV = (View) view.findViewById(R.id.loading_container);
-            loadingV.setVisibility(View.VISIBLE);
+            loadingV = view.findViewById(R.id.loading_container);
+            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
+                if (MyLastFMActivity.WEEK_ALBUMS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1) {
+                if (MyLastFMActivity.MONTH_ALBUMS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2) {
+                if (MyLastFMActivity.YEAR_ALBUMS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3) {
+                if (MyLastFMActivity.OVERALL_ALBUMS.isEmpty())
+                    loadingV.setVisibility(View.VISIBLE);
+            }
             return view;
         }
 
@@ -167,15 +178,14 @@ public class TopAlbumsFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                fetchDone = true;
                 if (mPeriod.equals("7day")) {
-                    setListAdapter(new TopAlbumsAdapter(WEEK_ALBUMS, "week"));
+                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.WEEK_ALBUMS, "week"));
                 } else if (mPeriod.equals("1month")) {
-                    setListAdapter(new TopAlbumsAdapter(MONTH_ALBUMS, "month"));
+                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.MONTH_ALBUMS, "month"));
                 } else if (mPeriod.equals("12month")) {
-                    setListAdapter(new TopAlbumsAdapter(YEAR_ALBUMS, "year"));
+                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.YEAR_ALBUMS, "year"));
                 } else if (mPeriod.equals("overall")) {
-                    setListAdapter(new TopAlbumsAdapter(OVERALL_ALBUMS, "overall"));
+                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.OVERALL_ALBUMS, "overall"));
                 }
 
             }
