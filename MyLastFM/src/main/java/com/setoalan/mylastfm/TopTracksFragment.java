@@ -180,16 +180,17 @@ public class TopTracksFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                if (mPeriod.equals("7day"))
-                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week"));
-                else if (mPeriod.equals("1month"))
-                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS, "month"));
-                else if (mPeriod.equals("12month"))
-                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year"));
-                else if (mPeriod.equals("overall"))
-                    setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS,
-                            "overall"));
-
+                if (isVisible()) {
+                    if (mPeriod.equals("7day"))
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week"));
+                    else if (mPeriod.equals("1month"))
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS, "month"));
+                    else if (mPeriod.equals("12month"))
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year"));
+                    else if (mPeriod.equals("overall"))
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS,
+                                "overall"));
+                }
             }
 
         }

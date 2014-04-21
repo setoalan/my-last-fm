@@ -94,7 +94,8 @@ public class MyLastFMFragment extends ListFragment {
                 Dialog dialog = builder.create();
                 dialog.show();
             }
-            setListAdapter(new MyLastFMAdapter(mList));
+            if (isVisible())
+                setListAdapter(new MyLastFMAdapter(mList));
         }
 
     }

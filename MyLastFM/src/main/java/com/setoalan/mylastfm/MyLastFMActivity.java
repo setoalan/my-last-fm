@@ -116,6 +116,7 @@ public class MyLastFMActivity extends Activity {
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_main, fragment)
                             .commit();
+                    getActionBar().setTitle(getResources().getString(R.string.app_name));
                     break;
                 case 1:
                     getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -125,6 +126,7 @@ public class MyLastFMActivity extends Activity {
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_main, fragment)
                             .commit();
+                    getActionBar().setTitle("Recent Tracks");
                     break;
                 case 2:
                     if (WEEK_ARTISTS == null) {
@@ -137,6 +139,7 @@ public class MyLastFMActivity extends Activity {
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_main, fragment)
                             .commit();
+                    getActionBar().setTitle("Top Artists");
                     break;
                 case 3:
                     if (WEEK_TRACKS == null) {
@@ -149,6 +152,7 @@ public class MyLastFMActivity extends Activity {
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_main, fragment)
                             .commit();
+                    getActionBar().setTitle("Top Tracks");
                     break;
                 case 4:
                     if (WEEK_ALBUMS == null) {
@@ -161,6 +165,7 @@ public class MyLastFMActivity extends Activity {
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_main, fragment)
                             .commit();
+                    getActionBar().setTitle("Top Albums");
                     break;
             }
             mDrawerList.setItemChecked(position, true);

@@ -43,7 +43,8 @@ public class RecentTracksFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            setListAdapter(new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS));
+            if (isVisible())
+                setListAdapter(new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS));
         }
 
     }

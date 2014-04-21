@@ -180,15 +180,17 @@ public class TopArtistsFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                if (mPeriod.equals("7day"))
-                    setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS, "week"));
-                else if (mPeriod.equals("1month"))
-                    setListAdapter(new TopArtistsAdapter(MyLastFMActivity.MONTH_ARTISTS, "month"));
-                else if (mPeriod.equals("12month"))
-                    setListAdapter(new TopArtistsAdapter(MyLastFMActivity.YEAR_ARTISTS, "year"));
-                else if (mPeriod.equals("overall"))
-                    setListAdapter(new TopArtistsAdapter(MyLastFMActivity.OVERALL_ARTISTS,
-                            "overall"));
+                if (isVisible()) {
+                    if (mPeriod.equals("7day"))
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS, "week"));
+                    else if (mPeriod.equals("1month"))
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.MONTH_ARTISTS, "month"));
+                    else if (mPeriod.equals("12month"))
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.YEAR_ARTISTS, "year"));
+                    else if (mPeriod.equals("overall"))
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.OVERALL_ARTISTS,
+                                "overall"));
+                }
             }
 
         }

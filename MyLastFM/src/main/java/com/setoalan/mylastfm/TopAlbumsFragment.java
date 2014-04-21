@@ -181,16 +181,17 @@ public class TopAlbumsFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
-                if (mPeriod.equals("7day"))
-                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.WEEK_ALBUMS, "week"));
-                else if (mPeriod.equals("1month"))
-                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.MONTH_ALBUMS, "month"));
-                else if (mPeriod.equals("12month"))
-                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.YEAR_ALBUMS, "year"));
-                else if (mPeriod.equals("overall"))
-                    setListAdapter(new TopAlbumsAdapter( MyLastFMActivity.OVERALL_ALBUMS,
-                            "overall"));
-
+                if (isVisible()) {
+                    if (mPeriod.equals("7day"))
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.WEEK_ALBUMS, "week"));
+                    else if (mPeriod.equals("1month"))
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.MONTH_ALBUMS, "month"));
+                    else if (mPeriod.equals("12month"))
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.YEAR_ALBUMS, "year"));
+                    else if (mPeriod.equals("overall"))
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS,
+                                "overall"));
+                }
             }
 
         }
