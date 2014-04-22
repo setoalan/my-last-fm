@@ -98,7 +98,7 @@ public class TopArtistsFragment extends Fragment {
 
             artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
             rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
-            artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
+            artistTV = (TextView) convertView.findViewById(R.id.name_tv);
             playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
             artistIV.setImageDrawable(artist.getImage());
@@ -182,15 +182,14 @@ public class TopArtistsFragment extends Fragment {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
-            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
+            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0)
                 artist = MyLastFMActivity.WEEK_ARTISTS.get(position);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1) {
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1)
                 artist = MyLastFMActivity.MONTH_ARTISTS.get(position);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2) {
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2)
                 artist = MyLastFMActivity.YEAR_ARTISTS.get(position);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3) {
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3)
                 artist = MyLastFMActivity.OVERALL_ARTISTS.get(position);
-            }
             startActivity(new Intent(getActivity(), ArtistActivity.class));
         }
 

@@ -27,14 +27,21 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/artist_tv"
+        android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_iv"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:freezesText="true"
+        android:marqueeRepeatLimit="marquee_forever"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:scrollHorizontally="true"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/detail_tv"

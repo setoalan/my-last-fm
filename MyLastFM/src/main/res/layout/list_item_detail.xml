@@ -24,8 +24,7 @@
         android:shadowColor="@android:color/black"
         android:shadowRadius="10"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:text="" />
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/artist_tv"
@@ -42,6 +41,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/artist_tv"
         android:layout_toRightOf="@+id/image_iv"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:freezesText="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 

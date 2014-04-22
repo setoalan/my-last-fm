@@ -87,11 +87,8 @@ public class FetchTracks {
                     .getJSONArray("track");
             JSONObject jsonObject;
 
-            if (limit !=3 && jsonObjectMain.getJSONObject("toptracks").getJSONObject("@attr")
-                    .getInt("total") < 50) {
-                total = jsonObjectMain.getJSONObject("toptracks").getJSONObject("@attr")
-                        .getInt("total");
-            }
+            if (limit !=3 && jsonArray.length() < 50)
+                total = jsonArray.length();
 
             for (int i=0; i<total; i++) {
                 jsonObject = jsonArray.getJSONObject(i);

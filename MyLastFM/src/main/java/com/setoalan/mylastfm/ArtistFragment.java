@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -14,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Track;
@@ -92,7 +95,16 @@ public class ArtistFragment extends Fragment {
             playsTV = (TextView) view.findViewById(R.id.plays_tv);
             listenersTV = (TextView) view.findViewById(R.id.listeners_tv);
 
-            new FetchDataTask().execute();
+            if (ArtistFragment.mArtist.getLargeImage() == null) {
+                new FetchDataTask().execute();
+            } else {
+                artistIV.setImageDrawable(mArtist.getLargeImage());
+                playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
+                        .format(mArtist.getPlays()) + " PLAYS");
+                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
+                        .format(mArtist.getListeners()) + " LISTENERS");
+                artistTV.setText(mArtist.getName());
+            }
 
             return view;
         }
@@ -132,7 +144,13 @@ public class ArtistFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            mList = new ArrayList<String>();
+            for (int i=0; i<12; i++)
+                mList.add("");
+            if (ArtistFragment.mArtist.getTracks().isEmpty())
+                new FetchDataTask().execute();
+            else
+                setListAdapter(new ArtistsPopularAdapter(mList));
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {
@@ -146,10 +164,8 @@ public class ArtistFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                mList = new ArrayList<String>();
-                for (int i=0; i<12; i++)
-                    mList.add("");
-                setListAdapter(new ArtistsPopularAdapter(mList));
+                if (isVisible())
+                    setListAdapter(new ArtistsPopularAdapter(mList));
             }
 
         }
@@ -171,16 +187,18 @@ public class ArtistFragment extends Fragment {
                         position == 5) {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_default, null);
-                    Track track = mArtist.getTracks().get(position - 1);
+                    if (mArtist.getTracks().get(position - 1) != null) {
+                        Track track = mArtist.getTracks().get(position - 1);
 
-                    albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                    trackTV = (TextView) convertView.findViewById(R.id.artist_tv);
-                    playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
+                        albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                        trackTV = (TextView) convertView.findViewById(R.id.name_tv);
+                        playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
-                    albumIV.setImageDrawable(track.getImage());
-                    trackTV.setText(track.getName());
-                    playCountTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                            .format(track.getPlayCount()) + " plays");
+                        albumIV.setImageDrawable(track.getImage());
+                        trackTV.setText(track.getName());
+                        playCountTV.setText(NumberFormat.getNumberInstance(Locale.US)
+                                .format(track.getPlayCount()) + " plays");
+                    }
                 } else if (position == 6) {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_header, null);
@@ -191,15 +209,17 @@ public class ArtistFragment extends Fragment {
                         position == 11) {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_default, null);
-                    Album album = mArtist.getAlbums().get(position - 7);
-                    albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                    albumTV = (TextView) convertView.findViewById(R.id.artist_tv);
-                    playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
+                    if ((mArtist.getAlbums().size() - position + 6) >= 0) {
+                        Album album = mArtist.getAlbums().get(position - 7);
+                        albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                        albumTV = (TextView) convertView.findViewById(R.id.name_tv);
+                        playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
-                    albumIV.setImageDrawable(album.getImage());
-                    albumTV.setText(album.getName());
-                    playCountTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                            .format(album.getPlayCount()) + " plays");
+                        albumIV.setImageDrawable(album.getImage());
+                        albumTV.setText(album.getName());
+                        playCountTV.setText(NumberFormat.getNumberInstance(Locale.US)
+                                .format(album.getPlayCount()) + " plays");
+                    }
                 }
 
                 return convertView;
@@ -235,7 +255,17 @@ public class ArtistFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            new FetchDataTask().execute();
+            if (ArtistFragment.mArtist.getSimilar().isEmpty())
+                new FetchDataTask().execute();
+            else
+                setListAdapter(new ArtistSimilarAdapter(mArtist.getSimilar()));
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            super.onListItemClick(l, v, position, id);
+            TopArtistsFragment.artist = mArtist.getSimilar().get(position);
+            startActivity(new Intent(getActivity(), ArtistActivity.class));
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {
@@ -249,7 +279,8 @@ public class ArtistFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                setListAdapter(new ArtistSimilarAdapter(mArtist.getSimilar()));
+                if (isVisible())
+                    setListAdapter(new ArtistSimilarAdapter(mArtist.getSimilar()));
             }
 
         }

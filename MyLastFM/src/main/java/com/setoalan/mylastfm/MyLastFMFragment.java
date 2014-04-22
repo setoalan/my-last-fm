@@ -131,12 +131,13 @@ public class MyLastFMFragment extends ListFragment {
                         .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.THREE_RECENT_TRACKS.size() == 0) return convertView;
                 albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                trackTV = (TextView) convertView.findViewById(R.id.artist_tv);
+                trackTV = (TextView) convertView.findViewById(R.id.name_tv);
                 lastPlayedTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2)
                         .getImage());
                 trackTV.setText(MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2).getName());
+                trackTV.setSelected(true);
                 if (MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2).isNowPlaying()) {
                     lastPlayedTV.setText("now");
                 } else {
@@ -187,7 +188,7 @@ public class MyLastFMFragment extends ListFragment {
                         .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.WEEKLY_ARTISTS.size() == 0) return convertView;
                 artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                artistTV = (TextView) convertView.findViewById(R.id.artist_tv);
+                artistTV = (TextView) convertView.findViewById(R.id.name_tv);
                 playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 artistIV.setImageDrawable(MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6)
@@ -206,7 +207,7 @@ public class MyLastFMFragment extends ListFragment {
                         .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.WEEKLY_TRACKS.size() == 0) return convertView;
                 albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                trackTV = (TextView) convertView.findViewById(R.id.artist_tv);
+                trackTV = (TextView) convertView.findViewById(R.id.name_tv);
                 playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(MyLastFMActivity.WEEKLY_TRACKS.get(position - 10)
@@ -225,7 +226,7 @@ public class MyLastFMFragment extends ListFragment {
                         .inflate(R.layout.list_item_default, null);
                 if (MyLastFMActivity.WEEKLY_ALBUMS.size() == 0) return convertView;
                 albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
-                albumTV = (TextView) convertView.findViewById(R.id.artist_tv);
+                albumTV = (TextView) convertView.findViewById(R.id.name_tv);
                 playCountTV = (TextView) convertView.findViewById(R.id.detail_tv);
 
                 albumIV.setImageDrawable(MyLastFMActivity.WEEKLY_ALBUMS.get(position - 14)

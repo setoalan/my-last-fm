@@ -42,7 +42,7 @@
             android:textSize="30dp"/>
 
         <TextView
-            android:id="@+id/artist_tv"
+            android:id="@+id/name_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

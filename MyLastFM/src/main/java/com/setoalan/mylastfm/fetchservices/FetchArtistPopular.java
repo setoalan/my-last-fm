@@ -76,13 +76,17 @@ public class FetchArtistPopular {
 
     private void deserialize(String result) {
         Track track;
+        int total = 5;
 
         try {
             JSONObject jsonObjectMain = new JSONObject(result);
             JSONArray jsonArray = jsonObjectMain.getJSONObject("toptracks").getJSONArray("track");
             JSONObject jsonObject;
 
-            for (int i=0; i<5; i++) {
+            if (jsonArray.length() < 5)
+                total = jsonArray.length();
+
+            for (int i=0; i<total; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
                 track = new Track();
                 ArtistFragment.mArtist.getTracks().add(track);
@@ -156,30 +160,52 @@ public class FetchArtistPopular {
 
     private void deserialize2(String result) {
         Album album;
+        JSONObject jsonObject;
+        int total = 5;
 
         try {
             JSONObject jsonObjectMain = new JSONObject(result);
-            JSONArray jsonArray = jsonObjectMain.getJSONObject("topalbums").getJSONArray("album");
-            JSONObject jsonObject;
-
-            for (int i=0; i<5; i++) {
-                jsonObject = jsonArray.getJSONObject(i);
+            if (jsonObjectMain.getJSONObject("topalbums").getJSONObject("@attr").getInt("total") < 5) {
+                jsonObject = jsonObjectMain.getJSONObject("topalbums").getJSONObject("album");
 
                 album = new Album();
                 ArtistFragment.mArtist.getAlbums().add(album);
-                ArtistFragment.mArtist.getAlbums().get(i).setRank(jsonObject.getJSONObject("@attr").getInt("rank"));
-                ArtistFragment.mArtist.getAlbums().get(i).setArtist(jsonObject.getJSONObject("artist").getString("name"));
-                ArtistFragment.mArtist.getAlbums().get(i).setName(jsonObject.getString("name"));
-                ArtistFragment.mArtist.getAlbums().get(i).setPlayCount(jsonObject.getInt("playcount"));
-                ArtistFragment.mArtist.getAlbums().get(i).setUrl(jsonObject.getString("url"));
+                ArtistFragment.mArtist.getAlbums().get(0).setArtist(jsonObject.getJSONObject("artist").getString("name"));
+                ArtistFragment.mArtist.getAlbums().get(0).setName(jsonObject.getString("name"));
+                ArtistFragment.mArtist.getAlbums().get(0).setPlayCount(jsonObject.getInt("playcount"));
+                ArtistFragment.mArtist.getAlbums().get(0).setUrl(jsonObject.getString("url"));
                 if (!jsonObject.getJSONArray("image").getJSONObject(2).getString("#text")
                         .equals("")) {
                     mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
                             .getJSONObject(2).getString("#text")).getContent();
                     mDrawable = Drawable.createFromStream(mInputStream, "src name");
-                    ArtistFragment.mArtist.getAlbums().get(i).setImage(mDrawable);
+                    ArtistFragment.mArtist.getAlbums().get(0).setImage(mDrawable);
                 }
+            } else {
+                JSONArray jsonArray = jsonObjectMain.getJSONObject("topalbums").getJSONArray("album");
 
+                if (jsonArray.length() < 5)
+                    total = jsonArray.length();
+
+                for (int i = 0; i < total; i++) {
+                    jsonObject = jsonArray.getJSONObject(i);
+
+                    album = new Album();
+                    ArtistFragment.mArtist.getAlbums().add(album);
+                    ArtistFragment.mArtist.getAlbums().get(i).setRank(jsonObject.getJSONObject("@attr").getInt("rank"));
+                    ArtistFragment.mArtist.getAlbums().get(i).setArtist(jsonObject.getJSONObject("artist").getString("name"));
+                    ArtistFragment.mArtist.getAlbums().get(i).setName(jsonObject.getString("name"));
+                    ArtistFragment.mArtist.getAlbums().get(i).setPlayCount(jsonObject.getInt("playcount"));
+                    ArtistFragment.mArtist.getAlbums().get(i).setUrl(jsonObject.getString("url"));
+                    if (!jsonObject.getJSONArray("image").getJSONObject(2).getString("#text")
+                            .equals("")) {
+                        mInputStream = (InputStream) new URL(jsonObject.getJSONArray("image")
+                                .getJSONObject(2).getString("#text")).getContent();
+                        mDrawable = Drawable.createFromStream(mInputStream, "src name");
+                        ArtistFragment.mArtist.getAlbums().get(i).setImage(mDrawable);
+                    }
+
+                }
             }
         } catch (JSONException e){
             e.printStackTrace();

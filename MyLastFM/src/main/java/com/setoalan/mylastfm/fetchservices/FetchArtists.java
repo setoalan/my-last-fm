@@ -86,11 +86,8 @@ public class FetchArtists {
             JSONArray jsonArray = jsonObjectMain.getJSONObject("topartists").getJSONArray("artist");
             JSONObject jsonObject;
 
-            if (limit !=3 && jsonObjectMain.getJSONObject("topartists").getJSONObject("@attr")
-                    .getInt("total") < 50) {
-                total = jsonObjectMain.getJSONObject("topartists").getJSONObject("@attr")
-                        .getInt("total");
-            }
+            if (limit !=3 && jsonArray.length() < 50)
+                total = jsonArray.length();
 
             for (int i=0; i<total; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
