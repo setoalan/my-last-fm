@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.LoginActivity;
 import com.setoalan.mylastfm.fetchservices.FetchAlbums;
 import com.setoalan.mylastfm.fetchservices.FetchArtists;
 import com.setoalan.mylastfm.fetchservices.FetchRecentTracks;

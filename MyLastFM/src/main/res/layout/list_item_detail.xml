@@ -34,8 +34,7 @@
         android:layout_marginTop="3dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Artist" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/name_tv"
@@ -44,8 +43,7 @@
         android:layout_below="@+id/artist_tv"
         android:layout_toRightOf="@+id/image_iv"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:text="Name" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/detail_tv"
@@ -53,7 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_tv"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Detail" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

@@ -4,8 +4,11 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.fetchservices.FetchArtistInfo;
 import com.setoalan.mylastfm.fetchservices.FetchArtistPopular;
+import com.setoalan.mylastfm.fetchservices.FetchArtistSimilar;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -27,12 +31,12 @@ public class ArtistFragment extends Fragment {
 
     public static Artist mArtist;
 
-    ActionBar.Tab mInfoTab, mPopularTab, mBioTab;
-    Fragment mInfoFragment, mPopularFragment, mBioFragment;
+    ActionBar.Tab mInfoTab, mPopularTab, mBioTab, mSimilarTab;
+    Fragment mInfoFragment, mPopularFragment, mBioFragment, mSimilarFragment;
     View loadingV;
 
-    public ArtistFragment(Artist artist) {
-        mArtist = artist;
+    public ArtistFragment() {
+        mArtist = TopArtistsFragment.artist;
     }
 
     @Override
@@ -40,31 +44,37 @@ public class ArtistFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getActivity().getActionBar();
-        actionBar.removeAllTabs();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.RED));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(mArtist.getName());
 
         mInfoFragment = new InfoFragmentTab();
         mPopularFragment = new PopularFragmentTab();
         mBioFragment = new BioFragmentTab();
+        mSimilarFragment = new SimilarFragmentTab();
 
         mInfoTab = actionBar.newTab().setText("Info");
         mPopularTab = actionBar.newTab().setText("Popular");
         mBioTab = actionBar.newTab().setText("Bio");
+        mSimilarTab = actionBar.newTab().setText("Similar");
 
         mInfoTab.setTabListener(new MyTabListener(mInfoFragment));
         mPopularTab.setTabListener(new MyTabListener(mPopularFragment));
         mBioTab.setTabListener(new MyTabListener(mBioFragment));
+        mSimilarTab.setTabListener(new MyTabListener(mSimilarFragment));
 
         actionBar.addTab(mInfoTab);
         actionBar.addTab(mPopularTab);
         actionBar.addTab(mBioTab);
+        actionBar.addTab(mSimilarTab);
     }
 
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_container, container, false);
         return view;
-    }*/
+    }
 
     public class InfoFragmentTab extends Fragment {
 
@@ -201,11 +211,75 @@ public class ArtistFragment extends Fragment {
 
     public class BioFragmentTab extends Fragment {
 
+        ImageView artistIV;
+        TextView bioTV;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_artist_bio, container, false);
+
+            artistIV = (ImageView) view.findViewById(R.id.artist_iv);
+            bioTV = (TextView) view.findViewById(R.id.bio_tv);
+
+            artistIV.setImageDrawable(mArtist.getLargeImage());
+            bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+
             return view;
+        }
+
+    }
+
+    public class SimilarFragmentTab extends ListFragment {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            new FetchDataTask().execute();
+        }
+
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FetchArtistSimilar().fetchArtistSimilar();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                setListAdapter(new ArtistSimilarAdapter(mArtist.getSimilar()));
+            }
+
+        }
+
+        private class ArtistSimilarAdapter extends ArrayAdapter<Artist> {
+
+            ImageView artistIV;
+            TextView artistTV;
+
+            public ArtistSimilarAdapter(ArrayList<Artist> data) {
+                super(getActivity(), android.R.layout.simple_list_item_1, data);
+            }
+
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_detail, null);
+                }
+
+                Artist artist = mArtist.getSimilar().get(position);
+
+                artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                artistTV = (TextView) convertView.findViewById(R.id.name_tv);
+
+                artistIV.setImageDrawable(artist.getImage());
+                artistTV.setText(artist.getName());
+
+                return convertView;
+            }
+
         }
 
     }

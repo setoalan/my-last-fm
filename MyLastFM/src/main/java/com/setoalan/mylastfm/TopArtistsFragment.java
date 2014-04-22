@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +15,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.fetchservices.FetchArtists;
 
 import java.util.ArrayList;
 
 public class TopArtistsFragment extends Fragment {
+
+    public static Artist artist;
 
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
@@ -178,15 +182,16 @@ public class TopArtistsFragment extends Fragment {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
-            Artist artist = MyLastFMActivity.WEEK_ARTISTS.get(position);
-            fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.animator.slide_in_right,
-                    R.animator.slide_out_right,
-                    R.animator.slide_out_left,
-                    R.animator.slide_in_left)
-                    .replace(R.id.fragment_container, new ArtistFragment(artist))
-                    .addToBackStack(null)
-                    .commit();
+            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
+                artist = MyLastFMActivity.WEEK_ARTISTS.get(position);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1) {
+                artist = MyLastFMActivity.MONTH_ARTISTS.get(position);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2) {
+                artist = MyLastFMActivity.YEAR_ARTISTS.get(position);
+            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3) {
+                artist = MyLastFMActivity.OVERALL_ARTISTS.get(position);
+            }
+            startActivity(new Intent(getActivity(), ArtistActivity.class));
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {

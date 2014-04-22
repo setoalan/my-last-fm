@@ -24,8 +24,7 @@
         android:shadowColor="@android:color/black"
         android:shadowRadius="10"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:text="" />
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/artist_tv"
@@ -35,8 +34,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_iv"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:text="Name" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/detail_tv"
@@ -45,7 +43,6 @@
         android:layout_marginBottom="10dp"
         android:layout_alignBottom="@+id/image_iv"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Detail" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

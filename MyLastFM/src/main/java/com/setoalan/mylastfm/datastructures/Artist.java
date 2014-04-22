@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 public class Artist {
 
-
-
     private int mRank;
     private String mName;
     private int mPlayCount;
@@ -19,6 +17,7 @@ public class Artist {
     private String mSummary;
     private ArrayList<Track> mTracks = new ArrayList<Track>();
     private ArrayList<Album> mAlbums = new ArrayList<Album>();
+    private ArrayList<Artist> mSimilar = new ArrayList<Artist>();
 
     public int getRank() {
         return mRank;
@@ -106,6 +105,14 @@ public class Artist {
 
     public void setAlbums(ArrayList<Album> albums) {
         mAlbums = albums;
+    }
+
+    public ArrayList<Artist> getSimilar() {
+        return mSimilar;
+    }
+
+    public void setSimilar(ArrayList<Artist> similar) {
+        mSimilar = similar;
     }
 
 }

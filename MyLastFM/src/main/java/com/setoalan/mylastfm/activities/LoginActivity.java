@@ -1,9 +1,12 @@
-package com.setoalan.mylastfm;
+package com.setoalan.mylastfm.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+
+import com.setoalan.mylastfm.LoginFragment;
+import com.setoalan.mylastfm.R;
 
 public class LoginActivity extends Activity {
 
