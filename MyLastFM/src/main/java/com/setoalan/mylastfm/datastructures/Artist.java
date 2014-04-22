@@ -2,7 +2,11 @@ package com.setoalan.mylastfm.datastructures;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
+
 public class Artist {
+
+
 
     private int mRank;
     private String mName;
@@ -13,6 +17,8 @@ public class Artist {
     private int mListeners;
     private int mPlays;
     private String mSummary;
+    private ArrayList<Track> mTracks = new ArrayList<Track>();
+    private ArrayList<Album> mAlbums = new ArrayList<Album>();
 
     public int getRank() {
         return mRank;
@@ -84,6 +90,22 @@ public class Artist {
 
     public void setSummary(String summary) {
         mSummary = summary;
+    }
+
+    public ArrayList<Track> getTracks() {
+        return mTracks;
+    }
+
+    public void setTracks(ArrayList<Track> tracks) {
+        mTracks = tracks;
+    }
+
+    public ArrayList<Album> getAlbums() {
+        return mAlbums;
+    }
+
+    public void setAlbums(ArrayList<Album> albums) {
+        mAlbums = albums;
     }
 
 }

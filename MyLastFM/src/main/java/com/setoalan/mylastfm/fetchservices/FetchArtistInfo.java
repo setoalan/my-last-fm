@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FetchArtist {
+public class FetchArtistInfo {
 
     private static final String LASTFM_URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
@@ -31,7 +31,7 @@ public class FetchArtist {
     InputStream mInputStream;
     Drawable mDrawable;
 
-    public void fetchArtist()  {
+    public void fetchArtistInfo()  {
         String url = Uri.parse(LASTFM_URL).buildUpon()
                 .appendQueryParameter("method", "artist.getinfo")
                 .appendQueryParameter("artist", ArtistFragment.mArtist.getName())
