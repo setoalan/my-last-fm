@@ -112,9 +112,8 @@ public class MyLastFMActivity extends Activity {
             switch (position) {
                 case 0:
                     getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-                    fragment = new MyLastFMFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container_main, fragment)
+                            .replace(R.id.fragment_container_main, new MyLastFMFragment())
                             .commit();
                     getActionBar().setTitle(getResources().getString(R.string.app_name));
                     break;
@@ -122,9 +121,8 @@ public class MyLastFMActivity extends Activity {
                     getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                     if (RECENT_TRACKS == null)
                         RECENT_TRACKS = new ArrayList<Track>();
-                    fragment = new RecentTracksFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container_main, fragment)
+                            .replace(R.id.fragment_container_main, new RecentTracksFragment())
                             .commit();
                     getActionBar().setTitle("Recent Tracks");
                     break;
@@ -135,9 +133,8 @@ public class MyLastFMActivity extends Activity {
                         YEAR_ARTISTS = new ArrayList<Artist>();
                         OVERALL_ARTISTS = new ArrayList<Artist>();
                     }
-                    fragment = new TopArtistsFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container_main, fragment)
+                            .replace(R.id.fragment_container_main, new TopArtistsFragment())
                             .commit();
                     getActionBar().setTitle("Top Artists");
                     break;
@@ -148,9 +145,8 @@ public class MyLastFMActivity extends Activity {
                         YEAR_TRACKS = new ArrayList<Track>();
                         OVERALL_TRACKS = new ArrayList<Track>();
                     }
-                    fragment = new TopTracksFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container_main, fragment)
+                            .replace(R.id.fragment_container_main, new TopTracksFragment())
                             .commit();
                     getActionBar().setTitle("Top Tracks");
                     break;
@@ -161,9 +157,8 @@ public class MyLastFMActivity extends Activity {
                         YEAR_ALBUMS = new ArrayList<Album>();
                         OVERALL_ALBUMS = new ArrayList<Album>();
                     }
-                    fragment = new TopAlbumsFragment();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container_main, fragment)
+                            .replace(R.id.fragment_container_main, new TopAlbumsFragment())
                             .commit();
                     getActionBar().setTitle("Top Albums");
                     break;

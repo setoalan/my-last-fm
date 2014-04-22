@@ -111,7 +111,7 @@ public class MyLastFMFragment extends ListFragment {
             if (position == 0) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_user, null);
-                playCountTV = (TextView) convertView.findViewById(R.id.play_count_tv);
+                playCountTV = (TextView) convertView.findViewById(R.id.plays_tv);
                 playsSinceTV = (TextView) convertView.findViewById(R.id.plays_since_tv);
 
                 playCountTV.setText(MyLastFMActivity.USERINFO.getPlayCount() + "");

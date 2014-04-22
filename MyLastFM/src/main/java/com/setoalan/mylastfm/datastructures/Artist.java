@@ -9,6 +9,10 @@ public class Artist {
     private int mPlayCount;
     private String mUrl;
     private Drawable mImage;
+    private Drawable mLargeImage;
+    private int mListeners;
+    private int mPlays;
+    private String mSummary;
 
     public int getRank() {
         return mRank;
@@ -49,4 +53,37 @@ public class Artist {
     public void setImage(Drawable image) {
         mImage = image;
     }
+
+    public Drawable getLargeImage() {
+        return mLargeImage;
+    }
+
+    public void setLargeImage(Drawable largeImage) {
+        mLargeImage = largeImage;
+    }
+
+    public int getListeners() {
+        return mListeners;
+    }
+
+    public void setListeners(int listeners) {
+        mListeners = listeners;
+    }
+
+    public int getPlays() {
+        return mPlays;
+    }
+
+    public void setPlays(int plays) {
+        mPlays = plays;
+    }
+
+    public String getSummary() {
+        return mSummary;
+    }
+
+    public void setSummary(String summary) {
+        mSummary = summary;
+    }
+
 }

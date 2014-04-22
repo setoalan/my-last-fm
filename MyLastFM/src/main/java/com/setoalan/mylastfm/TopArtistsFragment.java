@@ -187,7 +187,6 @@ public class TopArtistsFragment extends Fragment {
                     .replace(R.id.fragment_container, new ArtistFragment(artist))
                     .addToBackStack(null)
                     .commit();
-
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {
