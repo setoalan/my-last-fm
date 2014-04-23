@@ -23,7 +23,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FetchArtistInfo {
+public class FetchArtistBio {
+
 
     private static final String LASTFM_URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
@@ -31,7 +32,7 @@ public class FetchArtistInfo {
     InputStream mInputStream;
     Drawable mDrawable;
 
-    public void fetchArtistInfo()  {
+    public void fetchArtistBio()  {
         String url = Uri.parse(LASTFM_URL).buildUpon()
                 .appendQueryParameter("method", "artist.getinfo")
                 .appendQueryParameter("artist", ArtistFragment.mArtist.getName())
@@ -81,8 +82,7 @@ public class FetchArtistInfo {
                     .getJSONObject(4).getString("#text")).getContent();
             mDrawable = Drawable.createFromStream(mInputStream, "src name");
             ArtistFragment.mArtist.setLargeImage(mDrawable);
-            ArtistFragment.mArtist.setListeners(jsonObject.getJSONObject("stats").getInt("listeners"));
-            ArtistFragment.mArtist.setPlays(jsonObject.getJSONObject("stats").getInt("playcount"));
+            ArtistFragment.mArtist.setSummary(jsonObject.getJSONObject("bio").getString("summary"));
         } catch (JSONException e){
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -93,5 +93,4 @@ public class FetchArtistInfo {
 
         return;
     }
-
 }

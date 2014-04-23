@@ -22,6 +22,7 @@ import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Track;
+import com.setoalan.mylastfm.fetchservices.FetchArtistBio;
 import com.setoalan.mylastfm.fetchservices.FetchArtistInfo;
 import com.setoalan.mylastfm.fetchservices.FetchArtistPopular;
 import com.setoalan.mylastfm.fetchservices.FetchArtistSimilar;
@@ -91,7 +92,7 @@ public class ArtistFragment extends Fragment {
 
             loadingV = view.findViewById(R.id.loading_container);
             artistIV = (ImageView) view.findViewById(R.id.artist_iv);
-            artistTV = (TextView) view.findViewById(R.id.artist_tv);
+            artistTV = (TextView) view.findViewById(R.id.name_tv);
             playsTV = (TextView) view.findViewById(R.id.plays_tv);
             listenersTV = (TextView) view.findViewById(R.id.listeners_tv);
 
@@ -113,7 +114,12 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                loadingV.setVisibility(View.VISIBLE);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingV.setVisibility(View.VISIBLE);
+                    }
+                });
                 new FetchArtistInfo().fetchArtistInfo();
                 return null;
             }
@@ -239,13 +245,41 @@ public class ArtistFragment extends Fragment {
                                  Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_artist_bio, container, false);
 
+            loadingV = view.findViewById(R.id.loading_container);
             artistIV = (ImageView) view.findViewById(R.id.artist_iv);
-            bioTV = (TextView) view.findViewById(R.id.bio_tv);
+            bioTV = (TextView) view.findViewById(R.id.biography_tv);
 
-            artistIV.setImageDrawable(mArtist.getLargeImage());
-            bioTV.setText(Html.fromHtml(mArtist.getSummary()));
-
+            if (ArtistFragment.mArtist.getSummary() == null) {
+                new FetchDataTask().execute();
+            } else {
+                artistIV.setImageDrawable(mArtist.getLargeImage());
+                bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+            }
             return view;
+        }
+
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingV.setVisibility(View.VISIBLE);
+                    }
+                });
+                new FetchArtistBio().fetchArtistBio();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                loadingV.setVisibility(View.INVISIBLE);
+                artistIV.setImageDrawable(mArtist.getLargeImage());
+                bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+            }
+
         }
 
     }
