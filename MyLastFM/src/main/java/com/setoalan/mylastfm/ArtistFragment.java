@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,7 @@ public class ArtistFragment extends Fragment {
             listenersTV = (TextView) view.findViewById(R.id.listeners_tv);
 
             if (ArtistFragment.mArtist.getLargeImage() == null) {
+                loadingV.setVisibility(View.VISIBLE);
                 new FetchDataTask().execute();
             } else {
                 artistIV.setImageDrawable(mArtist.getLargeImage());
@@ -114,12 +116,6 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingV.setVisibility(View.VISIBLE);
-                    }
-                });
                 new FetchArtistInfo().fetchArtistInfo();
                 return null;
             }
@@ -187,7 +183,6 @@ public class ArtistFragment extends Fragment {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_header, null);
                     headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-
                     headerTV.setText("Top Tracks");
                 } else if (position == 1 || position == 2 || position == 3 || position == 4 ||
                         position == 5) {
@@ -209,7 +204,6 @@ public class ArtistFragment extends Fragment {
                     convertView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_header, null);
                     headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-
                     headerTV.setText("Top Albums");
                 } else if (position == 7 || position == 8 || position == 9 || position == 10 ||
                         position == 11) {
@@ -250,10 +244,12 @@ public class ArtistFragment extends Fragment {
             bioTV = (TextView) view.findViewById(R.id.biography_tv);
 
             if (ArtistFragment.mArtist.getSummary() == null) {
+                loadingV.setVisibility(View.VISIBLE);
                 new FetchDataTask().execute();
             } else {
                 artistIV.setImageDrawable(mArtist.getLargeImage());
                 bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+                bioTV.setMovementMethod(LinkMovementMethod.getInstance());
             }
             return view;
         }
@@ -262,12 +258,6 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingV.setVisibility(View.VISIBLE);
-                    }
-                });
                 new FetchArtistBio().fetchArtistBio();
                 return null;
             }
@@ -275,9 +265,12 @@ public class ArtistFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                loadingV.setVisibility(View.INVISIBLE);
-                artistIV.setImageDrawable(mArtist.getLargeImage());
-                bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+                if (isVisible()) {
+                    loadingV.setVisibility(View.INVISIBLE);
+                    artistIV.setImageDrawable(mArtist.getLargeImage());
+                    bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+                    bioTV.setMovementMethod(LinkMovementMethod.getInstance());
+                }
             }
 
         }

@@ -27,7 +27,6 @@ public class TopArtistsFragment extends Fragment {
 
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
-    FragmentTransaction fragmentTransaction;
     ImageView artistIV;
     TextView artistTV, playCountTV, rankTV;
     View loadingV;
@@ -38,9 +37,6 @@ public class TopArtistsFragment extends Fragment {
 
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        if (actionBar.getTabCount() != 0)
-            actionBar.removeAllTabs();
 
         mWeekFragment = new ArtistFragmentTab("7day");
         mMonthFragment = new ArtistFragmentTab("1month");
@@ -158,12 +154,6 @@ public class TopArtistsFragment extends Fragment {
                                  Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_list, container, false);
             loadingV = view.findViewById(R.id.loading_container);
-            if (getActivity().getActionBar().getTabCount() == 0) {
-                getActivity().getActionBar().addTab(mWeekTab);
-                getActivity().getActionBar().addTab(mMonthTab);
-                getActivity().getActionBar().addTab(mYearTab);
-                getActivity().getActionBar().addTab(mOverallTab);
-            }
             if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
                 if (MyLastFMActivity.WEEK_ARTISTS.isEmpty())
                     loadingV.setVisibility(View.VISIBLE);
@@ -207,11 +197,14 @@ public class TopArtistsFragment extends Fragment {
                 loadingV.setVisibility(View.INVISIBLE);
                 if (isVisible()) {
                     if (mPeriod.equals("7day"))
-                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS, "week"));
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS,
+                                "week"));
                     else if (mPeriod.equals("1month"))
-                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.MONTH_ARTISTS, "month"));
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.MONTH_ARTISTS,
+                                "month"));
                     else if (mPeriod.equals("12month"))
-                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.YEAR_ARTISTS, "year"));
+                        setListAdapter(new TopArtistsAdapter(MyLastFMActivity.YEAR_ARTISTS,
+                                "year"));
                     else if (mPeriod.equals("overall"))
                         setListAdapter(new TopArtistsAdapter(MyLastFMActivity.OVERALL_ARTISTS,
                                 "overall"));

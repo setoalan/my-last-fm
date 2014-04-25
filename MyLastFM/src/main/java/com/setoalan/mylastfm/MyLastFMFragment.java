@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.activities.LoginActivity;
 import com.setoalan.mylastfm.fetchservices.FetchAlbums;
 import com.setoalan.mylastfm.fetchservices.FetchArtists;
@@ -62,6 +64,15 @@ public class MyLastFMFragment extends ListFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mList = new ArrayList<String>();
         new FetchDataTask().execute();
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        if (position == 6 || position == 7 || position == 8 ) {
+            TopArtistsFragment.artist = MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6);
+            startActivity(new Intent(getActivity(), ArtistActivity.class));
+        }
+
     }
 
     private class FetchDataTask extends AsyncTask<Void, Void, Void> {
@@ -124,7 +135,6 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-
                 headerTV.setText("Recent Tracks");
             } else if (position == 2 || position == 3 || position == 4) {
                 convertView = getActivity().getLayoutInflater()
@@ -181,7 +191,6 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-
                 headerTV.setText("Top Artists");
             } else if (position == 6 || position == 7 || position == 8) {
                 convertView = getActivity().getLayoutInflater()
@@ -200,7 +209,6 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-
                 headerTV.setText("Top Tracks");
             } else if (position == 10 || position == 11 || position == 12) {
                 convertView = getActivity().getLayoutInflater()
@@ -219,7 +227,6 @@ public class MyLastFMFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_header, null);
                 headerTV = (TextView) convertView.findViewById(R.id.header_tv);
-
                 headerTV.setText("Top Albums");
             } else if (position == 14 || position == 15 || position == 16) {
                 convertView = getActivity().getLayoutInflater()
