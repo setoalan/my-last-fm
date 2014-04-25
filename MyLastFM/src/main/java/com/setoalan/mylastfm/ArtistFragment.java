@@ -20,10 +20,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.setoalan.mylastfm.activities.ArtistActivity;
+import com.setoalan.mylastfm.activities.EventActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
+import com.setoalan.mylastfm.datastructures.Event;
 import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.fetchservices.FetchArtistBio;
+import com.setoalan.mylastfm.fetchservices.FetchArtistEvents;
 import com.setoalan.mylastfm.fetchservices.FetchArtistInfo;
 import com.setoalan.mylastfm.fetchservices.FetchArtistPopular;
 import com.setoalan.mylastfm.fetchservices.FetchArtistSimilar;
@@ -36,8 +39,8 @@ public class ArtistFragment extends Fragment {
 
     public static Artist mArtist;
 
-    ActionBar.Tab mInfoTab, mPopularTab, mBioTab, mSimilarTab;
-    Fragment mInfoFragment, mPopularFragment, mBioFragment, mSimilarFragment;
+    ActionBar.Tab mInfoTab, mPopularTab, mBioTab, mEventsTab, mSimilarTab;
+    Fragment mInfoFragment, mPopularFragment, mBioFragment, mEventsFragment, mSimilarFragment;
     View loadingV;
 
     public ArtistFragment() {
@@ -57,21 +60,25 @@ public class ArtistFragment extends Fragment {
         mInfoFragment = new InfoFragmentTab();
         mPopularFragment = new PopularFragmentTab();
         mBioFragment = new BioFragmentTab();
+        mEventsFragment = new EventsFragmentTab();
         mSimilarFragment = new SimilarFragmentTab();
 
         mInfoTab = actionBar.newTab().setText("Info");
         mPopularTab = actionBar.newTab().setText("Popular");
         mBioTab = actionBar.newTab().setText("Bio");
+        mEventsTab = actionBar.newTab().setText("Events");
         mSimilarTab = actionBar.newTab().setText("Similar");
 
         mInfoTab.setTabListener(new MyTabListener(mInfoFragment));
         mPopularTab.setTabListener(new MyTabListener(mPopularFragment));
         mBioTab.setTabListener(new MyTabListener(mBioFragment));
+        mEventsTab.setTabListener(new MyTabListener(mEventsFragment));
         mSimilarTab.setTabListener(new MyTabListener(mSimilarFragment));
 
         actionBar.addTab(mInfoTab);
         actionBar.addTab(mPopularTab);
         actionBar.addTab(mBioTab);
+        actionBar.addTab(mEventsTab);
         actionBar.addTab(mSimilarTab);
     }
 
@@ -251,6 +258,7 @@ public class ArtistFragment extends Fragment {
                 bioTV.setText(Html.fromHtml(mArtist.getSummary()));
                 bioTV.setMovementMethod(LinkMovementMethod.getInstance());
             }
+
             return view;
         }
 
@@ -271,6 +279,76 @@ public class ArtistFragment extends Fragment {
                     bioTV.setText(Html.fromHtml(mArtist.getSummary()));
                     bioTV.setMovementMethod(LinkMovementMethod.getInstance());
                 }
+            }
+
+        }
+
+    }
+
+    public class EventsFragmentTab extends ListFragment {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (ArtistFragment.mArtist.getEvents().isEmpty())
+                new FetchDataTask().execute();
+            else
+                setListAdapter(new ArtistEventAdapter(mArtist.getEvents()));
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            super.onListItemClick(l, v, position, id);
+            EventFragment.mEvent = mArtist.getEvents().get(position);
+            EventFragment.mPosition = position;
+            startActivity(new Intent(getActivity(), EventActivity.class));
+        }
+
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FetchArtistEvents().fetchArtistEvents();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if (isVisible())
+                    setListAdapter(new ArtistEventAdapter(mArtist.getEvents()));
+            }
+
+        }
+
+        private class ArtistEventAdapter extends ArrayAdapter<Event> {
+
+            ImageView artistIV;
+            TextView headlinerTV, venueTV, dateTV;
+
+            public ArtistEventAdapter(ArrayList<Event> data) {
+                super(getActivity(), android.R.layout.simple_list_item_1, data);
+            }
+
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_detail, null);
+                }
+
+                Event event = mArtist.getEvents().get(position);
+
+                artistIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                headlinerTV = (TextView) convertView.findViewById(R.id.artist_tv);
+                venueTV = (TextView) convertView.findViewById(R.id.name_tv);
+                dateTV = (TextView) convertView.findViewById(R.id.detail_tv);
+
+                artistIV.setImageDrawable(event.getImage());
+                headlinerTV.setText(event.getHeadliner());
+                venueTV.setText(event.getVenue());
+                dateTV.setText(event.getStartDate().toString());
+
+                return convertView;
             }
 
         }

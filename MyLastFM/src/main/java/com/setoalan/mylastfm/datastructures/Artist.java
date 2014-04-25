@@ -17,6 +17,7 @@ public class Artist {
     private String mSummary;
     private ArrayList<Track> mTracks = new ArrayList<Track>();
     private ArrayList<Album> mAlbums = new ArrayList<Album>();
+    private ArrayList<Event> mEvents = new ArrayList<Event>();
     private ArrayList<Artist> mSimilar = new ArrayList<Artist>();
 
     public int getRank() {
@@ -105,6 +106,14 @@ public class Artist {
 
     public void setAlbums(ArrayList<Album> albums) {
         mAlbums = albums;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return mEvents;
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        mEvents = events;
     }
 
     public ArrayList<Artist> getSimilar() {

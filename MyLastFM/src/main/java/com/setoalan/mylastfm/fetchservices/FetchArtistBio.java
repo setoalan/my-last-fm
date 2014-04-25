@@ -25,7 +25,6 @@ import java.net.URL;
 
 public class FetchArtistBio {
 
-
     private static final String LASTFM_URL = "http://ws.audioscrobbler.com/2.0/?";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
 
@@ -93,4 +92,5 @@ public class FetchArtistBio {
 
         return;
     }
+
 }
