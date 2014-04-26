@@ -15,10 +15,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.activities.WebActivity;
+import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Event;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class EventFragment extends ListFragment {
 
@@ -45,7 +49,9 @@ public class EventFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+        TopArtistsFragment.artist = new Artist();
+        TopArtistsFragment.artist.setName(mEvent.getArtists().get(position - 2));
+        startActivity(new Intent(getActivity(), ArtistActivity.class));
     }
 
     private class EventAdapter extends ArrayAdapter<String> {
@@ -72,8 +78,12 @@ public class EventFragment extends ListFragment {
 
                 eventIV.setImageDrawable(mEvent.getImage());
                 titleTV.setText(mEvent.getTitle());
-                dateTV.setText(mEvent.getStartDate().toString());
+                String format = "EEEE, MMMM d, yyyy h:mma z";
+                SimpleDateFormat simpleDateFormat= new SimpleDateFormat(format, Locale.US);
+                dateTV.setText(simpleDateFormat.format(mEvent.getStartDate()));
                 venueTV.setText(mEvent.getVenue());
+                websiteBTN.setBackgroundColor(Color.RED);
+                websiteBTN.setTextColor(Color.WHITE);
                 websiteBTN.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -81,6 +91,8 @@ public class EventFragment extends ListFragment {
                         startActivity(new Intent(getActivity(), WebActivity.class));
                     }
                 });
+                phoneBTN.setBackgroundColor(Color.RED);
+                phoneBTN.setTextColor(Color.WHITE);
                 phoneBTN.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -89,6 +101,8 @@ public class EventFragment extends ListFragment {
                         startActivity(intent);
                     }
                 });
+                mapBTN.setBackgroundColor(Color.RED);
+                mapBTN.setTextColor(Color.WHITE);
                 mapBTN.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

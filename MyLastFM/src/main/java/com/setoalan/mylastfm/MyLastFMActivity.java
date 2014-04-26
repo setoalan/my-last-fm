@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,9 +13,12 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
@@ -33,12 +37,15 @@ public class MyLastFMActivity extends Activity {
     public static ArrayList<Album> WEEKLY_ALBUMS, WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS,
             OVERALL_ALBUMS;
 
-    public static DrawerLayout mDrawerLayout;
+    private ArrayList<String> mList;
+
+    DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mActionBarDrawerToggle;
 
     FragmentManager fragmentManager;
     Fragment fragment;
 
+    static DrawerListAdapter mDrawerListAdapter;
     ListView mDrawerList;
 
     @Override
@@ -49,10 +56,12 @@ public class MyLastFMActivity extends Activity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item,
-                getResources().getStringArray(R.array.drawer_items)));
+        mList = new ArrayList<String>();
+        for (int i=0; i<5; i++)
+            mList.add("");
+        mDrawerListAdapter = new DrawerListAdapter(this, mList);
+        mDrawerList.setAdapter(mDrawerListAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerList.setItemChecked(0, true);
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
             @Override
@@ -103,6 +112,10 @@ public class MyLastFMActivity extends Activity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mActionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public static void refreshDrawer() {
+        mDrawerListAdapter.notifyDataSetChanged();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -163,10 +176,42 @@ public class MyLastFMActivity extends Activity {
                     getActionBar().setTitle("Top Albums");
                     break;
             }
-            mDrawerList.setItemChecked(position, true);
             mDrawerLayout.closeDrawer(mDrawerList);
         }
 
+    }
+
+    private class DrawerListAdapter extends ArrayAdapter<String> {
+
+        ImageView userIV;
+        TextView ageTV, drawerTV, genderTV, nameTV, realNameTV;
+
+        public DrawerListAdapter(Context context, ArrayList<String> data) {
+            super(context, android.R.layout.simple_list_item_1, data);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (position == 0) {
+                convertView = getLayoutInflater().inflate(R.layout.list_item_drawer_user, parent, false);
+                userIV = (ImageView) convertView.findViewById(R.id.user_iv);
+                nameTV = (TextView) convertView.findViewById(R.id.name_tv);
+                realNameTV = (TextView) convertView.findViewById(R.id.real_name_tv);
+                ageTV = (TextView) convertView.findViewById(R.id.age_tv);
+                genderTV = (TextView) convertView.findViewById(R.id.gender);
+
+                userIV.setImageDrawable(USERINFO.getImage());
+                nameTV.setText(USERINFO.getName());
+                realNameTV.setText(USERINFO.getRealName() + ", ");
+                ageTV.setText(USERINFO.getAge() + ", ");
+                genderTV.setText(USERINFO.getGender());
+            } else {
+                convertView = getLayoutInflater().inflate(R.layout.list_item_drawer, parent, false);
+                drawerTV = (TextView) convertView.findViewById(R.id.drawer_tv);
+                String[] array = getResources().getStringArray(R.array.drawer_items);
+                drawerTV.setText(array[position - 1]);
+            }
+            return convertView;
+        }
     }
 
 }

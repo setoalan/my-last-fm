@@ -90,6 +90,7 @@ public class MyLastFMFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            MyLastFMActivity.refreshDrawer();
             for (int i=0; i<17; i++)
                 mList.add("");
             if (MyLastFMActivity.USERINFO.getName() == null) {

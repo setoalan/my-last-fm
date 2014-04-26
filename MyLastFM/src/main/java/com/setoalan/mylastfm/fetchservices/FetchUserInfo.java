@@ -1,5 +1,6 @@
 package com.setoalan.mylastfm.fetchservices;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.setoalan.mylastfm.MyLastFMActivity;
@@ -19,11 +20,16 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 
 public class FetchUserInfo {
 
     private static final String URL = "http://ws.audioscrobbler.com/2.0/?method=";
     private static final String KEY = "caee03757be853540591265ff765b6ff";
+
+    InputStream mInputStream;
+    Drawable mDrawable;
 
     public void fetchUserInfo()  {
         String url = Uri.parse(URL).buildUpon()
@@ -75,16 +81,22 @@ public class FetchUserInfo {
             user.setName(jsonObject.getString("name"));
             user.setRealName(jsonObject.getString("realname"));
             user.setUrl(jsonObject.getString("url"));
-            user.setImage(jsonObject.getString("image"));
+            mInputStream = (InputStream) new java.net.URL(jsonObject.getJSONArray("image")
+                    .getJSONObject(2).getString("#text")).getContent();
+            mDrawable = Drawable.createFromStream(mInputStream, "src name");
+            user.setImage(mDrawable);
             user.setCountry(jsonObject.getString("country"));
-            if (!jsonObject.getString("age").equals(""))
-                user.setAge(jsonObject.getInt("age"));
+            user.setAge(jsonObject.optInt("age"));
             user.setGender(jsonObject.getString("gender"));
             user.setPlayCount(jsonObject.getInt("playcount"));
             user.setRegistered(jsonObject.getJSONObject("registered").getLong("unixtime"));
 
             MyLastFMActivity.USERINFO = user;
         } catch (JSONException e){
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

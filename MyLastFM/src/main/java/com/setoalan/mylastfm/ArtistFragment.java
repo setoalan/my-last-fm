@@ -32,6 +32,7 @@ import com.setoalan.mylastfm.fetchservices.FetchArtistPopular;
 import com.setoalan.mylastfm.fetchservices.FetchArtistSimilar;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -298,7 +299,6 @@ public class ArtistFragment extends Fragment {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
-            super.onListItemClick(l, v, position, id);
             EventFragment.mEvent = mArtist.getEvents().get(position);
             EventFragment.mPosition = position;
             startActivity(new Intent(getActivity(), EventActivity.class));
@@ -346,7 +346,9 @@ public class ArtistFragment extends Fragment {
                 artistIV.setImageDrawable(event.getImage());
                 headlinerTV.setText(event.getHeadliner());
                 venueTV.setText(event.getVenue());
-                dateTV.setText(event.getStartDate().toString());
+                String format = "EEEE, MMMM d, yyyy h:mma z";
+                SimpleDateFormat simpleDateFormat= new SimpleDateFormat(format, Locale.US);
+                dateTV.setText(simpleDateFormat.format(event.getStartDate()));
 
                 return convertView;
             }

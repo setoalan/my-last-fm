@@ -59,7 +59,7 @@ public class RecentTracksFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_default, null);
+                        .inflate(R.layout.list_item_detail, null);
             }
 
             Track track = MyLastFMActivity.RECENT_TRACKS.get(position);

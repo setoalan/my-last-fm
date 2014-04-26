@@ -38,6 +38,9 @@ public class TopArtistsFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+        if (actionBar.getTabCount() != 0)
+            actionBar.removeAllTabs();
+
         mWeekFragment = new ArtistFragmentTab("7day");
         mMonthFragment = new ArtistFragmentTab("1month");
         mYearFragment = new ArtistFragmentTab("12month");

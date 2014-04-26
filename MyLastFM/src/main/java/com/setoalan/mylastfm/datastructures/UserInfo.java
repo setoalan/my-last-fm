@@ -1,11 +1,13 @@
 package com.setoalan.mylastfm.datastructures;
 
+import android.graphics.drawable.Drawable;
+
 public class UserInfo {
 
     private String mName;
     private String mRealName;
     private String mUrl;
-    private String mImage;
+    private Drawable mImage;
     private String mCountry;
     private int mAge;
     private String mGender;
@@ -36,11 +38,11 @@ public class UserInfo {
         mUrl = url;
     }
 
-    public String getImage() {
+    public Drawable getImage() {
         return mImage;
     }
 
-    public void setImage(String image) {
+    public void setImage(Drawable image) {
         mImage = image;
     }
 
