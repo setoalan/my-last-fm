@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.setoalan.mylastfm.EventFragment;
-import com.setoalan.mylastfm.LoginFragment;
 import com.setoalan.mylastfm.R;
 
 public class EventActivity extends Activity {
@@ -14,16 +14,26 @@ public class EventActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.fragment_container);
 
         FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container_main);
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
             fragment = new EventFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container_main, fragment)
+                    .add(R.id.fragment_container, fragment)
                     .commit();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

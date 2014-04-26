@@ -6,10 +6,10 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.setoalan.mylastfm.ArtistFragment;
 import com.setoalan.mylastfm.R;
+import com.setoalan.mylastfm.WebFragment;
 
-public class ArtistActivity extends Activity {
+public class WebActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class ArtistActivity extends Activity {
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
-            fragment = new ArtistFragment();
+            fragment = new WebFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
