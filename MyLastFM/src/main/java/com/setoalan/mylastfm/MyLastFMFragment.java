@@ -128,7 +128,7 @@ public class MyLastFMFragment extends ListFragment {
                 playsSinceTV = (TextView) convertView.findViewById(R.id.plays_since_tv);
 
                 playCountTV.setText(MyLastFMActivity.USERINFO.getPlayCount() + "");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy");
                 playsSinceTV.setText("plays since "
                         + simpleDateFormat.format(new Date(MyLastFMActivity.USERINFO
                         .getRegistered()*1000)));

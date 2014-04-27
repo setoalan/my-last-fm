@@ -34,13 +34,11 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_iv"
         android:ellipsize="marquee"
-        android:focusableInTouchMode="true"
-        android:freezesText="true"
         android:marqueeRepeatLimit="marquee_forever"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
         android:scrollHorizontally="true"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/detail_tv"

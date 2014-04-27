@@ -346,7 +346,7 @@ public class ArtistFragment extends Fragment {
                 artistIV.setImageDrawable(event.getImage());
                 headlinerTV.setText(event.getHeadliner());
                 venueTV.setText(event.getVenue());
-                String format = "EEEE, MMMM d, yyyy h:mma z";
+                String format = "EEEE, MMMM d, yyyy";
                 SimpleDateFormat simpleDateFormat= new SimpleDateFormat(format, Locale.US);
                 dateTV.setText(simpleDateFormat.format(event.getStartDate()));
 

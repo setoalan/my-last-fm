@@ -42,8 +42,6 @@
         android:layout_below="@+id/artist_tv"
         android:layout_toRightOf="@+id/image_iv"
         android:ellipsize="marquee"
-        android:focusableInTouchMode="true"
-        android:freezesText="true"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"

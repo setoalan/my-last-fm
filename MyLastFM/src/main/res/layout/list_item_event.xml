@@ -19,7 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:scrollHorizontally="true"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/date_tv"
