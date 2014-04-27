@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.AlbumActivity;
 import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.activities.LoginActivity;
 import com.setoalan.mylastfm.fetchservices.FetchAlbums;
@@ -71,6 +72,9 @@ public class MyLastFMFragment extends ListFragment {
         if (position == 6 || position == 7 || position == 8 ) {
             TopArtistsFragment.artist = MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6);
             startActivity(new Intent(getActivity(), ArtistActivity.class));
+        } else if (position == 14 || position == 15 || position == 16) {
+            TopAlbumsFragment.album = MyLastFMActivity.WEEKLY_ALBUMS.get(position - 14);
+            startActivity(new Intent(getActivity(), AlbumActivity.class));
         }
 
     }

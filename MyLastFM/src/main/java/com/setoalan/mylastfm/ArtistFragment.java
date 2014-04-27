@@ -97,10 +97,10 @@ public class ArtistFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_artist_info, container, false);
+            View view = inflater.inflate(R.layout.fragment_info, container, false);
 
             loadingV = view.findViewById(R.id.loading_container);
-            artistIV = (ImageView) view.findViewById(R.id.artist_iv);
+            artistIV = (ImageView) view.findViewById(R.id.image_iv);
             artistTV = (TextView) view.findViewById(R.id.name_tv);
             playsTV = (TextView) view.findViewById(R.id.plays_tv);
             listenersTV = (TextView) view.findViewById(R.id.listeners_tv);
@@ -245,13 +245,13 @@ public class ArtistFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_artist_bio, container, false);
+            View view = inflater.inflate(R.layout.fragment_bio, container, false);
 
             loadingV = view.findViewById(R.id.loading_container);
             artistIV = (ImageView) view.findViewById(R.id.artist_iv);
             bioTV = (TextView) view.findViewById(R.id.biography_tv);
 
-            if (ArtistFragment.mArtist.getSummary() == null) {
+            if (mArtist.getLargeImage() == null) {
                 loadingV.setVisibility(View.VISIBLE);
                 new FetchDataTask().execute();
             } else {
@@ -274,12 +274,10 @@ public class ArtistFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                if (isVisible()) {
-                    loadingV.setVisibility(View.INVISIBLE);
-                    artistIV.setImageDrawable(mArtist.getLargeImage());
-                    bioTV.setText(Html.fromHtml(mArtist.getSummary()));
-                    bioTV.setMovementMethod(LinkMovementMethod.getInstance());
-                }
+                loadingV.setVisibility(View.INVISIBLE);
+                artistIV.setImageDrawable(mArtist.getLargeImage());
+                bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+                bioTV.setMovementMethod(LinkMovementMethod.getInstance());
             }
 
         }

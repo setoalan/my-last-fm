@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,14 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.AlbumActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.fetchservices.FetchAlbums;
 
 import java.util.ArrayList;
 
 public class TopAlbumsFragment extends Fragment {
+
+    public static Album album;
 
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
@@ -167,6 +172,19 @@ public class TopAlbumsFragment extends Fragment {
                     loadingV.setVisibility(View.VISIBLE);
             }
             return view;
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0)
+                album = MyLastFMActivity.WEEK_ALBUMS.get(position);
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1)
+                album = MyLastFMActivity.MONTH_ALBUMS.get(position);
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2)
+                album = MyLastFMActivity.YEAR_ALBUMS.get(position);
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3)
+                album = MyLastFMActivity.OVERALL_ALBUMS.get(position);
+            startActivity(new Intent(getActivity(), AlbumActivity.class));
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {

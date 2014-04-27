@@ -3,6 +3,9 @@ package com.setoalan.mylastfm.datastructures;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Album {
 
     private int mRank;
@@ -11,6 +14,12 @@ public class Album {
     private int mPlayCount;
     private String mUrl;
     private Drawable mImage;
+    private Drawable mLargeImage;
+    private Date mReleaseDate;
+    private int mListeners;
+    private int mPlays;
+    private ArrayList<Track> mTracks = new ArrayList<Track>();
+    private String mSummary;
 
     public int getRank() {
         return mRank;
@@ -58,6 +67,54 @@ public class Album {
 
     public void setImage(Drawable image) {
         mImage = image;
+    }
+
+    public Drawable getLargeImage() {
+        return mLargeImage;
+    }
+
+    public void setLargeImage(Drawable largeImage) {
+        mLargeImage = largeImage;
+    }
+
+    public Date getReleaseDate() {
+        return mReleaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        mReleaseDate = releaseDate;
+    }
+
+    public int getListeners() {
+        return mListeners;
+    }
+
+    public void setListeners(int listeners) {
+        mListeners = listeners;
+    }
+
+    public int getPlays() {
+        return mPlays;
+    }
+
+    public void setPlays(int plays) {
+        mPlays = plays;
+    }
+
+    public ArrayList<Track> getTracks() {
+        return mTracks;
+    }
+
+    public void setTracks(ArrayList<Track> tracks) {
+        mTracks = tracks;
+    }
+
+    public String getSummary() {
+        return mSummary;
+    }
+
+    public void setSummary(String summary) {
+        mSummary = summary;
     }
 
 }
