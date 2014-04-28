@@ -3,6 +3,7 @@ package com.setoalan.mylastfm;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -12,15 +13,20 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.setoalan.mylastfm.datastructures.Album;
+import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.fetchservices.FetchAlbumBio;
 import com.setoalan.mylastfm.fetchservices.FetchAlbumInfo;
+import com.setoalan.mylastfm.fetchservices.FetchAlbumTracks;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class AlbumFragment extends Fragment {
 
@@ -79,9 +85,9 @@ public class AlbumFragment extends Fragment {
 
             loadingV = view.findViewById(R.id.loading_container);
             albumIV = (ImageView) view.findViewById(R.id.image_iv);
-            albumTV = (TextView) view.findViewById(R.id.name_tv);
             playsTV = (TextView) view.findViewById(R.id.plays_tv);
             listenersTV = (TextView) view.findViewById(R.id.listeners_tv);
+            albumTV = (TextView) view.findViewById(R.id.name_tv);
 
             if (AlbumFragment.mAlbum.getLargeImage() == null) {
                 loadingV.setVisibility(View.VISIBLE);
@@ -122,11 +128,68 @@ public class AlbumFragment extends Fragment {
 
     }
 
-    public class TracksFragmentTab extends Fragment {
+    public class TracksFragmentTab extends ListFragment {
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            return super.onCreateView(inflater, container, savedInstanceState);
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (mAlbum.getTracks().isEmpty())
+                new FetchDataTask().execute();
+            else
+                setListAdapter(new ArtistSimilarAdapter(mAlbum.getTracks()));
+        }
+
+        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                new FetchAlbumTracks().fetchAlbumTracks();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if (isVisible())
+                    setListAdapter(new ArtistSimilarAdapter(mAlbum.getTracks()));
+            }
+
+        }
+
+        private class ArtistSimilarAdapter extends ArrayAdapter<Track> {
+
+            ImageView albumIV;
+            TextView durationTV, rankTV, trackTV;
+
+            public ArtistSimilarAdapter(ArrayList<Track> data) {
+                super(getActivity(), android.R.layout.simple_list_item_1, data);
+            }
+
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_default, null);
+                }
+
+                Track track = mAlbum.getTracks().get(position);
+
+                albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
+                rankTV = (TextView) convertView.findViewById(R.id.rank_tv);
+                trackTV = (TextView) convertView.findViewById(R.id.name_tv);
+                durationTV = (TextView) convertView.findViewById(R.id.detail_tv);
+
+                albumIV.setImageDrawable(track.getImage());
+                rankTV.setText(track.getRank() + "");
+                trackTV.setText(track.getName());
+                long minute =  TimeUnit.SECONDS.toMinutes(track.getDuration());
+                if ((track.getDuration() % 60) < 10)
+                    durationTV.setText(minute + ":0" + track.getDuration() % 60);
+                else
+                    durationTV.setText(minute + ":" + track.getDuration() % 60);
+
+                return convertView;
+            }
+
         }
 
     }

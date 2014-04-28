@@ -11,7 +11,10 @@ public class Track {
     private int mDuration;
     private int mPlayCount;
     private String mUrl;
+    private int mListeners;
+    private int mPlays;
     private Drawable mImage;
+    private Drawable mLargeImage;
     private boolean mNowPlaying;
     private long mDate;
 
@@ -71,12 +74,36 @@ public class Track {
         mUrl = url;
     }
 
+    public int getListeners() {
+        return mListeners;
+    }
+
+    public void setListeners(int listeners) {
+        mListeners = listeners;
+    }
+
+    public int getPlays() {
+        return mPlays;
+    }
+
+    public void setPlays(int plays) {
+        mPlays = plays;
+    }
+
     public Drawable getImage() {
         return mImage;
     }
 
     public void setImage(Drawable image) {
         mImage = image;
+    }
+
+    public Drawable getLargeImage() {
+        return mLargeImage;
+    }
+
+    public void setLargeImage(Drawable largeImage) {
+        mLargeImage = largeImage;
     }
 
     public boolean isNowPlaying() {

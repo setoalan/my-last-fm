@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,14 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.TrackActivity;
 import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.fetchservices.FetchTracks;
 
 import java.util.ArrayList;
 
 public class TopTracksFragment extends Fragment {
+
+    public static Track track;
 
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
@@ -166,6 +171,19 @@ public class TopTracksFragment extends Fragment {
                     loadingV.setVisibility(View.VISIBLE);
             }
             return view;
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0)
+                track = MyLastFMActivity.WEEK_TRACKS.get(position);
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1)
+                track = MyLastFMActivity.MONTH_TRACKS.get(position);
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2)
+                track = MyLastFMActivity.YEAR_TRACKS.get(position);
+            else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3)
+                track = MyLastFMActivity.OVERALL_TRACKS.get(position);
+            startActivity(new Intent(getActivity(), TrackActivity.class));
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {

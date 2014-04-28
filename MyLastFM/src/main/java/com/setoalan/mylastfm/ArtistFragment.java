@@ -101,11 +101,11 @@ public class ArtistFragment extends Fragment {
 
             loadingV = view.findViewById(R.id.loading_container);
             artistIV = (ImageView) view.findViewById(R.id.image_iv);
-            artistTV = (TextView) view.findViewById(R.id.name_tv);
             playsTV = (TextView) view.findViewById(R.id.plays_tv);
             listenersTV = (TextView) view.findViewById(R.id.listeners_tv);
+            artistTV = (TextView) view.findViewById(R.id.name_tv);
 
-            if (ArtistFragment.mArtist.getLargeImage() == null) {
+            if (mArtist.getLargeImage() == null) {
                 loadingV.setVisibility(View.VISIBLE);
                 new FetchDataTask().execute();
             } else {
@@ -256,8 +256,10 @@ public class ArtistFragment extends Fragment {
                 new FetchDataTask().execute();
             } else {
                 artistIV.setImageDrawable(mArtist.getLargeImage());
-                bioTV.setText(Html.fromHtml(mArtist.getSummary()));
-                bioTV.setMovementMethod(LinkMovementMethod.getInstance());
+                if (mArtist.getSummary() != null) {
+                    bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+                    bioTV.setMovementMethod(LinkMovementMethod.getInstance());
+                }
             }
 
             return view;
@@ -360,7 +362,7 @@ public class ArtistFragment extends Fragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (ArtistFragment.mArtist.getSimilar().isEmpty())
+            if (mArtist.getSimilar().isEmpty())
                 new FetchDataTask().execute();
             else
                 setListAdapter(new ArtistSimilarAdapter(mArtist.getSimilar()));
@@ -368,7 +370,6 @@ public class ArtistFragment extends Fragment {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
-            super.onListItemClick(l, v, position, id);
             TopArtistsFragment.artist = mArtist.getSimilar().get(position);
             startActivity(new Intent(getActivity(), ArtistActivity.class));
         }

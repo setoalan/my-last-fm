@@ -1,14 +1,17 @@
 package com.setoalan.mylastfm;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.TrackActivity;
 import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.fetchservices.FetchRecentTracks;
 
@@ -30,6 +33,12 @@ public class RecentTracksFragment extends ListFragment {
             new FetchDataTask().execute();
         else
             setListAdapter(new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS));
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        TopTracksFragment.track = MyLastFMActivity.RECENT_TRACKS.get(position);
+        startActivity(new Intent(getActivity(), TrackActivity.class));
     }
 
     private class FetchDataTask extends AsyncTask<Void, Void, Void> {

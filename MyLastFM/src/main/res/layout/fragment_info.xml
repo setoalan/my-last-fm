@@ -26,7 +26,7 @@
             android:shadowColor="@android:color/black"
             android:shadowRadius="15"
             android:textColor="@android:color/white"
-            android:textSize="30dp"/>
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/listeners_tv"
@@ -39,7 +39,33 @@
             android:shadowColor="@android:color/black"
             android:shadowRadius="15"
             android:textColor="@android:color/white"
-            android:textSize="30dp"/>
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/duration_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listeners_tv"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="15"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/track_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/duration_tv"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="15"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/name_tv"
@@ -52,7 +78,7 @@
             android:shadowColor="@android:color/black"
             android:shadowRadius="25"
             android:textColor="@android:color/white"
-            android:textSize="50dp" />
+            android:textSize="50sp" />
 
     </RelativeLayout>
 

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.setoalan.mylastfm.activities.AlbumActivity;
 import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.activities.LoginActivity;
+import com.setoalan.mylastfm.activities.TrackActivity;
 import com.setoalan.mylastfm.fetchservices.FetchAlbums;
 import com.setoalan.mylastfm.fetchservices.FetchArtists;
 import com.setoalan.mylastfm.fetchservices.FetchRecentTracks;
@@ -69,9 +70,15 @@ public class MyLastFMFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if (position == 6 || position == 7 || position == 8 ) {
+        if (position == 2 || position == 3 || position == 3) {
+            TopTracksFragment.track = MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2);
+            startActivity(new Intent(getActivity(), TrackActivity.class));
+        } else if (position == 6 || position == 7 || position == 8) {
             TopArtistsFragment.artist = MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6);
             startActivity(new Intent(getActivity(), ArtistActivity.class));
+        } else if (position == 10 || position == 11 || position == 12) {
+            TopTracksFragment.track = MyLastFMActivity.WEEKLY_TRACKS.get(position - 10);
+            startActivity(new Intent(getActivity(), TrackActivity.class));
         } else if (position == 14 || position == 15 || position == 16) {
             TopAlbumsFragment.album = MyLastFMActivity.WEEKLY_ALBUMS.get(position - 14);
             startActivity(new Intent(getActivity(), AlbumActivity.class));
