@@ -19,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.AlbumActivity;
 import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.activities.EventActivity;
+import com.setoalan.mylastfm.activities.TrackActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Event;
@@ -161,6 +163,19 @@ public class ArtistFragment extends Fragment {
                 new FetchDataTask().execute();
             else
                 setListAdapter(new ArtistsPopularAdapter(mList));
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            if (position == 1 || position == 2 || position == 3 || position == 4 || position == 5) {
+                TopTracksFragment.track = mArtist.getTracks().get(position - 1);
+                TopTracksFragment.track.setArtist(mArtist.getName());
+                startActivity(new Intent(getActivity(), TrackActivity.class));
+            } else if (position == 7 || position == 8 || position == 9 || position == 10
+                    || position == 11) {
+                TopAlbumsFragment.album = mArtist.getAlbums().get(position - 7);
+                startActivity(new Intent(getActivity(), AlbumActivity.class));
+            }
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {

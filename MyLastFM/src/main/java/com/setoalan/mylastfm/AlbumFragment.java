@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.setoalan.mylastfm.activities.TrackActivity;
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Track;
 import com.setoalan.mylastfm.fetchservices.FetchAlbumInfo;
@@ -130,6 +133,13 @@ public class AlbumFragment extends Fragment {
                 new FetchDataTask().execute();
             else
                 setListAdapter(new ArtistSimilarAdapter(mAlbum.getTracks()));
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            TopTracksFragment.track = mAlbum.getTracks().get(position);
+            TopTracksFragment.track.setArtist(mAlbum.getArtist());
+            startActivity(new Intent(getActivity(), TrackActivity.class));
         }
 
         private class FetchDataTask extends AsyncTask<Void, Void, Void> {

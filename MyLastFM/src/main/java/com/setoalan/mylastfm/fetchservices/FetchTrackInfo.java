@@ -2,7 +2,6 @@ package com.setoalan.mylastfm.fetchservices;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 
 import com.setoalan.mylastfm.MyLastFMActivity;
 import com.setoalan.mylastfm.TrackFragment;
@@ -79,16 +78,16 @@ public class FetchTrackInfo {
             JSONObject jsonObject = new JSONObject(result);
             jsonObject = jsonObject.getJSONObject("track");
 
+            TrackFragment.mTrack.setListeners(jsonObject.getInt("listeners"));
+            TrackFragment.mTrack.setPlays(jsonObject.getInt("playcount"));
+            TrackFragment.mTrack.setDuration(jsonObject.getInt("duration"));
+            TrackFragment.mTrack.setSummary(jsonObject.getJSONObject("wiki").getString("summary"));
             TrackFragment.mTrack.setRank(jsonObject.getJSONObject("album").getJSONObject("@attr")
                     .getInt("position"));
             mInputStream = (InputStream) new URL(jsonObject.getJSONObject("album")
                     .getJSONArray("image").getJSONObject(2).getString("#text")).getContent();
             mDrawable = Drawable.createFromStream(mInputStream, "src name");
             TrackFragment.mTrack.setImage(mDrawable);
-            TrackFragment.mTrack.setListeners(jsonObject.getInt("listeners"));
-            TrackFragment.mTrack.setPlays(jsonObject.getInt("playcount"));
-            TrackFragment.mTrack.setDuration(jsonObject.getInt("duration"));
-            TrackFragment.mTrack.setSummary(jsonObject.getJSONObject("wiki").getString("summary"));
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

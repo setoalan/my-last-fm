@@ -110,8 +110,10 @@ public class TrackFragment extends Fragment {
                 durationTV.setText(minute + ":0" + (mTrack.getDuration() % (60 * 1000) / 1000));
             else
                 durationTV.setText(minute + ":" + (mTrack.getDuration() % (60 * 1000) / 1000));
-            summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
-            summaryTV.setMovementMethod(LinkMovementMethod.getInstance());
+            if (mTrack.getSummary() != null) {
+                summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
+                summaryTV.setMovementMethod(LinkMovementMethod.getInstance());
+            }
         }
 
     }
