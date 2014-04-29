@@ -19,7 +19,6 @@ public class Album {
     private int mListeners;
     private int mPlays;
     private ArrayList<Track> mTracks = new ArrayList<Track>();
-    private String mSummary;
 
     public int getRank() {
         return mRank;
@@ -107,14 +106,6 @@ public class Album {
 
     public void setTracks(ArrayList<Track> tracks) {
         mTracks = tracks;
-    }
-
-    public String getSummary() {
-        return mSummary;
-    }
-
-    public void setSummary(String summary) {
-        mSummary = summary;
     }
 
 }

@@ -70,7 +70,7 @@ public class MyLastFMFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if (position == 2 || position == 3 || position == 3) {
+        if (position == 2 || position == 3 || position == 4) {
             TopTracksFragment.track = MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2);
             startActivity(new Intent(getActivity(), TrackActivity.class));
         } else if (position == 6 || position == 7 || position == 8) {

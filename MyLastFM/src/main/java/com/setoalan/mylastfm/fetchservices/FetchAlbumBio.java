@@ -82,8 +82,6 @@ public class FetchAlbumBio {
                     .getJSONObject(4).getString("#text")).getContent();
             mDrawable = Drawable.createFromStream(mInputStream, "src name");
             AlbumFragment.mAlbum.setLargeImage(mDrawable);
-            if (jsonObject.optJSONObject("wiki") != null)
-                AlbumFragment.mAlbum.setSummary(jsonObject.getJSONObject("wiki").getString("summary"));
         } catch (JSONException e){
             e.printStackTrace();
         } catch (MalformedURLException e) {

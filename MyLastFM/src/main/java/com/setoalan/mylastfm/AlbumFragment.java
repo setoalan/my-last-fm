@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import android.widget.TextView;
 
 import com.setoalan.mylastfm.datastructures.Album;
 import com.setoalan.mylastfm.datastructures.Track;
-import com.setoalan.mylastfm.fetchservices.FetchAlbumBio;
 import com.setoalan.mylastfm.fetchservices.FetchAlbumInfo;
 import com.setoalan.mylastfm.fetchservices.FetchAlbumTracks;
 
@@ -32,8 +29,8 @@ public class AlbumFragment extends Fragment {
 
     public static Album mAlbum;
 
-    ActionBar.Tab mInfoTab, mTracksTab, mBioTab;
-    Fragment mInfoFragment, mTracksFragment, mBioFragment;
+    ActionBar.Tab mInfoTab, mTracksTab;
+    Fragment mInfoFragment, mTracksFragment;
     View loadingV;
 
     public AlbumFragment() {
@@ -52,19 +49,15 @@ public class AlbumFragment extends Fragment {
 
         mInfoFragment = new InfoFragmentTab();
         mTracksFragment = new TracksFragmentTab();
-        mBioFragment = new BioFragmentTab();
 
         mInfoTab = actionBar.newTab().setText("Info");
         mTracksTab = actionBar.newTab().setText("Tracks");
-        mBioTab = actionBar.newTab().setText("Bio");
 
         mInfoTab.setTabListener(new MyTabListener(mInfoFragment));
         mTracksTab.setTabListener(new MyTabListener(mTracksFragment));
-        mBioTab.setTabListener(new MyTabListener(mBioFragment));
 
         actionBar.addTab(mInfoTab);
         actionBar.addTab(mTracksTab);
-        actionBar.addTab(mBioTab);
     }
 
     @Override
@@ -188,57 +181,6 @@ public class AlbumFragment extends Fragment {
                     durationTV.setText(minute + ":" + track.getDuration() % 60);
 
                 return convertView;
-            }
-
-        }
-
-    }
-
-    public class BioFragmentTab extends Fragment {
-
-        ImageView albumIV;
-        TextView bioTV;
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_bio, container, false);
-
-            loadingV = view.findViewById(R.id.loading_container);
-            albumIV = (ImageView) view.findViewById(R.id.artist_iv);
-            bioTV = (TextView) view.findViewById(R.id.biography_tv);
-
-            if (mAlbum.getLargeImage() == null) {
-                loadingV.setVisibility(View.VISIBLE);
-                new FetchDataTask().execute();
-            } else {
-                albumIV.setImageDrawable(mAlbum.getLargeImage());
-                if (mAlbum.getSummary() != null) {
-                    bioTV.setText(Html.fromHtml(mAlbum.getSummary()));
-                    bioTV.setMovementMethod(LinkMovementMethod.getInstance());
-                }
-            }
-
-            return view;
-        }
-
-        private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                new FetchAlbumBio().fetchAlbumBio();
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                loadingV.setVisibility(View.INVISIBLE);
-                albumIV.setImageDrawable(mAlbum.getLargeImage());
-                if (mAlbum.getSummary() != null) {
-                    bioTV.setText(Html.fromHtml(mAlbum.getSummary()));
-                    bioTV.setMovementMethod(LinkMovementMethod.getInstance());
-                }
             }
 
         }

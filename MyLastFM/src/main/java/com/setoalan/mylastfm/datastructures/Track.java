@@ -14,9 +14,10 @@ public class Track {
     private int mListeners;
     private int mPlays;
     private Drawable mImage;
-    private Drawable mLargeImage;
     private boolean mNowPlaying;
     private long mDate;
+
+    private String mSummary;
 
     public int getRank() {
         return mRank;
@@ -98,14 +99,6 @@ public class Track {
         mImage = image;
     }
 
-    public Drawable getLargeImage() {
-        return mLargeImage;
-    }
-
-    public void setLargeImage(Drawable largeImage) {
-        mLargeImage = largeImage;
-    }
-
     public boolean isNowPlaying() {
         return mNowPlaying;
     }
@@ -120,6 +113,14 @@ public class Track {
 
     public void setDate(long date) {
         mDate = date;
+    }
+
+    public String getSummary() {
+        return mSummary;
+    }
+
+    public void setSummary(String summary) {
+        mSummary = summary;
     }
 
 }

@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +25,8 @@ public class TrackFragment extends Fragment {
 
     public static Track mTrack;
 
-    ImageView artistIV;
-    TextView artistTV, playsTV, listenersTV, durationTV, trackNumTV;
+    ImageView albumIV;
+    TextView albumTV, artistTV, playsTV, listenersTV, durationTV, summaryTV, trackTV, trackNumTV;
     View loadingV;
 
     public TrackFragment() {
@@ -44,32 +46,39 @@ public class TrackFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_track, container, false);
 
         loadingV = view.findViewById(R.id.loading_container);
-        artistIV = (ImageView) view.findViewById(R.id.image_iv);
-        artistTV = (TextView) view.findViewById(R.id.name_tv);
+        albumIV = (ImageView) view.findViewById(R.id.image_iv);
+        trackNumTV = (TextView) view.findViewById(R.id.track_num_tv);
+        artistTV = (TextView) view.findViewById(R.id.artist_tv);
+        trackTV = (TextView) view.findViewById(R.id.track_tv);
+        albumTV = (TextView) view.findViewById(R.id.album_tv);
         playsTV = (TextView) view.findViewById(R.id.plays_tv);
         listenersTV = (TextView) view.findViewById(R.id.listeners_tv);
         durationTV = (TextView) view.findViewById(R.id.duration_tv);
-        trackNumTV = (TextView) view.findViewById(R.id.track_num_tv);
+        summaryTV = (TextView) view.findViewById(R.id.summary_tv);
 
-        if (mTrack.getLargeImage() == null) {
+        if (mTrack.getSummary() == null) {
             loadingV.setVisibility(View.VISIBLE);
             new FetchDataTask().execute();
         } else {
-            artistIV.setImageDrawable(mTrack.getLargeImage());
+            albumIV.setImageDrawable(mTrack.getImage());
+            trackNumTV.setText(mTrack.getRank() + "");
+            artistTV.setText(mTrack.getArtist());
+            trackTV.setText(mTrack.getName());
+            albumTV.setText(mTrack.getAlbum());
             playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getPlays()) + " PLAYS");
+                    .format(mTrack.getPlays()) + "");
             listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getListeners()) + " LISTENERS");
+                    .format(mTrack.getListeners()) + "");
             long minute =  TimeUnit.MILLISECONDS.toMinutes(mTrack.getDuration());
             if ((mTrack.getDuration() % (60 * 1000)) < 10)
                 durationTV.setText(minute + ":0" + (mTrack.getDuration() % (60 * 1000) / 1000));
             else
                 durationTV.setText(minute + ":" + (mTrack.getDuration() % (60 * 1000) / 1000));
-            trackNumTV.setText("Track No. " + mTrack.getRank());
-            artistTV.setText(mTrack.getName());
+            summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
+            summaryTV.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         return view;
@@ -87,18 +96,22 @@ public class TrackFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             loadingV.setVisibility(View.INVISIBLE);
-            artistIV.setImageDrawable(mTrack.getLargeImage());
+            albumIV.setImageDrawable(mTrack.getImage());
+            trackNumTV.setText(mTrack.getRank() + "");
+            artistTV.setText(mTrack.getArtist());
+            trackTV.setText(mTrack.getName());
+            albumTV.setText(mTrack.getAlbum());
             playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getPlays()) + " PLAYS");
+                    .format(mTrack.getPlays()) + "");
             listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getListeners()) + " LISTENERS");
+                    .format(mTrack.getListeners()) + "");
             long minute =  TimeUnit.MILLISECONDS.toMinutes(mTrack.getDuration());
             if ((mTrack.getDuration() % (60 * 1000)) < 10)
                 durationTV.setText(minute + ":0" + (mTrack.getDuration() % (60 * 1000) / 1000));
             else
                 durationTV.setText(minute + ":" + (mTrack.getDuration() % (60 * 1000) / 1000));
-            trackNumTV.setText("Track No. " + mTrack.getRank());
-            artistTV.setText(mTrack.getName());
+            summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
+            summaryTV.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
     }
