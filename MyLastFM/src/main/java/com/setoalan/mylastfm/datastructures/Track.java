@@ -16,7 +16,6 @@ public class Track {
     private Drawable mImage;
     private boolean mNowPlaying;
     private long mDate;
-
     private String mSummary;
 
     public int getRank() {

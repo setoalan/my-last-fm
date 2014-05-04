@@ -3,7 +3,6 @@ package com.setoalan.mylastfm.fetchservices;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
-import com.setoalan.mylastfm.MyLastFMActivity;
 import com.setoalan.mylastfm.TrackFragment;
 
 import org.apache.http.HttpResponse;
@@ -37,7 +36,6 @@ public class FetchTrackInfo {
                 .appendQueryParameter("artist", TrackFragment.mTrack.getArtist())
                 .appendQueryParameter("track", TrackFragment.mTrack.getName())
                 .appendQueryParameter("api_key", KEY)
-                .appendQueryParameter("username", MyLastFMActivity.USERINFO.getName())
                 .appendQueryParameter("format", "json")
                 .build().toString();
 
@@ -81,7 +79,10 @@ public class FetchTrackInfo {
             TrackFragment.mTrack.setListeners(jsonObject.getInt("listeners"));
             TrackFragment.mTrack.setPlays(jsonObject.getInt("playcount"));
             TrackFragment.mTrack.setDuration(jsonObject.getInt("duration"));
-            TrackFragment.mTrack.setSummary(jsonObject.getJSONObject("wiki").getString("summary"));
+            if (jsonObject.optJSONObject("wiki") != null) {
+                TrackFragment.mTrack.setSummary(jsonObject.getJSONObject("wiki")
+                        .getString("summary"));
+            }
             TrackFragment.mTrack.setRank(jsonObject.getJSONObject("album").getJSONObject("@attr")
                     .getInt("position"));
             mInputStream = (InputStream) new URL(jsonObject.getJSONObject("album")

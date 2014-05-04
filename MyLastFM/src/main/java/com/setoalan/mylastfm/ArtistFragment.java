@@ -168,12 +168,13 @@ public class ArtistFragment extends Fragment {
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             if (position == 1 || position == 2 || position == 3 || position == 4 || position == 5) {
-                TopTracksFragment.track = mArtist.getTracks().get(position - 1);
-                TopTracksFragment.track.setArtist(mArtist.getName());
+                TrackFragment.mTrack = mArtist.getTracks().get(position - 1);
+                TrackFragment.mTrack.setArtist(mArtist.getName());
+                TrackFragment.mTrack.setAlbum(mArtist.getTracks().get(position - 1).getAlbum());
                 startActivity(new Intent(getActivity(), TrackActivity.class));
             } else if (position == 7 || position == 8 || position == 9 || position == 10
                     || position == 11) {
-                TopAlbumsFragment.album = mArtist.getAlbums().get(position - 7);
+                AlbumFragment.mAlbum = mArtist.getAlbums().get(position - 7);
                 startActivity(new Intent(getActivity(), AlbumActivity.class));
             }
         }
@@ -266,15 +267,13 @@ public class ArtistFragment extends Fragment {
             artistIV = (ImageView) view.findViewById(R.id.artist_iv);
             bioTV = (TextView) view.findViewById(R.id.biography_tv);
 
-            if (mArtist.getLargeImage() == null) {
+            if (mArtist.getSummary() == null) {
                 loadingV.setVisibility(View.VISIBLE);
                 new FetchDataTask().execute();
             } else {
                 artistIV.setImageDrawable(mArtist.getLargeImage());
-                if (mArtist.getSummary() != null) {
-                    bioTV.setText(Html.fromHtml(mArtist.getSummary()));
-                    bioTV.setMovementMethod(LinkMovementMethod.getInstance());
-                }
+                bioTV.setText(Html.fromHtml(mArtist.getSummary()));
+                bioTV.setMovementMethod(LinkMovementMethod.getInstance());
             }
 
             return view;

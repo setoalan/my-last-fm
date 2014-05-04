@@ -81,6 +81,8 @@ public class FetchArtistEvents {
 
         try {
             JSONObject jsonObjectMain = new JSONObject(result);
+            if (jsonObjectMain.getJSONObject("events").optJSONArray("event") == null)
+                return;
             JSONArray jsonArray = jsonObjectMain.getJSONObject("events").getJSONArray("event");
             JSONObject jsonObject;
 

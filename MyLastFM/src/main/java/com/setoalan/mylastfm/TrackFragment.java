@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,17 +69,22 @@ public class TrackFragment extends Fragment {
             artistTV.setText(mTrack.getArtist());
             trackTV.setText(mTrack.getName());
             albumTV.setText(mTrack.getAlbum());
-            playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getPlays()) + "");
-            listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getListeners()) + "");
+            playsTV.setText("Plays: " + NumberFormat.getNumberInstance(Locale.US)
+                    .format(mTrack.getPlays()));
+            listenersTV.setText("Listeners: " + NumberFormat.getNumberInstance(Locale.US)
+                    .format(mTrack.getListeners()));
             long minute =  TimeUnit.MILLISECONDS.toMinutes(mTrack.getDuration());
-            if ((mTrack.getDuration() % (60 * 1000)) < 10)
-                durationTV.setText(minute + ":0" + (mTrack.getDuration() % (60 * 1000) / 1000));
-            else
-                durationTV.setText(minute + ":" + (mTrack.getDuration() % (60 * 1000) / 1000));
-            summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
-            summaryTV.setMovementMethod(LinkMovementMethod.getInstance());
+            if ((mTrack.getDuration() % (60 * 1000)) < 10) {
+                durationTV.setText("Duration: " + minute + ":0" + (mTrack.getDuration() %
+                        (60 * 1000) / 1000));
+            } else {
+                durationTV.setText("Duration: " + minute + ":" + (mTrack.getDuration() %
+                        (60 * 1000) / 1000));
+            }
+            if (mTrack.getSummary() != null) {
+                summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
+                summaryTV.setMovementMethod(LinkMovementMethod.getInstance());
+            }
         }
 
         return view;
@@ -101,15 +107,18 @@ public class TrackFragment extends Fragment {
             artistTV.setText(mTrack.getArtist());
             trackTV.setText(mTrack.getName());
             albumTV.setText(mTrack.getAlbum());
-            playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getPlays()) + "");
-            listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getListeners()) + "");
+            playsTV.setText("Plays: " + NumberFormat.getNumberInstance(Locale.US)
+                    .format(mTrack.getPlays()));
+            listenersTV.setText("Listeners: " + NumberFormat.getNumberInstance(Locale.US)
+                    .format(mTrack.getListeners()));
             long minute =  TimeUnit.MILLISECONDS.toMinutes(mTrack.getDuration());
-            if ((mTrack.getDuration() % (60 * 1000)) < 10)
-                durationTV.setText(minute + ":0" + (mTrack.getDuration() % (60 * 1000) / 1000));
-            else
-                durationTV.setText(minute + ":" + (mTrack.getDuration() % (60 * 1000) / 1000));
+            if ((mTrack.getDuration() % (60 * 1000)) < 10) {
+                durationTV.setText("Duration: " + minute + ":0" + (mTrack.getDuration() %
+                        (60 * 1000) / 1000));
+            } else {
+                durationTV.setText("Duration: " + minute + ":" + (mTrack.getDuration() %
+                        (60 * 1000) / 1000));
+            }
             if (mTrack.getSummary() != null) {
                 summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
                 summaryTV.setMovementMethod(LinkMovementMethod.getInstance());

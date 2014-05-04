@@ -29,7 +29,6 @@ public class TopTracksFragment extends Fragment {
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
     TextView artistTV, playCountTV, rankTV, trackTV;
-    View loadingV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,10 +79,8 @@ public class TopTracksFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_detail, null);
-            }
+            if (convertView == null)
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_detail, null);
 
             Track track = null;
             if (mPeriod.equals("week"))
@@ -114,6 +111,8 @@ public class TopTracksFragment extends Fragment {
 
     public class TrackFragmentTab extends ListFragment {
 
+        TopTracksAdapter mTopTracksAdapter;
+
         private boolean dataCalled = false;
         private String mPeriod;
 
@@ -128,49 +127,35 @@ public class TopTracksFragment extends Fragment {
             if (!dataCalled) {
                 dataCalled = true;
                 if (mPeriod.equals("7day")) {
-                    if (MyLastFMActivity.WEEK_TRACKS.isEmpty())
+                    if (MyLastFMActivity.WEEK_TRACKS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week"));
+                    } else {
+                        mTopTracksAdapter = new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week");
+                        setListAdapter(mTopTracksAdapter);
+                    }
                 } else if (mPeriod.equals("1month")) {
-                    if (MyLastFMActivity.MONTH_TRACKS.isEmpty())
+                    if (MyLastFMActivity.MONTH_TRACKS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS,
-                                "month"));
+                    } else {
+                        mTopTracksAdapter = new TopTracksAdapter(MyLastFMActivity.MONTH_TRACKS, "month");
+                        setListAdapter(mTopTracksAdapter);
+                    }
                 } else if (mPeriod.equals("12month")) {
-                    if (MyLastFMActivity.YEAR_TRACKS.isEmpty())
+                    if (MyLastFMActivity.YEAR_TRACKS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year"));
+                    } else {
+                        mTopTracksAdapter = new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year");
+                        setListAdapter(mTopTracksAdapter);
+                    }
                 } else if (mPeriod.equals("overall")) {
-                    if (MyLastFMActivity.OVERALL_TRACKS.isEmpty())
+                    if (MyLastFMActivity.OVERALL_TRACKS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS,
-                                "overall"));
+                    } else {
+                        mTopTracksAdapter = new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS, "overall");
+                        setListAdapter(mTopTracksAdapter);
+                    }
                 }
             }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState){
-            View view = inflater.inflate(R.layout.fragment_list, container, false);
-            loadingV = view.findViewById(R.id.loading_container);
-            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
-                if (MyLastFMActivity.WEEK_TRACKS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1) {
-                if (MyLastFMActivity.MONTH_TRACKS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2) {
-                if (MyLastFMActivity.YEAR_TRACKS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3) {
-                if (MyLastFMActivity.OVERALL_TRACKS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            }
-            return view;
         }
 
         @Override
@@ -197,7 +182,6 @@ public class TopTracksFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                loadingV.setVisibility(View.INVISIBLE);
                 if (isVisible()) {
                     if (mPeriod.equals("7day"))
                         setListAdapter(new TopTracksAdapter(MyLastFMActivity.WEEK_TRACKS, "week"));
@@ -206,8 +190,7 @@ public class TopTracksFragment extends Fragment {
                     else if (mPeriod.equals("12month"))
                         setListAdapter(new TopTracksAdapter(MyLastFMActivity.YEAR_TRACKS, "year"));
                     else if (mPeriod.equals("overall"))
-                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS,
-                                "overall"));
+                        setListAdapter(new TopTracksAdapter(MyLastFMActivity.OVERALL_TRACKS, "overall"));
                 }
             }
 

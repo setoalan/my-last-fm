@@ -29,7 +29,6 @@ public class TopAlbumsFragment extends Fragment {
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
     TextView albumTV, artistTV, playCountTV, rankTV;
-    View loadingV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,10 +80,8 @@ public class TopAlbumsFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_detail, null);
-            }
+            if (convertView == null)
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_detail, null);
 
             Album album = null;
             if (mPeriod.equals("week"))
@@ -115,6 +112,8 @@ public class TopAlbumsFragment extends Fragment {
 
     public class AlbumFragmentTab extends ListFragment {
 
+        TopAlbumsAdapter mTopAlbumsAdapter;
+
         private boolean dataCalled = false;
         private String mPeriod;
 
@@ -126,52 +125,39 @@ public class TopAlbumsFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
+
             if (!dataCalled) {
                 dataCalled = true;
                 if (mPeriod.equals("7day")) {
-                    if (MyLastFMActivity.WEEK_ALBUMS.isEmpty())
+                    if (MyLastFMActivity.WEEK_ALBUMS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.WEEK_ALBUMS, "week"));
+                    } else {
+                        mTopAlbumsAdapter = new TopAlbumsAdapter(MyLastFMActivity.WEEK_ALBUMS, "week");
+                        setListAdapter(mTopAlbumsAdapter);
+                    }
                 } else if (mPeriod.equals("1month")) {
-                    if (MyLastFMActivity.MONTH_ALBUMS.isEmpty())
+                    if (MyLastFMActivity.MONTH_ALBUMS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.MONTH_ALBUMS,
-                                "month"));
+                    } else {
+                        mTopAlbumsAdapter = new TopAlbumsAdapter(MyLastFMActivity.MONTH_ALBUMS, "month");
+                        setListAdapter(mTopAlbumsAdapter);
+                    }
                 } else if (mPeriod.equals("12month")) {
-                    if (MyLastFMActivity.YEAR_ALBUMS.isEmpty())
+                    if (MyLastFMActivity.YEAR_ALBUMS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.YEAR_ALBUMS, "year"));
+                    } else {
+                        mTopAlbumsAdapter = new TopAlbumsAdapter(MyLastFMActivity.YEAR_ALBUMS, "year");
+                        setListAdapter(mTopAlbumsAdapter);
+                    }
                 } else if (mPeriod.equals("overall")) {
-                    if (MyLastFMActivity.OVERALL_ALBUMS.isEmpty())
+                    if (MyLastFMActivity.OVERALL_ALBUMS.isEmpty()) {
                         new FetchDataTask().execute();
-                    else
-                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS,
-                                "overall"));
+                    } else {
+                        mTopAlbumsAdapter = new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS, "overall");
+                        setListAdapter(mTopAlbumsAdapter);
+                    }
                 }
             }
-        }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_list, container, false);
-            loadingV = view.findViewById(R.id.loading_container);
-            if (getActivity().getActionBar().getSelectedTab().getPosition() == 0) {
-                if (MyLastFMActivity.WEEK_ALBUMS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1) {
-                if (MyLastFMActivity.MONTH_ALBUMS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2) {
-                if (MyLastFMActivity.YEAR_ALBUMS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            } else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3) {
-                if (MyLastFMActivity.OVERALL_ALBUMS.isEmpty())
-                    loadingV.setVisibility(View.VISIBLE);
-            }
-            return view;
         }
 
         @Override
@@ -198,7 +184,6 @@ public class TopAlbumsFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                loadingV.setVisibility(View.INVISIBLE);
                 if (isVisible()) {
                     if (mPeriod.equals("7day"))
                         setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.WEEK_ALBUMS, "week"));
@@ -207,8 +192,7 @@ public class TopAlbumsFragment extends Fragment {
                     else if (mPeriod.equals("12month"))
                         setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.YEAR_ALBUMS, "year"));
                     else if (mPeriod.equals("overall"))
-                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS,
-                                "overall"));
+                        setListAdapter(new TopAlbumsAdapter(MyLastFMActivity.OVERALL_ALBUMS, "overall"));
                 }
             }
 

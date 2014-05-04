@@ -33,6 +33,10 @@
         android:layout_marginTop="3dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_iv"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -54,8 +58,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/track_tv"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:singleLine="true" />
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/plays_t"
@@ -63,8 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/album_tv"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Plays: " />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/plays_tv"
@@ -80,8 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/plays_t"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Listeners: " />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/listeners_tv"
@@ -97,8 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/listeners_t"
         android:layout_toRightOf="@+id/image_iv"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Duration: " />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/duration_tv"

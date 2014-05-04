@@ -64,7 +64,8 @@ public class AlbumFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_container, container, false);
         return view;
     }
@@ -137,8 +138,9 @@ public class AlbumFragment extends Fragment {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
-            TopTracksFragment.track = mAlbum.getTracks().get(position);
-            TopTracksFragment.track.setArtist(mAlbum.getArtist());
+            TrackFragment.mTrack = mAlbum.getTracks().get(position);
+            TrackFragment.mTrack.setArtist(mAlbum.getArtist());
+            TrackFragment.mTrack.setAlbum(mAlbum.getName());
             startActivity(new Intent(getActivity(), TrackActivity.class));
         }
 

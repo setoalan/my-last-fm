@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.setoalan.mylastfm.ArtistFragment;
-import com.setoalan.mylastfm.MyLastFMActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -36,7 +35,6 @@ public class FetchArtistInfo {
                 .appendQueryParameter("method", "artist.getinfo")
                 .appendQueryParameter("artist", ArtistFragment.mArtist.getName())
                 .appendQueryParameter("api_key", KEY)
-                .appendQueryParameter("username", MyLastFMActivity.USERINFO.getName())
                 .appendQueryParameter("format", "json")
                 .build().toString();
 

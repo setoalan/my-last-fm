@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 public class RecentTracksFragment extends ListFragment {
 
+    RecentTracksAdapter mRecentTracksAdapter;
+
     ImageView albumIV;
     TextView artistTV, lastPlayedTV, trackTV;
 
@@ -29,10 +31,12 @@ public class RecentTracksFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        if (MyLastFMActivity.RECENT_TRACKS.isEmpty())
+        if (MyLastFMActivity.RECENT_TRACKS.isEmpty()) {
             new FetchDataTask().execute();
-        else
-            setListAdapter(new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS));
+        } else {
+            mRecentTracksAdapter = new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS);
+            setListAdapter(mRecentTracksAdapter);
+        }
     }
 
     @Override
@@ -52,9 +56,10 @@ public class RecentTracksFragment extends ListFragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (isVisible())
-                setListAdapter(new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS));
+            if (isVisible()) {
+                mRecentTracksAdapter = new RecentTracksAdapter(MyLastFMActivity.RECENT_TRACKS);
+                setListAdapter(mRecentTracksAdapter);
+            }
         }
 
     }
@@ -67,10 +72,8 @@ public class RecentTracksFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_detail, null);
-            }
+            if (convertView == null)
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_detail, null);
 
             Track track = MyLastFMActivity.RECENT_TRACKS.get(position);
 
@@ -90,34 +93,24 @@ public class RecentTracksFragment extends ListFragment {
                 long time;
                 if (difference < 3600) {
                     time = TimeUnit.SECONDS.toMinutes(difference);
-                    if (time == 1)
-                        lastPlayedTV.setText(time + " minute ago");
-                    else
-                        lastPlayedTV.setText(time  + " minutes ago");
+                    if (time == 1) lastPlayedTV.setText(time + " minute ago");
+                    else lastPlayedTV.setText(time  + " minutes ago");
                 } else if (difference < 86400) {
                     time = TimeUnit.SECONDS.toHours(difference);
-                    if (time == 1)
-                        lastPlayedTV.setText(time + " hour ago");
-                    else
-                        lastPlayedTV.setText(time + " hours ago");
+                    if (time == 1) lastPlayedTV.setText(time + " hour ago");
+                    else lastPlayedTV.setText(time + " hours ago");
                 }  else if (difference < 2592000) {
                     time = TimeUnit.SECONDS.toDays(difference);
-                    if (time == 1)
-                        lastPlayedTV.setText(time + " day ago");
-                    else
-                        lastPlayedTV.setText(time + " days ago");
+                    if (time == 1) lastPlayedTV.setText(time + " day ago");
+                    else lastPlayedTV.setText(time + " days ago");
                 } else if (difference < 31556952) {
                     time = TimeUnit.SECONDS.toDays(difference) / 12;
-                    if (time == 1)
-                        lastPlayedTV.setText(time + " month ago");
-                    else
-                        lastPlayedTV.setText(time + " months ago");
+                    if (time == 1) lastPlayedTV.setText(time + " month ago");
+                    else lastPlayedTV.setText(time + " months ago");
                 } else {
                     time = TimeUnit.SECONDS.toDays(difference) / 365;
-                    if (time == 1)
-                        lastPlayedTV.setText(time + " year ago");
-                    else
-                        lastPlayedTV.setText(time + " years ago");
+                    if (time == 1) lastPlayedTV.setText(time + " year ago");
+                    else lastPlayedTV.setText(time + " years ago");
                 }
             }
 

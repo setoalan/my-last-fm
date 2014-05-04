@@ -1,7 +1,10 @@
 package com.setoalan.mylastfm;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -21,6 +24,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.RED));
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }

@@ -21,9 +21,9 @@
         android:layout_toRightOf="@+id/image_iv"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:scrollHorizontally="true"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/date_tv"
@@ -31,6 +31,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_tv"
         android:layout_toRightOf="@+id/image_iv"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -39,6 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/date_tv"
         android:layout_toRightOf="@+id/image_iv"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout

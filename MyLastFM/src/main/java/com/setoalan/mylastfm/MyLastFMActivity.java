@@ -30,22 +30,21 @@ import java.util.ArrayList;
 public class MyLastFMActivity extends Activity {
 
     public static UserInfo USERINFO;
-    public static ArrayList<Track> THREE_RECENT_TRACKS, WEEKLY_TRACKS, RECENT_TRACKS, WEEK_TRACKS,
-            MONTH_TRACKS, YEAR_TRACKS, OVERALL_TRACKS;
-    public static ArrayList<Artist> WEEKLY_ARTISTS, WEEK_ARTISTS, MONTH_ARTISTS, YEAR_ARTISTS,
-            OVERALL_ARTISTS;
-    public static ArrayList<Album> WEEKLY_ALBUMS, WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS,
-            OVERALL_ALBUMS;
+    public static ArrayList<Track> THREE_RECENT_TRACKS, WEEKLY_TRACKS, RECENT_TRACKS,
+            WEEK_TRACKS, MONTH_TRACKS, YEAR_TRACKS, OVERALL_TRACKS;
+    public static ArrayList<Artist> WEEKLY_ARTISTS,
+            WEEK_ARTISTS, MONTH_ARTISTS, YEAR_ARTISTS, OVERALL_ARTISTS;
+    public static ArrayList<Album> WEEKLY_ALBUMS,
+            WEEK_ALBUMS, MONTH_ALBUMS, YEAR_ALBUMS, OVERALL_ALBUMS;
 
     private ArrayList<String> mList;
 
-    DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mActionBarDrawerToggle;
-
-    FragmentManager fragmentManager;
-    Fragment fragment;
-
+    DrawerLayout mDrawerLayout;
     static DrawerListAdapter mDrawerListAdapter;
+    Fragment fragment;
+    FragmentManager fragmentManager;
+
     ListView mDrawerList;
 
     @Override
@@ -74,6 +73,7 @@ public class MyLastFMActivity extends Activity {
                 super.onDrawerOpened(drawerView);
             }
         };
+        mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -207,11 +207,11 @@ public class MyLastFMActivity extends Activity {
             } else {
                 convertView = getLayoutInflater().inflate(R.layout.list_item_drawer, parent, false);
                 drawerTV = (TextView) convertView.findViewById(R.id.drawer_tv);
-                String[] array = getResources().getStringArray(R.array.drawer_items);
-                drawerTV.setText(array[position - 1]);
+                drawerTV.setText(getResources().getStringArray(R.array.drawer_items)[position -1]);
             }
             return convertView;
         }
+
     }
 
 }
