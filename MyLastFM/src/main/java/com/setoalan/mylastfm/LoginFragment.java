@@ -33,8 +33,7 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_login, container, false);
 
         usernameET = (EditText) view.findViewById(R.id.username_et);
@@ -43,8 +42,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MyLastFMFragment.USERNAME = usernameET.getText().toString();
-                if (MyLastFMFragment.USERNAME.equals("") || MyLastFMFragment.USERNAME
-                        .matches("^\\s*$")) {
+                if (MyLastFMFragment.USERNAME.equals("") || MyLastFMFragment.USERNAME.matches("^\\s*$")) {
                     Toast.makeText(getActivity(), "Enter username", Toast.LENGTH_LONG).show();
                 } else {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -57,4 +55,5 @@ public class LoginFragment extends Fragment {
 
         return view;
     }
+
 }

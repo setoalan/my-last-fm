@@ -66,8 +66,7 @@ public class EventFragment extends ListFragment {
 
         public View getView(int position, View convertView, ViewGroup parent) {
             if (position == 0) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_event, null);
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_event, null);
                 eventIV = (ImageView) convertView.findViewById(R.id.image_iv);
                 titleTV = (TextView) convertView.findViewById(R.id.title_tv);
                 dateTV = (TextView) convertView.findViewById(R.id.date_tv);

@@ -116,6 +116,7 @@ public class RecentTracksFragment extends ListFragment {
 
             return convertView;
         }
+
     }
 
 }

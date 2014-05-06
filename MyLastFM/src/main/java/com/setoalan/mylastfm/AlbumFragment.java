@@ -64,8 +64,7 @@ public class AlbumFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_container, container, false);
         return view;
     }
@@ -76,8 +75,7 @@ public class AlbumFragment extends Fragment {
         TextView albumTV, playsTV, listenersTV;
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_info, container, false);
 
             loadingV = view.findViewById(R.id.loading_container);
@@ -91,10 +89,8 @@ public class AlbumFragment extends Fragment {
                 new FetchDataTask().execute();
             } else {
                 albumIV.setImageDrawable(AlbumFragment.mAlbum.getLargeImage());
-                playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(AlbumFragment.mAlbum.getPlays()) + " PLAYS");
-                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(AlbumFragment.mAlbum.getListeners()) + " LISTENERS");
+                playsTV.setText(NumberFormat.getNumberInstance(Locale.US).format(AlbumFragment.mAlbum.getPlays()) + " PLAYS");
+                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US).format(AlbumFragment.mAlbum.getListeners()) + " LISTENERS");
                 albumTV.setText(AlbumFragment.mAlbum.getName());
             }
 
@@ -111,13 +107,10 @@ public class AlbumFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
                 albumIV.setImageDrawable(AlbumFragment.mAlbum.getLargeImage());
-                playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(AlbumFragment.mAlbum.getPlays()) + " PLAYS");
-                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(AlbumFragment.mAlbum.getListeners()) + " LISTENERS");
+                playsTV.setText(NumberFormat.getNumberInstance(Locale.US).format(AlbumFragment.mAlbum.getPlays()) + " PLAYS");
+                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US).format(AlbumFragment.mAlbum.getListeners()) + " LISTENERS");
                 albumTV.setText(AlbumFragment.mAlbum.getName());
             }
 
@@ -154,7 +147,6 @@ public class AlbumFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 if (isVisible())
                     setListAdapter(new ArtistSimilarAdapter(mAlbum.getTracks()));
             }
@@ -171,10 +163,8 @@ public class AlbumFragment extends Fragment {
             }
 
             public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_default, null);
-                }
+                if (convertView == null)
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_default, null);
 
                 Track track = mAlbum.getTracks().get(position);
 

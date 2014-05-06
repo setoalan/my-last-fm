@@ -97,8 +97,7 @@ public class ArtistFragment extends Fragment {
         TextView artistTV, playsTV, listenersTV;
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_info, container, false);
 
             loadingV = view.findViewById(R.id.loading_container);
@@ -112,10 +111,8 @@ public class ArtistFragment extends Fragment {
                 new FetchDataTask().execute();
             } else {
                 artistIV.setImageDrawable(mArtist.getLargeImage());
-                playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(mArtist.getPlays()) + " PLAYS");
-                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(mArtist.getListeners()) + " LISTENERS");
+                playsTV.setText(NumberFormat.getNumberInstance(Locale.US).format(mArtist.getPlays()) + " PLAYS");
+                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US).format(mArtist.getListeners()) + " LISTENERS");
                 artistTV.setText(mArtist.getName());
             }
 
@@ -132,13 +129,10 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
                 artistIV.setImageDrawable(mArtist.getLargeImage());
-                playsTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(mArtist.getPlays()) + " PLAYS");
-                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US)
-                        .format(mArtist.getListeners()) + " LISTENERS");
+                playsTV.setText(NumberFormat.getNumberInstance(Locale.US).format(mArtist.getPlays()) + " PLAYS");
+                listenersTV.setText(NumberFormat.getNumberInstance(Locale.US).format(mArtist.getListeners()) + " LISTENERS");
                 artistTV.setText(mArtist.getName());
             }
 
@@ -172,8 +166,7 @@ public class ArtistFragment extends Fragment {
                 TrackFragment.mTrack.setArtist(mArtist.getName());
                 TrackFragment.mTrack.setAlbum(mArtist.getTracks().get(position - 1).getAlbum());
                 startActivity(new Intent(getActivity(), TrackActivity.class));
-            } else if (position == 7 || position == 8 || position == 9 || position == 10
-                    || position == 11) {
+            } else if (position == 7 || position == 8 || position == 9 || position == 10 || position == 11) {
                 AlbumFragment.mAlbum = mArtist.getAlbums().get(position - 7);
                 startActivity(new Intent(getActivity(), AlbumActivity.class));
             }
@@ -189,7 +182,6 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 if (isVisible())
                     setListAdapter(new ArtistsPopularAdapter(mList));
             }
@@ -204,14 +196,11 @@ public class ArtistFragment extends Fragment {
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (position == 0) {
-                    convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_header, null);
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_header, null);
                     headerTV = (TextView) convertView.findViewById(R.id.header_tv);
                     headerTV.setText("Top Tracks");
-                } else if (position == 1 || position == 2 || position == 3 || position == 4 ||
-                        position == 5) {
-                    convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_default, null);
+                } else if (position == 1 || position == 2 || position == 3 || position == 4 || position == 5) {
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_default, null);
                     if (mArtist.getTracks().get(position - 1) != null) {
                         Track track = mArtist.getTracks().get(position - 1);
 
@@ -229,10 +218,8 @@ public class ArtistFragment extends Fragment {
                             .inflate(R.layout.list_item_header, null);
                     headerTV = (TextView) convertView.findViewById(R.id.header_tv);
                     headerTV.setText("Top Albums");
-                } else if (position == 7 || position == 8 || position == 9 || position == 10 ||
-                        position == 11) {
-                    convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_default, null);
+                } else if (position == 7 || position == 8 || position == 9 || position == 10 || position == 11) {
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_default, null);
                     if ((mArtist.getAlbums().size() - position + 6) >= 0) {
                         Album album = mArtist.getAlbums().get(position - 7);
                         albumIV = (ImageView) convertView.findViewById(R.id.image_iv);
@@ -259,8 +246,7 @@ public class ArtistFragment extends Fragment {
         TextView bioTV;
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_bio, container, false);
 
             loadingV = view.findViewById(R.id.loading_container);
@@ -289,7 +275,6 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 loadingV.setVisibility(View.INVISIBLE);
                 artistIV.setImageDrawable(mArtist.getLargeImage());
                 bioTV.setText(Html.fromHtml(mArtist.getSummary()));
@@ -328,7 +313,6 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 if (isVisible())
                     setListAdapter(new ArtistEventAdapter(mArtist.getEvents()));
             }
@@ -338,17 +322,15 @@ public class ArtistFragment extends Fragment {
         private class ArtistEventAdapter extends ArrayAdapter<Event> {
 
             ImageView artistIV;
-            TextView headlinerTV, venueTV, dateTV;
+            TextView dateTV, headlinerTV, venueTV;
 
             public ArtistEventAdapter(ArrayList<Event> data) {
                 super(getActivity(), android.R.layout.simple_list_item_1, data);
             }
 
             public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_detail, null);
-                }
+                if (convertView == null)
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_detail, null);
 
                 Event event = mArtist.getEvents().get(position);
 
@@ -398,7 +380,6 @@ public class ArtistFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 if (isVisible())
                     setListAdapter(new ArtistSimilarAdapter(mArtist.getSimilar()));
             }
@@ -415,10 +396,8 @@ public class ArtistFragment extends Fragment {
             }
 
             public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getActivity().getLayoutInflater()
-                            .inflate(R.layout.list_item_detail, null);
-                }
+                if (convertView == null)
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_detail, null);
 
                 Artist artist = mArtist.getSimilar().get(position);
 

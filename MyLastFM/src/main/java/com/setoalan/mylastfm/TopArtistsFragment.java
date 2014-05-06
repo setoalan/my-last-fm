@@ -63,8 +63,7 @@ public class TopArtistsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_container, container, false);
         return view;
     }
@@ -181,7 +180,6 @@ public class TopArtistsFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
                 if (isVisible()) {
                     if (mPeriod.equals("7day"))
                         setListAdapter(new TopArtistsAdapter(MyLastFMActivity.WEEK_ARTISTS, "week"));
