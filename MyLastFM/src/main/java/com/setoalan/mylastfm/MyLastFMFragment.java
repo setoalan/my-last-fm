@@ -102,7 +102,8 @@ public class MyLastFMFragment extends ListFragment {
         protected void onPostExecute(Void aVoid) {
             MyLastFMActivity.refreshDrawer();
             mList = new ArrayList<String>();
-            for (int i=0; i<17; i++) mList.add("");
+            for (int i=0; i<17; i++)
+                mList.add("");
             if (MyLastFMActivity.USERINFO.getName() == null) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("No user with that name was found")
