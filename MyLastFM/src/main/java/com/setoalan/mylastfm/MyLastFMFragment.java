@@ -55,6 +55,9 @@ public class MyLastFMFragment extends ListFragment {
             if (MyLastFMActivity.USERINFO.getName() == null) {
                 new FetchDataTask().execute();
             } else {
+                mList = new ArrayList<String>();
+                for (int i=0; i<17; i++)
+                    mList.add("");
                 mMyLastFMAdapter = new MyLastFMAdapter(mList);
                 setListAdapter(mMyLastFMAdapter);
             }
@@ -101,9 +104,6 @@ public class MyLastFMFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             MyLastFMActivity.refreshDrawer();
-            mList = new ArrayList<String>();
-            for (int i=0; i<17; i++)
-                mList.add("");
             if (MyLastFMActivity.USERINFO.getName() == null) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("No user with that name was found")
@@ -117,10 +117,11 @@ public class MyLastFMFragment extends ListFragment {
                 Dialog dialog = builder.create();
                 dialog.show();
             }
-            if (isVisible()) {
-                mMyLastFMAdapter = new MyLastFMAdapter(mList);
-                setListAdapter(mMyLastFMAdapter);
-            }
+            mList = new ArrayList<String>();
+            for (int i=0; i<17; i++)
+                mList.add("");
+            mMyLastFMAdapter = new MyLastFMAdapter(mList);
+            setListAdapter(mMyLastFMAdapter);
         }
 
     }
