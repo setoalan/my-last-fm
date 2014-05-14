@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 public class TopArtistsFragment extends Fragment {
 
-    public static Artist artist;
-
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
 
@@ -160,13 +158,13 @@ public class TopArtistsFragment extends Fragment {
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             if (getActivity().getActionBar().getSelectedTab().getPosition() == 0)
-                artist = MyLastFMActivity.WEEK_ARTISTS.get(position);
+                ArtistFragment.mArtist = MyLastFMActivity.WEEK_ARTISTS.get(position);
             else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1)
-                artist = MyLastFMActivity.MONTH_ARTISTS.get(position);
+                ArtistFragment.mArtist = MyLastFMActivity.MONTH_ARTISTS.get(position);
             else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2)
-                artist = MyLastFMActivity.YEAR_ARTISTS.get(position);
+                ArtistFragment.mArtist = MyLastFMActivity.YEAR_ARTISTS.get(position);
             else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3)
-                artist = MyLastFMActivity.OVERALL_ARTISTS.get(position);
+                ArtistFragment.mArtist = MyLastFMActivity.OVERALL_ARTISTS.get(position);
             startActivity(new Intent(getActivity(), ArtistActivity.class));
         }
 

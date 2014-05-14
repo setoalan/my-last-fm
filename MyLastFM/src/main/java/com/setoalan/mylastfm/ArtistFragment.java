@@ -46,10 +46,6 @@ public class ArtistFragment extends Fragment {
     Fragment mInfoFragment, mPopularFragment, mBioFragment, mEventsFragment, mSimilarFragment;
     View loadingV;
 
-    public ArtistFragment() {
-        mArtist = TopArtistsFragment.artist;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -366,7 +362,7 @@ public class ArtistFragment extends Fragment {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
-            TopArtistsFragment.artist = mArtist.getSimilar().get(position);
+            ArtistFragment.mArtist = mArtist.getSimilar().get(position);
             startActivity(new Intent(getActivity(), ArtistActivity.class));
         }
 

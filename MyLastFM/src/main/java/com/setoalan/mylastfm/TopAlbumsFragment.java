@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 public class TopAlbumsFragment extends Fragment {
 
-    public static Album album;
-
     ActionBar.Tab mWeekTab, mMonthTab, mYearTab, mOverallTab;
     Fragment mWeekFragment, mMonthFragment, mYearFragment, mOverallFragment;
     ImageView albumIV;
@@ -162,13 +160,13 @@ public class TopAlbumsFragment extends Fragment {
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             if (getActivity().getActionBar().getSelectedTab().getPosition() == 0)
-                album = MyLastFMActivity.WEEK_ALBUMS.get(position);
+                AlbumFragment.mAlbum = MyLastFMActivity.WEEK_ALBUMS.get(position);
             else if (getActivity().getActionBar().getSelectedTab().getPosition() == 1)
-                album = MyLastFMActivity.MONTH_ALBUMS.get(position);
+                AlbumFragment.mAlbum = MyLastFMActivity.MONTH_ALBUMS.get(position);
             else if (getActivity().getActionBar().getSelectedTab().getPosition() == 2)
-                album = MyLastFMActivity.YEAR_ALBUMS.get(position);
+                AlbumFragment.mAlbum = MyLastFMActivity.YEAR_ALBUMS.get(position);
             else if (getActivity().getActionBar().getSelectedTab().getPosition() == 3)
-                album = MyLastFMActivity.OVERALL_ALBUMS.get(position);
+                AlbumFragment.mAlbum = MyLastFMActivity.OVERALL_ALBUMS.get(position);
             startActivity(new Intent(getActivity(), AlbumActivity.class));
         }
 

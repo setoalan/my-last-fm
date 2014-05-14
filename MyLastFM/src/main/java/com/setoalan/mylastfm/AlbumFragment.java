@@ -36,10 +36,6 @@ public class AlbumFragment extends Fragment {
     Fragment mInfoFragment, mTracksFragment;
     View loadingV;
 
-    public AlbumFragment() {
-        mAlbum = TopAlbumsFragment.album;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

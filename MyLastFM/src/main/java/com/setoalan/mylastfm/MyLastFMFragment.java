@@ -75,13 +75,13 @@ public class MyLastFMFragment extends ListFragment {
             TrackFragment.mTrack = MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2);
             startActivity(new Intent(getActivity(), TrackActivity.class));
         } else if (position == 6 || position == 7 || position == 8) {
-            TopArtistsFragment.artist = MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6);
+            ArtistFragment.mArtist = MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6);
             startActivity(new Intent(getActivity(), ArtistActivity.class));
         } else if (position == 10 || position == 11 || position == 12) {
             TrackFragment.mTrack = MyLastFMActivity.WEEKLY_TRACKS.get(position - 10);
             startActivity(new Intent(getActivity(), TrackActivity.class));
         } else if (position == 14 || position == 15 || position == 16) {
-            TopAlbumsFragment.album = MyLastFMActivity.WEEKLY_ALBUMS.get(position - 14);
+            AlbumFragment.mAlbum = MyLastFMActivity.WEEKLY_ALBUMS.get(position - 14);
             startActivity(new Intent(getActivity(), AlbumActivity.class));
         }
 

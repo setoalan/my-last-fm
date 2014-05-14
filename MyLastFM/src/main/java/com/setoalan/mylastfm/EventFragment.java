@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.setoalan.mylastfm.activities.ArtistActivity;
 import com.setoalan.mylastfm.activities.WebActivity;
-import com.setoalan.mylastfm.datastructures.Artist;
 import com.setoalan.mylastfm.datastructures.Event;
 
 import java.text.SimpleDateFormat;
@@ -49,8 +48,7 @@ public class EventFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        TopArtistsFragment.artist = new Artist();
-        TopArtistsFragment.artist.setName(mEvent.getArtists().get(position - 2));
+        ArtistFragment.mArtist.setName(mEvent.getArtists().get(position - 2));
         startActivity(new Intent(getActivity(), ArtistActivity.class));
     }
 
