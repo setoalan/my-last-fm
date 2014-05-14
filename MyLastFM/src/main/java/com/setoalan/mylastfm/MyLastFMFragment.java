@@ -72,15 +72,13 @@ public class MyLastFMFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         if (position == 2 || position == 3 || position == 4) {
-            TopTracksFragment.track = MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2);
-            TopTracksFragment.track.setArtist(MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2).getArtist());
+            TrackFragment.mTrack = MyLastFMActivity.THREE_RECENT_TRACKS.get(position - 2);
             startActivity(new Intent(getActivity(), TrackActivity.class));
         } else if (position == 6 || position == 7 || position == 8) {
             TopArtistsFragment.artist = MyLastFMActivity.WEEKLY_ARTISTS.get(position - 6);
             startActivity(new Intent(getActivity(), ArtistActivity.class));
         } else if (position == 10 || position == 11 || position == 12) {
-            TopTracksFragment.track = MyLastFMActivity.WEEKLY_TRACKS.get(position - 10);
-            TopTracksFragment.track.setAlbum(MyLastFMActivity.WEEKLY_TRACKS.get(position - 10).getAlbum());
+            TrackFragment.mTrack = MyLastFMActivity.WEEKLY_TRACKS.get(position - 10);
             startActivity(new Intent(getActivity(), TrackActivity.class));
         } else if (position == 14 || position == 15 || position == 16) {
             TopAlbumsFragment.album = MyLastFMActivity.WEEKLY_ALBUMS.get(position - 14);

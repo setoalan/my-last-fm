@@ -41,8 +41,7 @@ public class RecentTracksFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        TopTracksFragment.track = MyLastFMActivity.RECENT_TRACKS.get(position);
-        TopTracksFragment.track.setArtist(MyLastFMActivity.RECENT_TRACKS.get(position).getArtist());
+        TrackFragment.mTrack = MyLastFMActivity.RECENT_TRACKS.get(position);
         startActivity(new Intent(getActivity(), TrackActivity.class));
     }
 

@@ -29,10 +29,6 @@ public class TrackFragment extends Fragment {
     TextView albumTV, artistTV, durationTV, playsTV, listenersTV, summaryTV, trackTV, trackNumTV;
     View loadingV;
 
-    public TrackFragment() {
-        mTrack = TopTracksFragment.track;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,32 +54,8 @@ public class TrackFragment extends Fragment {
         durationTV = (TextView) view.findViewById(R.id.duration_tv);
         summaryTV = (TextView) view.findViewById(R.id.summary_tv);
 
-        if (mTrack.getSummary() == null) {
-            loadingV.setVisibility(View.VISIBLE);
-            new FetchDataTask().execute();
-        } else {
-            albumIV.setImageDrawable(mTrack.getImage());
-            trackNumTV.setText(mTrack.getRank() + "");
-            artistTV.setText(mTrack.getArtist());
-            trackTV.setText(mTrack.getName());
-            albumTV.setText(mTrack.getAlbum());
-            playsTV.setText("Plays: " + NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getPlays()));
-            listenersTV.setText("Listeners: " + NumberFormat.getNumberInstance(Locale.US)
-                    .format(mTrack.getListeners()));
-            long minute =  TimeUnit.MILLISECONDS.toMinutes(mTrack.getDuration());
-            if ((mTrack.getDuration() % (60 * 1000)) < 10) {
-                durationTV.setText("Duration: " + minute + ":0" + (mTrack.getDuration() %
-                        (60 * 1000) / 1000));
-            } else {
-                durationTV.setText("Duration: " + minute + ":" + (mTrack.getDuration() %
-                        (60 * 1000) / 1000));
-            }
-            if (mTrack.getSummary() != null) {
-                summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
-                summaryTV.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-        }
+        loadingV.setVisibility(View.VISIBLE);
+        new FetchDataTask().execute();
 
         return view;
     }
@@ -106,11 +78,11 @@ public class TrackFragment extends Fragment {
             albumTV.setText(mTrack.getAlbum());
             playsTV.setText("Plays: " + NumberFormat.getNumberInstance(Locale.US).format(mTrack.getPlays()));
             listenersTV.setText("Listeners: " + NumberFormat.getNumberInstance(Locale.US).format(mTrack.getListeners()));
-            long minute =  TimeUnit.MILLISECONDS.toMinutes(mTrack.getDuration());
-            if ((mTrack.getDuration() % (60 * 1000)) < 10)
-                durationTV.setText("Duration: " + minute + ":0" + (mTrack.getDuration() % (60 * 1000) / 1000));
+            long minute =  TimeUnit.SECONDS.toMinutes(mTrack.getDuration() / 1000);
+            if ((mTrack.getDuration() / 1000 % 60) < 10)
+                durationTV.setText("Duration: " + minute + ":0" + mTrack.getDuration() / 1000 % 60);
             else
-                durationTV.setText("Duration: " + minute + ":" + (mTrack.getDuration() % (60 * 1000) / 1000));
+                durationTV.setText("Duration: " + minute + ":" + mTrack.getDuration() / 1000 % 60);
             if (mTrack.getSummary() != null) {
                 summaryTV.setText(Html.fromHtml(mTrack.getSummary()));
                 summaryTV.setMovementMethod(LinkMovementMethod.getInstance());

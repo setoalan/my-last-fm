@@ -76,15 +76,13 @@ public class FetchTrackInfo {
             JSONObject jsonObject = new JSONObject(result);
             jsonObject = jsonObject.getJSONObject("track");
 
+            TrackFragment.mTrack.setAlbum(jsonObject.getJSONObject("album").getString("title"));
             TrackFragment.mTrack.setListeners(jsonObject.getInt("listeners"));
             TrackFragment.mTrack.setPlays(jsonObject.getInt("playcount"));
             TrackFragment.mTrack.setDuration(jsonObject.getInt("duration"));
-            if (jsonObject.optJSONObject("wiki") != null) {
-                TrackFragment.mTrack.setSummary(jsonObject.getJSONObject("wiki")
-                        .getString("summary"));
-            }
-            TrackFragment.mTrack.setRank(jsonObject.getJSONObject("album").getJSONObject("@attr")
-                    .getInt("position"));
+            if (jsonObject.optJSONObject("wiki") != null)
+                TrackFragment.mTrack.setSummary(jsonObject.getJSONObject("wiki").getString("summary"));
+            TrackFragment.mTrack.setRank(jsonObject.getJSONObject("album").getJSONObject("@attr").getInt("position"));
             mInputStream = (InputStream) new URL(jsonObject.getJSONObject("album")
                     .getJSONArray("image").getJSONObject(2).getString("#text")).getContent();
             mDrawable = Drawable.createFromStream(mInputStream, "src name");

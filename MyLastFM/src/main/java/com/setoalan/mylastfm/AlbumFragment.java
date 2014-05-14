@@ -133,7 +133,6 @@ public class AlbumFragment extends Fragment {
         public void onListItemClick(ListView l, View v, int position, long id) {
             TrackFragment.mTrack = mAlbum.getTracks().get(position);
             TrackFragment.mTrack.setArtist(mAlbum.getArtist());
-            TrackFragment.mTrack.setAlbum(mAlbum.getName());
             startActivity(new Intent(getActivity(), TrackActivity.class));
         }
 
